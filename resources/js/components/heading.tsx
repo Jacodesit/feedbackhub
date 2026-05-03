@@ -11,8 +11,9 @@ export default function Heading() {
                 </div>
                 <div className="">
                     <ul className="flex items-center gap-3">
-                        <li>Features</li>
                         <li>Feedback</li>
+                        <li>Problem & Solution</li>
+                        <li>Features</li>
                         <li>How It Works</li>
                     </ul>
                 </div>
