@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');
+Route::get('/login', fn() => Inertia::render('auth/login'));
 
 // Route::get('/', function () {
 //     return Inertia::render('welcome');

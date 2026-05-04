@@ -24,7 +24,7 @@ export default function Features() {
         },
     ]
     return (
-        <section className="p-20 bg-black">
+        <section id="features" className="p-20 bg-black">
             <div className="px-30">
                 <div className="mb-15 text-center">
                     <h1 className="font-bold text-3xl text-violet-500">Features</h1>

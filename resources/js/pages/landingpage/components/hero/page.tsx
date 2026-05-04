@@ -2,7 +2,7 @@ import CTA from "../cta/button";
 
 export default function Hero() {
     return (
-        <section className="h-screen w-full bg-black relative overflow-hidden p-20">
+        <section id="hero" className="h-screen w-full bg-black relative overflow-hidden p-20">
             <div
                 className="absolute inset-0 z-0"
                 style={{
@@ -14,12 +14,12 @@ export default function Hero() {
                 <div className="w-1/2 flex justify-center items-center ">
                     <div className="text-accent">
                         <div className="bg-[#1e1e1e] shadow-md rounded-full inline-block px-5 py-2 border-white/5">
-                            <p
+                            <div
                                 className="text-xs flex items-center gap-2"
                             >
                                 <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse text-white/2"></div>
                                 AI-powered categorization
-                            </p>
+                            </div>
                         </div>
                         <h1 className="font-bold text-7xl mt-5">Turn Feedback Into Better Products</h1>
                         <p className="mt-5">Collect feedback, track suggestions, and prioritize features in one clean system. No noise. Just real user-driven product decisions.

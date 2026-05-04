@@ -24,7 +24,7 @@ export default function ProblemSolution() {
         }
     ]
     return (
-        <section className="p-20 bg-slate-100">
+        <section id="problem-solution" className="p-20 bg-slate-100">
             <div className="px-30">
                 <div className="mb-15 text-center">
                     <h1 className="font-bold text-3xl text-violet-500">Problems and Solution</h1>

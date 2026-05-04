@@ -1,6 +1,6 @@
 export default function CallToAction() {
     return (
-        <section className="p-20 bg-black">
+        <section id="call-to-action" className="p-20 bg-black">
             <div className="px-20 max-w-7xl mx-auto">
                     <div className="relative overflow-hidden bg-violet-600 px-8 py-24 rounded-[48px] flex flex-col items-center justify-center gap-10 shadow-[0_0_50px_-12px_rgba(139,92,246,0.5)]">
 

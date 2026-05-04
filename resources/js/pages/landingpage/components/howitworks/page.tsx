@@ -2,7 +2,7 @@ import { Database, Edit3, MessagesSquare, Monitor } from "lucide-react"
 
 export default function HowItWorks() {
     return (
-        <section className="p-20 bg-slate-100">
+        <section id="how-it-works" className="p-20 bg-slate-100">
             <div className="px-30">
                 <div className="mb-15 text-center">
                     <h1 className="font-bold text-3xl text-violet-500">How It Works</h1>
