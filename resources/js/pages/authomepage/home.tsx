@@ -1,7 +1,10 @@
+import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
+
 export default function Home() {
     return (
-        <main>
-            <h1>Welcome to homepage</h1>
-        </main>
+        <AuthenticatedLayout>
+            <div>
+            </div>
+        </AuthenticatedLayout>
     )
 }

@@ -1,8 +1,14 @@
 import { Link } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "@/types/feedbackhub";
+import Logout from "./logout-btn";
 
 export default function Heading() {
     const [activeId, setActiveId] = useState("");
+
+    const { auth } = usePage<PageProps>().props;
+    const user = auth.user
 
     const links = [
         { name: "Feedback", id: "hero" },
@@ -10,6 +16,12 @@ export default function Heading() {
         { name: "Features", id: "features" },
         { name: "How It Works", id: "how-it-works" },
     ];
+
+    const authLinks = [
+        { name: "Feedback", url: '/feedback' },
+        { name: "My Posts", url: '/my-posts' },
+        { name: "Profile", url: '/profile' },
+    ]
 
     useEffect(() => {
         const silentIds = ["call-to-action", "footer"];
@@ -52,41 +64,69 @@ export default function Heading() {
         }
     };
 
+
+
     return (
         <header className="px-50 fixed z-[999] w-full">
             <div className="flex justify-between items-center border rounded-full px-10 py-3 mt-5 text-accent bg-white/5 backdrop-blur-md border-white/10 shadow-2xl">
                 <div>
                     <img src="/images/branding2.png" alt="logo" className="w-40 invert" />
                 </div>
-                <div>
-                    <ul className="flex items-center gap-6">
-                        {links.map((link) => (
-                            <li key={link.id}>
-                                <a
-                                    href={`#${link.id}`}
-                                    onClick={(e) => handleScroll(e, link.id)}
-                                    className={`text-sm transition-all duration-300 ${
-                                        activeId === link.id && activeId !== "hero" && activeId !== "call-to-action"
-                                        ? "text-white font-bold"
-                                        : "text-white/50 hover:text-white/80"
-                                    }`}
-                                >
-                                    {link.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="flex gap-2">
-                    <Link
-                        href="/login"
-                        className="bg-[#1e1e1e] px-6 py-2 rounded-lg text-sm text-white/80 border border-white/10
-                            transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]
-                            hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)]
-                            hover:border-white/30 hover:text-white">
-                        Login
-                    </Link>
-                </div>
+                {user ? (
+                    <>
+                        <div>
+                            <ul className="flex items-center gap-6">
+                                {authLinks.map((link, index) => (
+                                    <li
+                                        key={index}
+                                    >
+                                        <a
+                                            href={link.url}
+                                        >
+                                            {link.name}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <Logout />
+                        </div>
+                    </>
+
+                ) : (
+                    <>
+                        <div>
+                            <ul className="flex items-center gap-6">
+                                {links.map((link) => (
+                                    <li key={link.id}>
+                                        <a
+                                            href={`#${link.id}`}
+                                            onClick={(e) => handleScroll(e, link.id)}
+                                            className={`text-sm transition-all duration-300 ${
+                                                activeId === link.id && activeId !== "hero" && activeId !== "call-to-action"
+                                                ? "text-white font-bold"
+                                                : "text-white/50 hover:text-white/80"
+                                            }`}
+                                        >
+                                            {link.name}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="flex gap-2">
+                            <Link
+                                href="/login"
+                                className="bg-[#1e1e1e] px-6 py-2 rounded-lg text-sm text-white/80 border border-white/10
+                                    transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]
+                                    hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)]
+                                    hover:border-white/30 hover:text-white">
+                                Login
+                            </Link>
+                        </div>
+                    </>
+                )}
             </div>
         </header>
     );
