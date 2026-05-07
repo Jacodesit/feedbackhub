@@ -64,11 +64,17 @@ export default function Heading() {
         }
     };
 
-
+    const currentPath = window.location.pathname;
 
     return (
         <header className="px-50 fixed z-[999] w-full">
-            <div className="flex justify-between items-center border rounded-full px-10 py-3 mt-5 text-accent bg-white/5 backdrop-blur-md border-white/10 shadow-2xl">
+            <div
+                className={`flex justify-between items-center border rounded-full px-10 py-3 mt-5 text-accent
+                    ${currentPath === '/' ? 'bg-white/5 backdrop-blur-md border-white/10 shadow-2xl'
+                        : 'bg-[#1e1e1e] border-white/10 shadow-lg'
+                    }
+                `}
+            >
                 <div>
                     <img src="/images/branding2.png" alt="logo" className="w-40 invert" />
                 </div>

@@ -8,7 +8,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
     return (
         <div className="">
             <Heading />
-            <main>
+            <main className="">
                 {children}
             </main>
         </div>

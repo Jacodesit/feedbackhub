@@ -12,11 +12,12 @@ export default function Logout() {
     return (
         <button
             onClick={handleLogout}
-            disabled={processing} // or "ghost", "destructive" etc.
-            className="border px-6 py-2 flex items-center"
+            disabled={processing}
+            className="text-sm rounded-lg border border-white/10 px-6 py-2 flex items-center transtion-all duration-300         hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)]
+            hover:border-white/30 hover:text-white gap-1"
         >
             {processing ? (
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                <div className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
             ) : (
                 <LogOut className="mr-2 h-4 w-4" />
             )}
