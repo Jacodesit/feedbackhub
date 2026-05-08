@@ -2,9 +2,12 @@ import { usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
 import { PageProps } from "@/types/feedbackhub";
 import { MessageSquareMore } from "lucide-react";
+import PostModal from "./components/modal";
+import { useState } from "react";
 
 export default function Home() {
     const { auth } = usePage<PageProps>().props;
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <AuthenticatedLayout>
@@ -32,6 +35,7 @@ export default function Home() {
                                 </p>
                             </div>
                             <p
+                                onClick={() => setOpenModal(true)}
                                 className="flex items-center justify-center text-center gap-2 border-2 border-white bg-violet-500 text-white rounded-md py-3 w-[25%] cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:bg-violet-700 hover:border-violet-700"
                             >
                                 Post a Feedback
@@ -41,6 +45,10 @@ export default function Home() {
                     </div>
                 </section>
             </div>
+            <PostModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+            />
         </AuthenticatedLayout>
     )
 }

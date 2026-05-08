@@ -9,7 +9,7 @@ Route::get('/login', fn() => Inertia::render('auth/login'));
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/feedback', fn() => Inertia::render('authomepage/feedback'))->name('feedback');
+    Route::get('/feedback', fn() => Inertia::render('authpage/feedback/feedback'))->name('feedback');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 

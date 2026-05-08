@@ -67,7 +67,7 @@ export default function Heading() {
     const currentPath = window.location.pathname;
 
     return (
-        <header className="px-50 fixed z-[999] w-full">
+        <header className="px-50 fixed z-50 w-full">
             <div
                 className={`flex justify-between items-center border rounded-full px-10 py-3 mt-5 text-accent
                     ${currentPath === '/' ? 'bg-white/5 backdrop-blur-md border-white/10 shadow-2xl'
@@ -99,7 +99,6 @@ export default function Heading() {
                             <Logout />
                         </div>
                     </>
-
                 ) : (
                     <>
                         <div>
