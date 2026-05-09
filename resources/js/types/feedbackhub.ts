@@ -8,7 +8,22 @@ export interface User {
 }
 
 export type PageProps = {
+    categories: Category[]
+    feedbacks: Feedback[]
     auth: {
         user: User | null;
     };
 }
+
+export type Feedback = {
+    id: number;
+    title: string,
+    description: string,
+    category: string;
+    user: Pick<User, 'id' | 'name'>;
+    votes: number;
+    status: 'open' | 'in_progress' | 'completed';
+    created_at: string;
+}
+
+export type Category = 'feature_request' | 'bug_report' | 'ui_ux' | 'performance' | 'other'

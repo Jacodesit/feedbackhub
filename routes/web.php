@@ -1,15 +1,19 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::resource('feedbacks', FeedbackController::class)->except('index');
 
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');
 Route::get('/login', fn() => Inertia::render('auth/login'));
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/feedback', fn() => Inertia::render('authpage/feedback/feedback'))->name('feedback');
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
