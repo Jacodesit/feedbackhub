@@ -1,9 +1,9 @@
-import { STATUS_CONFIG } from '@/components/constants/feedback';
+import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { MessageSquareMore } from "lucide-react";
+import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
 import { useState } from "react";
 import { PageProps } from "@/types/feedbackhub";
@@ -16,7 +16,7 @@ export default function Home() {
 
     return (
         <AuthenticatedLayout>
-            <div className="">
+            <div className="bg-[#fafafa]">
                 <section className="h-screen w-full bg-white relative">
                     <div
                         className="absolute inset-0 z-0"
@@ -31,12 +31,16 @@ export default function Home() {
                     <div className="relative z-10 px-50 flex items-center h-full">
                         <div className="w-3/4 flex flex-col gap-5">
                             <div>
-                                <h1 className="font-medium text-4xl mb-5">
-                                    Welcome to FeedackHub,{" "}
-                                    <span className="text-violet-500 border-b-4 border-b-violet-500">
-                                        {auth.user?.name}
+                                <div className='flex items-center gap-1 mb-5'>
+                                    <p className='text-2xl'>Hello!</p>
+                                    <span className="text-violet-500 border-b-4 text-2xl border-b-violet-500"
+                                    >
+                                        {auth.user?.name?.split(" ").slice(0, -1).join(" ")}
                                     </span>
-                                    .
+                                </div>
+
+                                <h1 className="font-medium text-5xl mb-5">
+                                    Welcome to FeedackHub
                                 </h1>
                                 <p className="text-2xl">
                                     Manage feedback, track user ideas, and prioritize what matters most
@@ -64,7 +68,7 @@ export default function Home() {
                     <div className="px-50 py-20">
                         <div className="mb-10">
                             <h1 className="font-bold text-5xl">Community Feedback</h1>
-                            <p className="text-lg">
+                            <p className="text-lg text-gray-500">
                                 Explore ideas, feature requests, and product improvements shared by the community.
                             </p>
                         </div>
@@ -76,19 +80,25 @@ export default function Home() {
                                     className: 'bg-gray-100 text-gray-700'
                                 };
 
+
+                                const categoryConfig = CATEGORY_CONFIG[feedback.category as FeedbackCategory] || {
+                                    label: feedback.category,
+                                    className: 'bg-gray-100 text-gray-700'
+                                };
+
                                 return (
                                     <div
                                         key={feedback.id}
-                                        className='flex flex-col gap-4 border p-5 rounded-lg'
+                                        className='flex flex-col justify-between gap-6 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg'
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <div className="border-2 border-white w-14 h-14 flex items-center justify-center rounded-full bg-violet-500 text-white">
+                                        <div className="flex items-center gap-1 px-5 pt-5">
+                                            <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
                                                 <p className="font-bold text-2xl">
                                                     {feedback.user.name.charAt(0)}
                                                 </p>
                                             </div>
                                             <div className='flex flex-col'>
-                                                <p className='font-medium text-lg'>
+                                                <p className='font-medium text-base'>
                                                     {feedback.user.name}
                                                 </p>
                                                 <p className='text-xs text-gray-500'>
@@ -96,16 +106,44 @@ export default function Home() {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
-                                                {statusConfig.label}
-                                            </span>
+                                        <div className='px-5'>
+                                            <div className='flex gap-1'>
+                                                <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
+                                                    {statusConfig.label}
+                                                </span>
+                                                <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
+                                                    {categoryConfig.label}
+                                                </span>
+                                            </div>
+
                                             <h1 className='my-3 text-sm font-medium'>
                                                 {feedback.title}
                                             </h1>
-                                            <p className='text-sm'>
+                                            <p className='text-sm line-clamp-4'>
                                                 {feedback.description}
                                             </p>
+                                        </div>
+                                        <div className='border border-t-2 w-full grid grid-cols-3 rounded-bl-lg rounded-br-lg'>
+                                            <div className=' flex justify-center items-center gap-1 py-3'>
+                                                <ThumbsUp
+                                                    size={18}
+                                                    strokeWidth={1.5}
+                                                    className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
+                                                />
+                                                <p className='text-sm'>{feedback.votes}</p>
+                                            </div>
+
+                                            <div className=' flex justify-center py-3'>
+                                                <MessageSquareMore
+                                                    size={20}
+                                                    strokeWidth={1.5}
+                                                    className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
+                                                />
+                                            </div>
+
+                                            <div className=' flex justify-center items-center py-3'>
+                                                <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
+                                            </div>
                                         </div>
                                     </div>
                                 );

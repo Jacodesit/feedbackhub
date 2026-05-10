@@ -66,6 +66,10 @@ export default function Heading() {
 
     const currentPath = window.location.pathname;
 
+    const isActiveLink = (url: string) => {
+        return currentPath === url;
+    };
+
     return (
         <header className="px-50 fixed z-50 w-full">
             <div
@@ -83,14 +87,17 @@ export default function Heading() {
                         <div>
                             <ul className="flex items-center gap-6">
                                 {authLinks.map((link, index) => (
-                                    <li
-                                        key={index}
-                                    >
-                                        <a
+                                    <li key={index}>
+                                        <Link
                                             href={link.url}
+                                            className={`text-sm transition-all duration-300 ${
+                                                isActiveLink(link.url)
+                                                    ? "text-white font-bold"
+                                                    : "text-white/50 hover:text-white/80"
+                                            }`}
                                         >
                                             {link.name}
-                                        </a>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

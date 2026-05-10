@@ -1,3 +1,4 @@
+import Footer from "@/components/footer"
 import Heading from "@/components/heading"
 
 interface AuthenticatedLayoutProps  {
@@ -11,6 +12,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
             <main className="">
                 {children}
             </main>
+            <Footer />
         </div>
     )
 }

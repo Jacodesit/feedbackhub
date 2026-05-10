@@ -16,23 +16,23 @@ export const STATUS_CONFIG = {
 export const CATEGORY_CONFIG = {
     feature_request: {
         label: 'Feature Request',
-        className: 'bg-purple-100 text-purple-700',
+        className: 'bg-purple-100 border border-purple-300 text-purple-700',
     },
     bug_report: {
         label: 'Bug Report',
-        className: 'bg-red-100 text-red-700',
+        className: 'bg-red-100 border border-red-300 text-red-700',
     },
     ui_ux: {
         label: 'UI/UX',
-        className: 'bg-indigo-100 text-indigo-700',
+        className: 'bg-indigo-100 border border-indigo-300 text-indigo-700',
     },
     performance: {
         label: 'Performance',
-        className: 'bg-orange-100 text-orange-700',
+        className: 'bg-orange-100 border border-orange-300 text-orange-700',
     },
     other: {
         label: 'Other',
-        className: 'bg-gray-100 text-gray-700',
+        className: 'bg-gray-100 border border-gray-300 text-gray-700',
     },
 } as const;
 
