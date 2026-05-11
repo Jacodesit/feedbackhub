@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
+use App\Models\Comments;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -15,7 +16,7 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::with('user:id,name')->latest()->get();
+        $feedbacks = Feedback::with('user:id,name')->withCount('comments')->latest()->get();
 
         return Inertia::render('authpage/feedback/feedback', [
             'feedbacks' => $feedbacks,
@@ -78,5 +79,16 @@ class FeedbackController extends Controller
     public function destroy(Feedback $feedback)
     {
         //
+    }
+
+    public function userFeedback() {
+        $feedbacks = Feedback::with('user')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return Inertia::render('authpage/profile/components/sections/feedbacks', [
+            'feedbacks' => $feedbacks
+        ]);
     }
 }

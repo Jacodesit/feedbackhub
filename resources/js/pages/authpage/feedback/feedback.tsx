@@ -139,6 +139,7 @@ export default function Home() {
                                                     strokeWidth={1.5}
                                                     className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
                                                 />
+                                                <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
                                             </div>
 
                                             <div className=' flex justify-center items-center py-3'>

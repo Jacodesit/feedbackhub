@@ -1,13 +1,16 @@
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import Sidebar from "./components/sidebar";
+import { Feedback } from "@/types/feedbackhub";
+import ProfileMainLayout from "./components/layout/main-layout";
 
-export default function Profile() {
+type pageProps = {
+    feedbacks: Feedback[]
+}
+
+export default function Profile({feedbacks}:pageProps) {
     return (
         <AuthenticatedLayout>
             <div className="bg-[#fafafa]">
-                <section className="w-full  relative px-50 py-35">
-                    <Sidebar />
-                </section>
+                <ProfileMainLayout feedbacks={feedbacks}/>
             </div>
         </AuthenticatedLayout>
     )

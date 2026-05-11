@@ -17,6 +17,8 @@ export type PageProps = {
 
 export type Feedback = {
     id: number;
+    public_id: string;
+    comments_count: number;
     title: string,
     description: string,
     category: string;
