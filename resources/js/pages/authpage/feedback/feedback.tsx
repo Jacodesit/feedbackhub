@@ -50,7 +50,7 @@ export default function Home() {
                                     starts here.
                                 </p>
                             </div>
-                            <p
+                            <button
                                 onClick={() => setOpenModal(true)}
                                 className="flex items-center justify-center text-center gap-2
                                     border-2 border-white bg-violet-500 text-white rounded-md py-3
@@ -59,7 +59,7 @@ export default function Home() {
                             >
                                 Post a Feedback
                                 <MessageSquareMore size={18} />
-                            </p>
+                            </button>
                         </div>
                     </div>
                 </section>

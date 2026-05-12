@@ -46,7 +46,7 @@ class FeedbackController extends Controller
             'status' => 'open',
         ]);
 
-        return redirect('/feedback');
+        return back();
     }
 
     /**
@@ -81,14 +81,28 @@ class FeedbackController extends Controller
         //
     }
 
-    public function userFeedback() {
+    public function forProfile() {
         $feedbacks = Feedback::with('user')
+            ->withCount('comments')
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
 
-        return Inertia::render('authpage/profile/components/sections/feedbacks', [
+        return Inertia::render('authpage/profile/profile', [
             'feedbacks' => $feedbacks
+        ]);
+    }
+
+    public function forPost() {
+        $feedbacks = Feedback::with('user')
+            ->withCount('comments')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return Inertia::render('authpage/post/post', [
+            'feedbacks' => $feedbacks,
+            'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }
 }

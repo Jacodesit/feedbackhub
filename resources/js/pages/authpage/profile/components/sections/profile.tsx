@@ -10,7 +10,7 @@ dayjs.extend(relativeTime);
 export default function Profile() {
     const { auth } = usePage<PageProps>().props
     return (
-        <div>
+        <div id="section-profile" className="scroll-mt-20">
             <div className="pb-4">
                 <h2 className=" font-medium">Profile</h2>
                 <p className="text-sm text-gray-400 ">User Identity</p>

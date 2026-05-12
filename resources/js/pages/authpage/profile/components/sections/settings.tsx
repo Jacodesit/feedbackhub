@@ -2,7 +2,7 @@ import { Lock, UserRoundPen } from "lucide-react";
 
 export default function Settings() {
     return (
-        <div className="py-5 px-10">
+        <div id="section-settings" className="py-5 px-10 scroll-mt-20">
             <div className="pb-4">
                 <h2 className=" font-medium">Account Settings</h2>
                 <p className="text-sm text-gray-400 ">Manage your account</p>
@@ -10,7 +10,7 @@ export default function Settings() {
 
             <div className="grid grid-rows-1 gap-4">
                 <div className="flex gap-5">
-                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2">
+                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2 transition-all duration-300 hover:shadow-lg cursor-pointer">
                         <div>
                             <h1 className="">Edit Account Details</h1>
                             <p className="text-xs text-gray-500">Avatar, email, and name</p>
@@ -23,10 +23,10 @@ export default function Settings() {
                 </div>
 
                 <div className="flex gap-5">
-                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2">
+                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2 transition-all duration-300 hover:shadow-lg cursor-pointer">
                         <div>
                             <h1 className="">Change Password</h1>
-                            <p className="text-xs text-gray-500">Avatar, email, and name</p>
+                            <p className="text-xs text-gray-500">Password</p>
                         </div>
                         <Lock />
                     </div>

@@ -13,8 +13,8 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
-    Route::get('/my-posts',fn() => Inertia::render('authpage/post/post'))->name('my-posts.index');
-    Route::get('/profile', [FeedbackController::class, 'userFeedback'])->name('profile.index');
+    Route::get('/my-posts', [FeedbackController::class, 'forPost'])->name('my-posts.index');
+    Route::get('/profile', [FeedbackController::class, 'forProfile'])->name('profile.index');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 

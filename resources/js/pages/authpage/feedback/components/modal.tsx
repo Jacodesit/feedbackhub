@@ -33,6 +33,7 @@ export default function PostModal({open, onClose}:pageProps) {
                 </DialogHeader>
                 <Separator />
                 <PostForm
+
                     onClose={onClose}
                 />
             </DialogContent>

@@ -10,7 +10,7 @@ export default function Stats() {
     ]
 
     return (
-        <div className="py-5 px-10">
+        <div id="section-stats" className="py-5 px-10 scroll-mt-20">
             <div className="pb-4">
                 <h2 className=" font-medium">Stats</h2>
                 <p className="text-sm text-gray-400">Contribution/Activity</p>

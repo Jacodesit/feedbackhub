@@ -6,6 +6,8 @@ import { Feedback } from "@/types/feedbackhub";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MessageSquareMore, ThumbsUp } from 'lucide-react';
+import { useState } from 'react';
+import CommentsModal from '../modal';
 
 dayjs.extend(relativeTime);
 
@@ -14,11 +16,21 @@ type pageProps = {
 }
 
 export default function Feedbacks({feedbacks}:pageProps) {
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedComment, setSelectedComment] = useState<Feedback | null>(null);
+
+    const handleClose = () => {
+        setOpenModal(false)
+        setSelectedComment(null)
+    }
+
     return (
-        <div className="py-5 px-10">
-            <div className="pb-4">
-                <h2 className=" font-medium">Feedbacks</h2>
-                <p className="text-sm text-gray-400 ">Show your feedbacks</p>
+        <div id="section-feedbacks" className="py-5 px-10 scroll-mt-20">
+            <div className="pb-4 flex items-centeer justify-between">
+                <div>
+                    <h2 className=" font-medium">Feedbacks</h2>
+                    <p className="text-sm text-gray-400 ">Show your feedbacks</p>
+                </div>
             </div>
             <div className="grid grid-rows-1 gap-4">
                 {feedbacks.length === 0 && (
@@ -47,8 +59,12 @@ export default function Feedbacks({feedbacks}:pageProps) {
 
                     return (
                         <div
+                            onClick={() => {
+                                setSelectedComment(feedback)
+                                setOpenModal(true)
+                            }}
                             key={feedback.id}
-                            className="p-4 shadow-md rounded-lg"
+                            className="p-4 shadow-md rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer"
                         >
                             <div className='px-5'>
                                 <div className="flex justify-between">
@@ -104,6 +120,11 @@ export default function Feedbacks({feedbacks}:pageProps) {
                     );
                 })}
             </div>
+            <CommentsModal
+                openModal={openModal}
+                feedback={selectedComment}
+                onClose={handleClose}
+            />
         </div>
     )
 }
