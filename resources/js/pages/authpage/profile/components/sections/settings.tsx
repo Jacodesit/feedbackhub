@@ -10,7 +10,7 @@ export default function Settings() {
 
             <div className="grid grid-rows-1 gap-4">
                 <div className="flex gap-5">
-                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2 transition-all duration-300 hover:shadow-lg cursor-pointer">
+                    <div className="flex items-center justify-between w-1/2 bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer">
                         <div>
                             <h1 className="">Edit Account Details</h1>
                             <p className="text-xs text-gray-500">Avatar, email, and name</p>
@@ -23,7 +23,7 @@ export default function Settings() {
                 </div>
 
                 <div className="flex gap-5">
-                    <div className="shadow-md rounded-lg p-5 flex items-center justify-between w-1/2 transition-all duration-300 hover:shadow-lg cursor-pointer">
+                    <div className="flex items-center justify-between w-1/2 bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer">
                         <div>
                             <h1 className="">Change Password</h1>
                             <p className="text-xs text-gray-500">Password</p>

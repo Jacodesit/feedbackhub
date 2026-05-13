@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from 'react';
 import PostModal from '../feedback/components/modal';
+import CommentsModal from '../profile/components/modal';
 
 dayjs.extend(relativeTime);
 
@@ -15,6 +16,13 @@ type pageProps = {
 
 export default function Posts({feedbacks}:pageProps) {
     const [openModal, setOpenModal] = useState(false);
+    const [commentModal, setCommentModal] = useState(false);
+    const [selectedComment, setSelectedComment] = useState<Feedback | null>(null);
+
+    const handleClose = () => {
+        setCommentModal(false)
+        setSelectedComment(null)
+    }
 
     return (
         <AuthenticatedLayout>
@@ -80,10 +88,14 @@ export default function Posts({feedbacks}:pageProps) {
 
                             return (
                                 <div
+                                    onClick={() => {
+                                        setSelectedComment(feedback)
+                                        setCommentModal(true)
+                                    }}
                                     key={feedback.id}
-                                    className='flex flex-col justify-between gap-6 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg'
+                                    className='flex flex-col justify-between gap-6 bg-white border border-slate-100 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer'
                                 >
-                                    <div className="flex items-center gap-1 px-5 pt-5">
+                                    <div className="flex items-center gap-1 px-6 pt-6">
                                         <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
                                             <p className="font-bold text-2xl">
                                                 {feedback.user.name.charAt(0)}
@@ -98,7 +110,7 @@ export default function Posts({feedbacks}:pageProps) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className='px-5'>
+                                    <div className='px-6'>
                                         <div className='flex gap-1'>
                                             <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
                                                 {statusConfig.label}
@@ -108,10 +120,10 @@ export default function Posts({feedbacks}:pageProps) {
                                             </span>
                                         </div>
 
-                                        <h1 className='my-3 text-sm font-medium'>
+                                        <h1 className='my-2 text-base font-medium'>
                                             {feedback.title}
                                         </h1>
-                                        <p className='text-sm line-clamp-4'>
+                                        <p className='text-sm line-clamp-4 text-gray-500'>
                                             {feedback.description}
                                         </p>
                                     </div>
@@ -134,9 +146,15 @@ export default function Posts({feedbacks}:pageProps) {
                                             <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
                                         </div>
 
-                                        <div className=' flex justify-center items-center py-3'>
+                                        <button
+                                            onClick={() => {
+                                                setSelectedComment(feedback)
+                                                setCommentModal(true)
+                                            }}
+                                            className='flex justify-center items-center py-3'
+                                        >
                                             <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
-                                        </div>
+                                        </button>
                                     </div>
                                 </div>
                             );
@@ -148,6 +166,13 @@ export default function Posts({feedbacks}:pageProps) {
                 open={openModal}
                 onClose={() => setOpenModal(false)}
             />
+
+            <CommentsModal
+                commentModal={commentModal}
+                feedback={selectedComment}
+                onClose={handleClose}
+            />
+
         </AuthenticatedLayout>
     )
 }

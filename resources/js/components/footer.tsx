@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import ScrollToTop from "./scroll-to-top";
+import { Link, usePage } from "@inertiajs/react";
+import { PageProps } from "@/types/feedbackhub";
+import Logout from "./logout-btn";
 
 export default function Footer() {
+    const { auth } = usePage<PageProps>().props
+    const user = auth.user
+
     const [activeId, setActiveId] = useState("");
 
     const links = [
@@ -10,6 +16,12 @@ export default function Footer() {
         { name: "Features", id: "features" },
         { name: "How It Works", id: "how-it-works" },
     ];
+
+    const authLinks = [
+        { name: "Feedback", url: '/feedback' },
+        { name: "My Posts", url: '/my-posts' },
+        { name: "Profile", url: '/profile' },
+    ]
 
     useEffect(() => {
         const silentIds = ["call-to-action", "footer"];
@@ -65,47 +77,78 @@ export default function Footer() {
                         <p className="text-accent">Collect feedback. Build better products.</p>
                     </div>
 
-                    <div className="flex flex-col gap-10">
-                        <div className="">
-                            <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
-                            <ul className="text-accent flex gap-5">
-                                {links.map((link) => (
-                                    <li key={link.id}>
-                                        <a
-                                            href={`#${link.id}`}
-                                            onClick={(e) => handleScroll(e, link.id)}
-                                            className={`text-sm transition-all duration-300 ${
-                                                activeId === link.id && activeId !== "hero"
+
+                    {user ? (
+                        <div className="flex flex-col gap-10">
+                            <div className="">
+                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
+                                <ul className="text-accent flex gap-5">
+                                    {authLinks.map((authLink, index) => (
+                                        <li
+                                            key={index}
+                                        >
+                                            <Link
+                                                href={authLink.url}
+                                                className={`text-sm transition-all duration-300 ${
+                                                activeId === authLink.url && activeId !== "hero"
                                                 ? "text-white font-medium"
                                                 : "text-white font-medium hover:text-black"
                                             }`}
-                                        >
-                                            {link.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                                            >
+                                                {authLink.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
 
-                        <div className="">
-                            <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
-                            <ul className="flex gap-5 text-accent">
-                                <a
-                                    href="#"
-                                    className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
-                                >
-                                    Get Started
-                                </a>
-                                <a
-                                    href="#"
-                                    className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
-                                >
-                                    Login
-                                </a>
-                            </ul>
+                            <div className="">
+                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
+                                <Logout />
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="flex flex-col gap-10">
+                            <div className="">
+                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
+                                <ul className="text-accent flex gap-5">
+                                    {links.map((link) => (
+                                        <li key={link.id}>
+                                            <a
+                                                href={`#${link.id}`}
+                                                onClick={(e) => handleScroll(e, link.id)}
+                                                className={`text-sm transition-all duration-300 ${
+                                                    activeId === link.id && activeId !== "hero"
+                                                    ? "text-white font-medium"
+                                                    : "text-white font-medium hover:text-black"
+                                                }`}
+                                            >
+                                                {link.name}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
 
+                            <div className="">
+                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
+                                <ul className="flex gap-5 text-accent">
+                                    <a
+                                        href="#"
+                                        className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
+                                    >
+                                        Get Started
+                                    </a>
+                                    <a
+                                        href="#"
+                                        className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
+                                    >
+                                        Login
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className="border-t border-white/40">
                     <p className="text-xs mt-5 text-center text-white">© 2026 FeedbackHub. All rights reserved</p>
@@ -115,3 +158,7 @@ export default function Footer() {
         </footer>
     )
 }
+
+
+
+

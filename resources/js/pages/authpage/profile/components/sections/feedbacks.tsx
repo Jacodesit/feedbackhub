@@ -64,9 +64,9 @@ export default function Feedbacks({feedbacks}:pageProps) {
                                 setOpenModal(true)
                             }}
                             key={feedback.id}
-                            className="p-4 shadow-md rounded-lg transition-all duration-300 hover:shadow-lg cursor-pointer"
+                            className="bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer"
                         >
-                            <div className='px-5'>
+                            <div className=''>
                                 <div className="flex justify-between">
                                     <div className='flex gap-1'>
                                         <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
@@ -84,7 +84,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                                     <h1 className='my-3 text-sm font-medium'>
                                         {feedback.title}
                                     </h1>
-                                    <p className='text-sm line-clamp-3'>
+                                    <p className='text-sm line-clamp-3 text-gray-500'>
                                         {feedback.description}
                                     </p>
                                 </div>
@@ -120,10 +120,12 @@ export default function Feedbacks({feedbacks}:pageProps) {
                     );
                 })}
             </div>
+
             <CommentsModal
                 openModal={openModal}
                 feedback={selectedComment}
                 onClose={handleClose}
+                commentModal
             />
         </div>
     )

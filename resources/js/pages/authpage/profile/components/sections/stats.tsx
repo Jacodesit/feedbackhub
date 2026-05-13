@@ -15,21 +15,26 @@ export default function Stats() {
                 <h2 className=" font-medium">Stats</h2>
                 <p className="text-sm text-gray-400">Contribution/Activity</p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
                 {stats.map((stat, index) => (
                     <div
                         key={index}
-                        className="shadow-md p-5 rounded-lg"
+                        className="group relative bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl "
                     >
-                        <div className="flex justify-end mb-5">
-                            <div className="bg-violet-100 inline-flex p-3 rounded-md">
+                        <div className="flex justify-between items-start mb-6">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                {stat.text}
+                            </p>
+
+                            <div className="bg-violet-50 text-violet-600 inline-flex p-2.5 rounded-xl transition-colors duration-300 group-hover:bg-violet-600 group-hover:text-white">
                                 {stat.icon}
                             </div>
                         </div>
 
                         <div>
-                            <p className="text-2xl">{stat.data}</p>
-                            <p className="text-sm text-gray-500">{stat.text}</p>
+                            <p className="text-4xl font-bold tracking-tight text-slate-900">
+                                {stat.data}
+                            </p>
                         </div>
                     </div>
                 ))}
