@@ -1,17 +1,18 @@
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { Feedback } from "@/types/feedbackhub";
+import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from 'react';
 import PostModal from '../feedback/components/modal';
 import CommentsModal from '../profile/components/modal';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 dayjs.extend(relativeTime);
 
 type pageProps = {
-    feedbacks: Feedback[];
+    feedbacks: PaginatedFeedbacks;
 }
 
 export default function Posts({feedbacks}:pageProps) {
@@ -39,7 +40,7 @@ export default function Posts({feedbacks}:pageProps) {
                             border-2 border-white bg-violet-500 text-white rounded-md py-3
                             w-[15%] cursor-pointer transition-all duration-300
                             hover:-translate-y-1 hover:bg-violet-700 hover:border-violet-700 ${
-                                feedbacks.length !== 0 ? 'block' : 'hidden'
+                                feedbacks.data.length !== 0 ? 'block' : 'hidden'
                             }`}
                     >
                         Post a Feedback
@@ -48,7 +49,7 @@ export default function Posts({feedbacks}:pageProps) {
                 </div>
 
                 <div>
-                    {feedbacks.length === 0 && (
+                    {feedbacks.data.length === 0 && (
                         <div className="h-96 flex justify-center items-center">
                             <div className="flex flex-col text-center mb-5 justify-center items-center">
                                 <img
@@ -74,7 +75,7 @@ export default function Posts({feedbacks}:pageProps) {
                         </div>
                     )}
                     <div className="grid grid-cols-3 gap-4">
-                        {feedbacks.map(feedback => {
+                        {feedbacks.data.map(feedback => {
                             const statusConfig = STATUS_CONFIG[feedback.status] || {
                                 label: feedback.status,
                                 className: 'bg-gray-100 text-gray-700'
@@ -160,6 +161,49 @@ export default function Posts({feedbacks}:pageProps) {
                             );
                         })}
                     </div>
+                    {/* Pagination */}
+                    <div className="mt-8">
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        href={feedbacks.prev_page_url || "#"}
+                                        className={!feedbacks.prev_page_url ? "pointer-events-none opacity-50" : ""}
+                                    />
+                                </PaginationItem>
+
+                                {feedbacks.links.map((link, i) => {
+                                    if (link.label.includes('Previous') || link.label.includes('Next')) return null;
+
+                                    if (link.label === "...") {
+                                        return (
+                                            <PaginationItem key={i}>
+                                                <PaginationEllipsis />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    return (
+                                        <PaginationItem key={i}>
+                                            <PaginationLink
+                                                href={link.url || "#"}
+                                                isActive={link.active}
+                                            >
+                                                {link.label}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    );
+                                })}
+
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href={feedbacks.next_page_url || "#"}
+                                        className={!feedbacks.next_page_url ? "pointer-events-none opacity-50" : ""}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </div>
                 </div>
             </div>
             <PostModal
@@ -168,6 +212,7 @@ export default function Posts({feedbacks}:pageProps) {
             />
 
             <CommentsModal
+                open={openModal}
                 commentModal={commentModal}
                 feedback={selectedComment}
                 onClose={handleClose}

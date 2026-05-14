@@ -1,7 +1,8 @@
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import { Separator } from '@/components/ui/separator';
+import { router } from '@inertiajs/react'
 
-import { Feedback } from "@/types/feedbackhub";
+import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -11,8 +12,19 @@ import CommentsModal from '../modal';
 
 dayjs.extend(relativeTime);
 
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
+// import { Link } from "@inertiajs/react"
+
 type pageProps = {
-    feedbacks: Feedback[];
+    feedbacks: PaginatedFeedbacks;
 }
 
 export default function Feedbacks({feedbacks}:pageProps) {
@@ -24,6 +36,20 @@ export default function Feedbacks({feedbacks}:pageProps) {
         setSelectedComment(null)
     }
 
+    const handlePageChange = (url: string | null) => {
+        if (!url) return;
+        router.visit(url, {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                document.getElementById('section-feedbacks')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                })
+            }
+        })
+    }
+
     return (
         <div id="section-feedbacks" className="py-5 px-10 scroll-mt-20">
             <div className="pb-4 flex items-centeer justify-between">
@@ -33,7 +59,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                 </div>
             </div>
             <div className="grid grid-rows-1 gap-4">
-                {feedbacks.length === 0 && (
+                {feedbacks.data.length === 0 && (
                     <div className="border border-dashed rounded-lg h-72 flex justify-center items-center">
                         <div className="flex flex-col gap-5">
                             <img
@@ -46,7 +72,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                     </div>
                 )}
 
-                {feedbacks.map(feedback => {
+                {feedbacks.data.map(feedback => {
                     const statusConfig = STATUS_CONFIG[feedback.status] || {
                         label: feedback.status,
                         className: 'bg-gray-100 text-gray-700'
@@ -121,8 +147,54 @@ export default function Feedbacks({feedbacks}:pageProps) {
                 })}
             </div>
 
+            <div className="mt-8">
+                <Pagination>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                href="#"
+                                onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePageChange(feedbacks.prev_page_url) }}
+                                className={!feedbacks.prev_page_url ? "pointer-events-none opacity-50" : ""}
+                            />
+                        </PaginationItem>
+
+                        {feedbacks.links.map((link, i) => {
+                            if (link.label.includes('Previous') || link.label.includes('Next')) return null;
+
+                            if (link.label === "...") {
+                                return (
+                                    <PaginationItem key={i}>
+                                        <PaginationEllipsis />
+                                    </PaginationItem>
+                                );
+                            }
+
+                            return (
+                                <PaginationItem key={i}>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={link.active}
+                                        onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePageChange(link.url) }}
+                                    >
+                                        {link.label}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            );
+                        })}
+
+                        <PaginationItem>
+                            <PaginationNext
+                                href="#"
+                                onClick={(e: React.MouseEvent) => { e.preventDefault(); handlePageChange(feedbacks.next_page_url) }}
+                                className={!feedbacks.next_page_url ? "pointer-events-none opacity-50" : ""}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
+
             <CommentsModal
-                openModal={openModal}
+                open={openModal}
                 feedback={selectedComment}
                 onClose={handleClose}
                 commentModal

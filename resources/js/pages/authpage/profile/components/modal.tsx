@@ -7,25 +7,26 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
-    // DialogFooter,
-    // DialogTrigger,
 } from "@/components/ui/dialog"
-// import { Separator } from "@/components/ui/separator"
-import { Feedback } from "@/types/feedbackhub"
 
+import { Feedback } from "@/types/feedbackhub"
+import { ThumbsUp } from 'lucide-react';
+import EditDeleteButtons from './buttons';
+import CommentForm from './forms/form';
 
 dayjs.extend(relativeTime);
 
 type pageProps = {
-    openModal: boolean
+    open: boolean
     commentModal: boolean
     onClose: () => void
     feedback: Feedback | null;
 }
 
-export default function CommentsModal({openModal, onClose, feedback, commentModal}:pageProps) {
+export default function CommentsModal({open, onClose, feedback, commentModal}:pageProps) {
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -40,7 +41,7 @@ export default function CommentsModal({openModal, onClose, feedback, commentModa
 
     return (
         <Dialog
-            open={openModal || commentModal}
+            open={open || commentModal}
             onOpenChange={onClose}
         >
             <DialogContent className="max-w-2xl">
@@ -75,14 +76,14 @@ export default function CommentsModal({openModal, onClose, feedback, commentModa
                             </div>
                             <h1 className='text-2xl'>{feedback.title}</h1>
                         </DialogTitle>
-                        <div className='flex flex-col gap-5 scrollable-content'>
+                        <div className='flex flex-col gap-10 scrollable-content'>
                             <DialogDescription className='overflow-y-auto'>
                                 <p className='text-base'>{feedback.description}</p>
                             </DialogDescription>
 
                             <div className="">
                                 <h5 className='text-xs font-medium'>Comments {feedback.comments_count}</h5>
-                                <div className="border border-dashed rounded-lg h-32 flex justify-center items-center">
+                                <div className="h-36 flex justify-center items-center">
                                     <div className="flex flex-col gap-5">
                                         <img
                                             src="/images/no-comment.svg"
@@ -97,8 +98,8 @@ export default function CommentsModal({openModal, onClose, feedback, commentModa
                     </div>
                 </div>
 
-                {/* <DialogFooter className='flex gap-2 items-center py-3 border-t'>
-                    <div className='flex shrink-0 gap-1 py-2 px-3 border rounded-lg'>
+                <DialogFooter className='py-3'>
+                    <div className='flex gap-1 py-2 px-3'>
                         <ThumbsUp
                             size={20}
                             strokeWidth={1.5}
@@ -106,8 +107,11 @@ export default function CommentsModal({openModal, onClose, feedback, commentModa
                         />
                         <p className='text-base'>{feedback.votes}</p>
                     </div>
+                    <EditDeleteButtons
+                        feedback={feedback}
+                    />
                     <CommentForm />
-                </DialogFooter> */}
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     )

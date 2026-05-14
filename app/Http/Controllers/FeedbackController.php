@@ -16,7 +16,10 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::with('user:id,name')->withCount('comments')->latest()->get();
+        $feedbacks = Feedback::with('user:id,name')
+            ->withCount('comments')
+            ->latest()
+            ->paginate(10);
 
         return Inertia::render('authpage/feedback/feedback', [
             'feedbacks' => $feedbacks,
@@ -86,10 +89,11 @@ class FeedbackController extends Controller
             ->withCount('comments')
             ->where('user_id', Auth::id())
             ->latest()
-            ->get();
+            ->paginate(5);
 
         return Inertia::render('authpage/profile/profile', [
-            'feedbacks' => $feedbacks
+            'feedbacks' => $feedbacks,
+            'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }
 
@@ -98,7 +102,7 @@ class FeedbackController extends Controller
             ->withCount('comments')
             ->where('user_id', Auth::id())
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return Inertia::render('authpage/post/post', [
             'feedbacks' => $feedbacks,

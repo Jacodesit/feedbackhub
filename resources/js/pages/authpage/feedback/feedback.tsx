@@ -6,13 +6,22 @@ import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
 import { useState } from "react";
-import { PageProps } from "@/types/feedbackhub";
+import { Feedback, PageProps } from "@/types/feedbackhub";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import CommentsModal from '../profile/components/modal';
 
 dayjs.extend(relativeTime);
 
 export default function Home() {
     const { auth, feedbacks } = usePage<PageProps>().props;
     const [openModal, setOpenModal] = useState(false);
+    const [viewFeedback, setViewFeedback] = useState(false)
+    const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null)
+
+    const handleClose = () => {
+        setViewFeedback(false)
+        setSelectedFeedback(null)
+    }
 
     return (
         <AuthenticatedLayout>
@@ -74,12 +83,11 @@ export default function Home() {
                         </div>
 
                         <div className="grid grid-cols-3 gap-4">
-                            {feedbacks.map(feedback => {
+                            {feedbacks.data.map(feedback => {
                                 const statusConfig = STATUS_CONFIG[feedback.status] || {
                                     label: feedback.status,
                                     className: 'bg-gray-100 text-gray-700'
                                 };
-
 
                                 const categoryConfig = CATEGORY_CONFIG[feedback.category as FeedbackCategory] || {
                                     label: feedback.category,
@@ -88,8 +96,12 @@ export default function Home() {
 
                                 return (
                                     <div
+                                        onClick={() => {
+                                            setSelectedFeedback(feedback)
+                                            setViewFeedback(true)
+                                        }}
                                         key={feedback.id}
-                                        className='flex flex-col justify-between gap-6 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg'
+                                        className='flex flex-col justify-between gap-6 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
                                     >
                                         <div className="flex items-center gap-1 px-5 pt-5">
                                             <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
@@ -142,20 +154,78 @@ export default function Home() {
                                                 <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
                                             </div>
 
-                                            <div className=' flex justify-center items-center py-3'>
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedFeedback(feedback)
+                                                    setViewFeedback(true)
+                                                }}
+                                                className=' flex justify-center items-center py-3'
+                                            >
                                                 <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
-                                            </div>
+                                            </button>
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
+
+                        {/* Pagination */}
+                        <div className="mt-8">
+                            <Pagination>
+                                <PaginationContent>
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            href={feedbacks.prev_page_url || "#"}
+                                            className={!feedbacks.prev_page_url ? "pointer-events-none opacity-50" : ""}
+                                        />
+                                    </PaginationItem>
+
+                                    {feedbacks.links.map((link, i) => {
+                                        if (link.label.includes('Previous') || link.label.includes('Next')) return null;
+
+                                        if (link.label === "...") {
+                                            return (
+                                                <PaginationItem key={i}>
+                                                    <PaginationEllipsis />
+                                                </PaginationItem>
+                                            );
+                                        }
+
+                                        return (
+                                            <PaginationItem key={i}>
+                                                <PaginationLink
+                                                    href={link.url || "#"}
+                                                    isActive={link.active}
+                                                >
+                                                    {link.label}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                        );
+                                    })}
+
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            href={feedbacks.next_page_url || "#"}
+                                            className={!feedbacks.next_page_url ? "pointer-events-none opacity-50" : ""}
+                                        />
+                                    </PaginationItem>
+                                </PaginationContent>
+                            </Pagination>
+                        </div>
                     </div>
                 </section>
             </div>
+
             <PostModal
                 open={openModal}
                 onClose={() => setOpenModal(false)}
+            />
+
+            <CommentsModal
+                open={viewFeedback}
+                feedback={selectedFeedback}
+                onClose={handleClose}
+                commentModal
             />
         </AuthenticatedLayout>
     );

@@ -139,12 +139,12 @@ export default function Footer() {
                                     >
                                         Get Started
                                     </a>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/feedback"
                                         className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
                                     >
                                         Login
-                                    </a>
+                                    </Link>
                                 </ul>
                             </div>
                         </div>

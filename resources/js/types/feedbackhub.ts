@@ -9,7 +9,7 @@ export interface User {
 
 export type PageProps = {
     categories: Category[]
-    feedbacks: Feedback[]
+    feedbacks: PaginatedFeedbacks
     auth: {
         user: User | null;
     };
@@ -26,6 +26,16 @@ export type Feedback = {
     votes: number;
     status: 'open' | 'in_progress' | 'completed';
     created_at: string;
+}
+
+export type PaginatedFeedbacks = {
+    data: Feedback[];
+    links: { url: string | null; label: string; active: boolean }[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    total: number;
 }
 
 export type Category = 'feature_request' | 'bug_report' | 'ui_ux' | 'performance' | 'other'

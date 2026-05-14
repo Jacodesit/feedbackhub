@@ -13,8 +13,9 @@ import { Input } from "@/components/ui/input"
 import { Send } from "lucide-react"
 
 export default function CommentForm() {
+    const currentPath = window.location.pathname
     return (
-        <div className='min-w-0 flex-1'>
+        <div className={`${currentPath === '/feedback' ? 'min-w-0 flex-1' : 'hidden'}`}>
             <form className='flex w-full gap-2'>
                 <FieldSet className='min-w-0 flex-1'>
                     <Field className='min-w-0'>
