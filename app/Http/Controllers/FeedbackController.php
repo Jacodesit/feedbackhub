@@ -18,6 +18,7 @@ class FeedbackController extends Controller
     {
         $feedbacks = Feedback::with('user:id,name')
             ->withCount('comments')
+            ->with('comments.user:id,name')
             ->latest()
             ->paginate(10);
 
@@ -73,7 +74,13 @@ class FeedbackController extends Controller
      */
     public function update(UpdateFeedbackRequest $request, Feedback $feedback)
     {
-        //
+        $feedback->update([
+            'title' => $request->input('title', $feedback->title),
+            'category' => $request->input('category', $feedback->category),
+            'description' => $request->input('description', $feedback->description),
+        ]);
+
+        return back();
     }
 
     /**
@@ -87,6 +94,7 @@ class FeedbackController extends Controller
     public function forProfile() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
+            ->with('comments.user:id,name')
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(5);
@@ -100,6 +108,7 @@ class FeedbackController extends Controller
     public function forPost() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
+            ->with('comments.user:id,name')
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);

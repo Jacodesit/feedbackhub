@@ -4,7 +4,7 @@ import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PostModal from '../feedback/components/modal';
 import CommentsModal from '../profile/components/modal';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
@@ -15,14 +15,43 @@ type pageProps = {
     feedbacks: PaginatedFeedbacks;
 }
 
-export default function Posts({feedbacks}:pageProps) {
+export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
     const [openModal, setOpenModal] = useState(false);
     const [commentModal, setCommentModal] = useState(false);
     const [selectedComment, setSelectedComment] = useState<Feedback | null>(null);
+    const [feedbacks, setFeedbacks] = useState<PaginatedFeedbacks>(initialFeedbacks);
+
+    useEffect(() => {
+        setFeedbacks(initialFeedbacks);
+    }, [initialFeedbacks]);
+
+    useEffect(() => {
+        if (!selectedComment) return;
+
+        const updatedSelectedComment = feedbacks.data.find(feedback => feedback.id === selectedComment.id);
+
+        if (updatedSelectedComment && updatedSelectedComment !== selectedComment) {
+            setSelectedComment(updatedSelectedComment);
+        }
+    }, [feedbacks, selectedComment]);
 
     const handleClose = () => {
         setCommentModal(false)
         setSelectedComment(null)
+    }
+
+    const handleFeedbackUpdate = (updatedFeedback: Feedback) => {
+        // Update the selected comment for the modal
+        setSelectedComment(updatedFeedback)
+
+        // Update the feedback in the list
+        const updatedFeedbacks = {
+            ...feedbacks,
+            data: feedbacks.data.map(fb =>
+                fb.id === updatedFeedback.id ? updatedFeedback : fb
+            )
+        }
+        setFeedbacks(updatedFeedbacks)
     }
 
     return (
@@ -94,7 +123,7 @@ export default function Posts({feedbacks}:pageProps) {
                                         setCommentModal(true)
                                     }}
                                     key={feedback.id}
-                                    className='flex flex-col justify-between gap-6 bg-white border border-slate-100 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer'
+                                    className='flex flex-col justify-between gap-5 bg-white border border-slate-100 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer'
                                 >
                                     <div className="flex items-center gap-1 px-6 pt-6">
                                         <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
@@ -121,7 +150,7 @@ export default function Posts({feedbacks}:pageProps) {
                                             </span>
                                         </div>
 
-                                        <h1 className='my-2 text-base font-medium'>
+                                        <h1 className='my-3 text-sm font-medium'>
                                             {feedback.title}
                                         </h1>
                                         <p className='text-sm line-clamp-4 text-gray-500'>
@@ -161,6 +190,7 @@ export default function Posts({feedbacks}:pageProps) {
                             );
                         })}
                     </div>
+
                     {/* Pagination */}
                     <div className="mt-8">
                         <Pagination>
@@ -206,18 +236,19 @@ export default function Posts({feedbacks}:pageProps) {
                     </div>
                 </div>
             </div>
+
             <PostModal
                 open={openModal}
                 onClose={() => setOpenModal(false)}
             />
 
             <CommentsModal
-                open={openModal}
+                open={commentModal}
                 commentModal={commentModal}
                 feedback={selectedComment}
                 onClose={handleClose}
+                onFeedbackUpdate={handleFeedbackUpdate}
             />
-
         </AuthenticatedLayout>
     )
 }

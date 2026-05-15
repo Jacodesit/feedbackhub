@@ -7,7 +7,7 @@ import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MessageSquareMore, ThumbsUp } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CommentsModal from '../modal';
 
 dayjs.extend(relativeTime);
@@ -31,9 +31,23 @@ export default function Feedbacks({feedbacks}:pageProps) {
     const [openModal, setOpenModal] = useState(false);
     const [selectedComment, setSelectedComment] = useState<Feedback | null>(null);
 
+    useEffect(() => {
+        if (!selectedComment) return;
+
+        const updatedSelectedComment = feedbacks.data.find(feedback => feedback.id === selectedComment.id);
+
+        if (updatedSelectedComment && updatedSelectedComment !== selectedComment) {
+            setSelectedComment(updatedSelectedComment);
+        }
+    }, [feedbacks, selectedComment]);
+
     const handleClose = () => {
         setOpenModal(false)
         setSelectedComment(null)
+    }
+
+    const handleFeedbackUpdate = (updatedFeedback: Feedback) => {
+        setSelectedComment(updatedFeedback)
     }
 
     const handlePageChange = (url: string | null) => {
@@ -198,6 +212,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                 feedback={selectedComment}
                 onClose={handleClose}
                 commentModal
+                onFeedbackUpdate={handleFeedbackUpdate}
             />
         </div>
     )

@@ -15,9 +15,10 @@ type pageProps = {
     open: boolean
     onClose: () => void
     feedback: Feedback
+    onFeedbackUpdate?: (updatedFeedback: Feedback) => void
 }
 
-export default function EditSheet({ open, onClose, feedback }: pageProps) {
+export default function EditSheet({ open, onClose, feedback, onFeedbackUpdate}: pageProps) {
     return (
         <Sheet
             open={open}
@@ -31,6 +32,7 @@ export default function EditSheet({ open, onClose, feedback }: pageProps) {
                 <EditForm
                     feedback={feedback}
                     onClose={onClose}
+                    onFeedbackUpdate={onFeedbackUpdate}
                 />
             </SheetContent>
         </Sheet>

@@ -1,11 +1,11 @@
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Feedback, PageProps } from "@/types/feedbackhub";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import CommentsModal from '../profile/components/modal';
@@ -22,6 +22,25 @@ export default function Home() {
         setViewFeedback(false)
         setSelectedFeedback(null)
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            router.reload({
+                only: ['feedbacks'],
+            })
+        }, 2000)
+
+        return () => clearInterval(interval)
+    }, [])
+
+    useEffect(() => {
+        if (selectedFeedback && feedbacks?.data) {
+            const updatedFeedback = feedbacks.data.find(f => f.id === selectedFeedback.id)
+            if(updatedFeedback) {
+                setSelectedFeedback(updatedFeedback)
+            }
+        }
+    }, [feedbacks])
 
     return (
         <AuthenticatedLayout>
@@ -101,7 +120,7 @@ export default function Home() {
                                             setViewFeedback(true)
                                         }}
                                         key={feedback.id}
-                                        className='flex flex-col justify-between gap-6 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
+                                        className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
                                     >
                                         <div className="flex items-center gap-1 px-5 pt-5">
                                             <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
@@ -131,7 +150,7 @@ export default function Home() {
                                             <h1 className='my-3 text-sm font-medium'>
                                                 {feedback.title}
                                             </h1>
-                                            <p className='text-sm line-clamp-4'>
+                                            <p className='text-sm line-clamp-4 text-gray-500'>
                                                 {feedback.description}
                                             </p>
                                         </div>

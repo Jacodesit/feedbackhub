@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { toast } from 'sonner';
 
 interface LoginForm {
     email: string;
@@ -32,6 +33,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         e.preventDefault();
         post(route('login'), {
             onFinish: () => reset('password'),
+            onSuccess: () => {
+                toast.success('Login successfully')
+            }
         });
     };
 

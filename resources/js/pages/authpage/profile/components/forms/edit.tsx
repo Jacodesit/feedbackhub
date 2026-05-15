@@ -19,13 +19,15 @@ import {
 } from "@/components/ui/sheet"
 import { Feedback, PageProps } from "@/types/feedbackhub";
 import { Textarea } from "@/components/ui/textarea"
+import { toast } from "sonner";
 
 type pageProps = {
     onClose: () => void
     feedback: Feedback
+    onFeedbackUpdate?: (updatedFeedback: Feedback) => void
 }
 
-export default function EditForm({onClose, feedback}:pageProps) {
+export default function EditForm({onClose, feedback, onFeedbackUpdate}:pageProps) {
     const { categories } = usePage<PageProps>().props
 
     function formatCategoryLabel(category: string): string {
@@ -39,7 +41,7 @@ export default function EditForm({onClose, feedback}:pageProps) {
         return labels[category] || category.replace('_', ' ').toUpperCase();
     }
 
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, put, processing, errors } = useForm({
         title: feedback.title,
         category: feedback.category,
         description: feedback.description
@@ -47,10 +49,18 @@ export default function EditForm({onClose, feedback}:pageProps) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault()
-        put('/feedbacks', {
+        put(route('feedbacks.update', feedback.id), {
             onSuccess: () => {
-                reset()
+                if (onFeedbackUpdate) {
+                    onFeedbackUpdate({
+                        ...feedback,
+                        title: data.title,
+                        category: data.category,
+                        description: data.description,
+                    })
+                }
                 onClose()
+                toast.success('Feedback updated successfully')
             }
         })
     }

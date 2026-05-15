@@ -10,9 +10,10 @@ import { Feedback } from "@/types/feedbackhub";
 
 type pageProps = {
     feedback: Feedback
+    onFeedbackUpdate?: (updatedFeedback: Feedback) => void
 }
 
-export default function EditDeleteButtons({feedback}:pageProps) {
+export default function EditDeleteButtons({feedback, onFeedbackUpdate}:pageProps) {
     const [editSheet, setEditSheet] = useState(false);
 
     const handleClose = () => {
@@ -60,6 +61,7 @@ export default function EditDeleteButtons({feedback}:pageProps) {
                 open={editSheet}
                 onClose={handleClose}
                 feedback={feedback}
+                onFeedbackUpdate={onFeedbackUpdate}
             />
         </div>
     )

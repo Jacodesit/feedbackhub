@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::resource('feedbacks', FeedbackController::class)->except('index');
+Route::resource('feedbacks.comments', CommentsController::class);
 
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');
 Route::get('/login', fn() => Inertia::render('auth/login'));

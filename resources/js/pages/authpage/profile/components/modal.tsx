@@ -24,9 +24,10 @@ type pageProps = {
     commentModal: boolean
     onClose: () => void
     feedback: Feedback | null;
+    onFeedbackUpdate?: (updatedFeedback: Feedback) => void
 }
 
-export default function CommentsModal({open, onClose, feedback, commentModal}:pageProps) {
+export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate}:pageProps) {
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -44,7 +45,7 @@ export default function CommentsModal({open, onClose, feedback, commentModal}:pa
             open={open || commentModal}
             onOpenChange={onClose}
         >
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-3xl">
                 <DialogHeader className="mb-5">
                     <div className="flex items-center gap-1">
                         <div className="border-2 border-white w-10 h-10 flex items-center justify-center rounded-full bg-violet-500 text-white">
@@ -82,17 +83,46 @@ export default function CommentsModal({open, onClose, feedback, commentModal}:pa
                             </DialogDescription>
 
                             <div className="">
-                                <h5 className='text-xs font-medium'>Comments {feedback.comments_count}</h5>
-                                <div className="h-36 flex justify-center items-center">
-                                    <div className="flex flex-col gap-5">
-                                        <img
-                                            src="/images/no-comment.svg"
-                                            alt="No Comments"
-                                            className="h-15 opacity-50"
-                                        />
-                                        <p className="text-gray-500 text-xs">No comments found in this feedback yet.</p>
+                                <h5 className='text-xs font-medium mb-5'>Comments {feedback.comments_count}</h5>
+                                {feedback.comments?.length === 0 ? (
+                                    <div className="h-36 flex justify-center items-center">
+                                        <div className="flex flex-col gap-5">
+                                            <img
+                                                src="/images/no-comment.svg"
+                                                alt="No Comments"
+                                                className="h-15 opacity-50"
+                                            />
+                                            <p className="text-gray-500 text-xs">No comments found in this feedback yet.</p>
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    feedback.comments.map(comment => (
+                                        <div
+                                            key={comment.id}
+                                            className='mb-2'
+                                        >
+                                            <div className='flex gap-3'>
+                                                <div className="border-2 border-white w-10 h-10 flex items-center justify-center rounded-full bg-violet-500 text-white">
+                                                    <p className="font-bold text-sm">
+                                                        {comment.user.name.charAt(0)}
+                                                    </p>
+                                                </div>
+                                                <div className='border p-3 bg-[#fafafa] flex flex-col gap-2 rounded-md'>
+                                                    <div className='flex gap-1 items-center'>
+                                                        <p className='text-sm font-medium'>{comment.user.name}</p>
+                                                        <p className='text-xs text-gray-500'>
+                                                            • {dayjs(comment.created_at).fromNow()}
+                                                            </p>
+                                                    </div>
+                                                    <div className='w-[40vw]'>
+                                                        <p className='text-sm text-gray-500'>{comment.content}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>
@@ -109,8 +139,11 @@ export default function CommentsModal({open, onClose, feedback, commentModal}:pa
                     </div>
                     <EditDeleteButtons
                         feedback={feedback}
+                        onFeedbackUpdate={onFeedbackUpdate}
                     />
-                    <CommentForm />
+                    <CommentForm
+                        feedback={feedback}
+                    />
                 </DialogFooter>
             </DialogContent>
         </Dialog>
