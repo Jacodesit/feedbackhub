@@ -133,14 +133,14 @@ export default function Footer() {
                             <div className="">
                                 <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
                                 <ul className="flex gap-5 text-accent">
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/register"
                                         className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
                                     >
                                         Get Started
-                                    </a>
+                                    </Link>
                                     <Link
-                                        href="/feedback"
+                                        href="/login"
                                         className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
                                     >
                                         Login

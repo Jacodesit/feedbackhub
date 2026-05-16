@@ -1,6 +1,6 @@
 import { PageProps } from '@/types/feedbackhub';
 import { usePage } from '@inertiajs/react';
-import LogoutDialog from './logout';
+import LogoutDialog from './dialog/logout';
 import { useState } from 'react';
 
 export default function Logout() {

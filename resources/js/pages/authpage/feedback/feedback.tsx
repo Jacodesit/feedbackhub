@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Feedback, PageProps } from "@/types/feedbackhub";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import CommentsModal from '../profile/components/modal';
+import { toast } from 'sonner';
 
 dayjs.extend(relativeTime);
 
@@ -41,6 +42,16 @@ export default function Home() {
             }
         }
     }, [feedbacks])
+
+    const handleVote = (feedbackId: number) => {
+        router.post(route('feedbacks.votes.store', feedbackId), {}, {
+            preserveScroll: true,
+
+            onSuccess: () => {
+                toast.success('Vote successfully')
+            }
+        })
+    }
 
     return (
         <AuthenticatedLayout>
@@ -115,10 +126,10 @@ export default function Home() {
 
                                 return (
                                     <div
-                                        onClick={() => {
-                                            setSelectedFeedback(feedback)
-                                            setViewFeedback(true)
-                                        }}
+                                        // onClick={() => {
+                                        //     setSelectedFeedback(feedback)
+                                        //     setViewFeedback(true)
+                                        // }}
                                         key={feedback.id}
                                         className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
                                     >
@@ -155,14 +166,19 @@ export default function Home() {
                                             </p>
                                         </div>
                                         <div className='border border-t-2 w-full grid grid-cols-3 rounded-bl-lg rounded-br-lg'>
-                                            <div className=' flex justify-center items-center gap-1 py-3'>
+                                            <button
+                                                onClick={() => handleVote(feedback.id)}
+                                                className=' flex justify-center items-center gap-1 py-3'
+                                            >
                                                 <ThumbsUp
-                                                    size={18}
+                                                    size={20}
                                                     strokeWidth={1.5}
-                                                    className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
+                                                    className={`transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer ${feedback.votes !== 0
+                                                        ? 'text-blue-500 font-medium' : ''
+                                                    }`}
                                                 />
-                                                <p className='text-sm'>{feedback.votes}</p>
-                                            </div>
+                                                <p className='text-base'>{feedback.votes}</p>
+                                            </button>
 
                                             <div className=' flex justify-center py-3'>
                                                 <MessageSquareMore

@@ -41,6 +41,12 @@ class FeedbackController extends Controller
      */
     public function store(StoreFeedbackRequest $request)
     {
+        if (!Auth::check()) {
+            return back()->withErrors([
+                'auth' => 'Authentication required'
+            ]);
+        }
+
         $feedback = Feedback::create([
             'title' => $request->title,
             'category' => $request->category,
@@ -88,7 +94,9 @@ class FeedbackController extends Controller
      */
     public function destroy(Feedback $feedback)
     {
-        //
+        $feedback->delete();
+
+        return back();
     }
 
     public function forProfile() {

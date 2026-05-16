@@ -11,7 +11,7 @@ export default function Heading() {
     const user = auth.user
 
     const links = [
-        { name: "Feedback", id: "hero" },
+        { name: "Feedback", id: "hero", url: '/feedback'},
         { name: "Problem & Solution", id: "problem-solution" },
         { name: "Features", id: "features" },
         { name: "How It Works", id: "how-it-works" },
@@ -111,18 +111,31 @@ export default function Heading() {
                         <div>
                             <ul className="flex items-center gap-6">
                                 {links.map((link) => (
-                                    <li key={link.id}>
-                                        <a
-                                            href={`#${link.id}`}
-                                            onClick={(e) => handleScroll(e, link.id)}
-                                            className={`text-sm transition-all duration-300 ${
-                                                activeId === link.id && activeId !== "hero" && activeId !== "call-to-action"
-                                                ? "text-white font-bold"
-                                                : "text-white/50 hover:text-white/80"
-                                            }`}
-                                        >
-                                            {link.name}
-                                        </a>
+                                    <li key={link.id || link.url}>
+                                        {link.url ? (
+                                            <Link
+                                                href={link.url}
+                                                className={`text-sm transition-all duration-300 ${
+                                                    isActiveLink(link.url)
+                                                        ? "text-white font-bold"
+                                                        : "text-white/50 hover:text-white/80"
+                                                }`}
+                                            >
+                                                {link.name}
+                                            </Link>
+                                        ) : (
+                                            <a
+                                                href={`#${link.id}`}
+                                                onClick={(e) => handleScroll(e, link.id)}
+                                                className={`text-sm transition-all duration-300 ${
+                                                    activeId === link.id && activeId !== "hero" && activeId !== "call-to-action"
+                                                    ? "text-white font-bold"
+                                                    : "text-white/50 hover:text-white/80"
+                                                }`}
+                                            >
+                                                {link.name}
+                                            </a>
+                                        )}
                                     </li>
                                 ))}
                             </ul>

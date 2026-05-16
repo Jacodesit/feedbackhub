@@ -10,7 +10,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
     return (
         <div className="">
             <Heading />
-            <Toaster position="top-right" />
+            <Toaster position="bottom-right" />
             <main className="">
                 {children}
             </main>

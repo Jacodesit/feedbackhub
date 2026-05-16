@@ -41,10 +41,8 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
     }
 
     const handleFeedbackUpdate = (updatedFeedback: Feedback) => {
-        // Update the selected comment for the modal
         setSelectedComment(updatedFeedback)
 
-        // Update the feedback in the list
         const updatedFeedbacks = {
             ...feedbacks,
             data: feedbacks.data.map(fb =>
@@ -52,6 +50,17 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
             )
         }
         setFeedbacks(updatedFeedbacks)
+    }
+
+    const handleFeedbackDelete = () => {
+        if (selectedComment) {
+            setFeedbacks({
+                ...feedbacks,
+                data: feedbacks.data.filter(feedback => feedback.id !== selectedComment.id)
+            })
+        }
+
+        handleClose()
     }
 
     return (
@@ -248,6 +257,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                 feedback={selectedComment}
                 onClose={handleClose}
                 onFeedbackUpdate={handleFeedbackUpdate}
+                onFeedbackDelete={handleFeedbackDelete}
             />
         </AuthenticatedLayout>
     )

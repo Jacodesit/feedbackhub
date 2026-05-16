@@ -16,6 +16,8 @@ import { Feedback } from "@/types/feedbackhub"
 import { ThumbsUp } from 'lucide-react';
 import EditDeleteButtons from './buttons';
 import CommentForm from './forms/form';
+import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 dayjs.extend(relativeTime);
 
@@ -25,9 +27,10 @@ type pageProps = {
     onClose: () => void
     feedback: Feedback | null;
     onFeedbackUpdate?: (updatedFeedback: Feedback) => void
+    onFeedbackDelete?: () => void
 }
 
-export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate}:pageProps) {
+export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate, onFeedbackDelete}:pageProps) {
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -39,6 +42,15 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
         label: feedback.category,
         className: 'bg-gray-100 text-gray-700'
     };
+
+    const handleVote = (feedbackId: number) => {
+        router.post(route('feedbacks.votes.store', feedbackId), {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Vote successfully')
+            }
+        })
+    }
 
     return (
         <Dialog
@@ -129,17 +141,23 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
                 </div>
 
                 <DialogFooter className='py-3'>
-                    <div className='flex gap-1 py-2 px-3'>
+                    <button
+                        onClick={() => handleVote(feedback.id)}
+                        className='flex gap-1 py-2 px-3'
+                    >
                         <ThumbsUp
                             size={20}
                             strokeWidth={1.5}
-                            className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
+                            className={`transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer ${feedback.votes !== 0
+                                ? 'text-blue-500 font-medium' : ''
+                            }`}
                         />
                         <p className='text-base'>{feedback.votes}</p>
-                    </div>
+                    </button>
                     <EditDeleteButtons
                         feedback={feedback}
                         onFeedbackUpdate={onFeedbackUpdate}
+                        onFeedbackDelete={onFeedbackDelete ?? onClose}
                     />
                     <CommentForm
                         feedback={feedback}
@@ -149,4 +167,3 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
         </Dialog>
     )
 }
-

@@ -7,14 +7,17 @@ import { SquarePen, Trash } from "lucide-react"
 import { useState } from "react";
 import EditSheet from "./sheet"
 import { Feedback } from "@/types/feedbackhub";
+import DeleteDialog from "@/components/dialog/delete";
 
 type pageProps = {
     feedback: Feedback
     onFeedbackUpdate?: (updatedFeedback: Feedback) => void
+    onFeedbackDelete?: () => void
 }
 
-export default function EditDeleteButtons({feedback, onFeedbackUpdate}:pageProps) {
+export default function EditDeleteButtons({feedback, onFeedbackUpdate, onFeedbackDelete}:pageProps) {
     const [editSheet, setEditSheet] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState(false)
 
     const handleClose = () => {
         setEditSheet(false);
@@ -45,7 +48,10 @@ export default function EditDeleteButtons({feedback, onFeedbackUpdate}:pageProps
             <TooltipProvider>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <button className='flex items-center gap-2 py-2 px-3 border rounded-lg transition-all duration-300 transform hover:text-red-500 hover:-translate-y-1 cursor-pointer'>
+                        <button
+                            onClick={() => setDeleteDialog(true)}
+                            className='flex items-center gap-2 py-2 px-3 border rounded-lg transition-all duration-300 transform hover:text-red-500 hover:-translate-y-1 cursor-pointer'
+                        >
                             <Trash
                                 size={15}
                                 strokeWidth={1.5}
@@ -62,6 +68,13 @@ export default function EditDeleteButtons({feedback, onFeedbackUpdate}:pageProps
                 onClose={handleClose}
                 feedback={feedback}
                 onFeedbackUpdate={onFeedbackUpdate}
+            />
+
+            <DeleteDialog
+                feedback={feedback}
+                openDialog={deleteDialog}
+                onClose={() => setDeleteDialog(false)}
+                onDeleted={onFeedbackDelete}
             />
         </div>
     )

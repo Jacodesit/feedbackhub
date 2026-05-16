@@ -50,7 +50,7 @@ export default function LogoutDialog({openDialog, onClose}:pageProps) {
                         disabled={processing}
                         onClick={handleLogout}
                     >
-                        {processing ? 'Logging-out' : 'Logout'}
+                        {processing ? 'Logging out' : 'Logout'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

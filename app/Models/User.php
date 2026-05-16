@@ -47,10 +47,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function feedbacks() {
-        return $this->hasMany(Feedback::class);
-    }
-
     protected static function boot()
     {
         parent::boot();
@@ -58,5 +54,9 @@ class User extends Authenticatable
         static::creating(function ($user) {
             $user->public_id = 'FBH' . strtoupper(Str::random(8));
         });
+    }
+
+    public function feedbacks() {
+        return $this->hasMany(Feedback::class);
     }
 }

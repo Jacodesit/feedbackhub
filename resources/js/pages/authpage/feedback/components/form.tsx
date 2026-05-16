@@ -21,6 +21,8 @@ import {
 import { PageProps } from "@/types/feedbackhub";
 import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator";
+import { useState } from "react";
+import AuthDialog from "@/components/dialog/error";
 
 type pageProps = {
     onClose: () => void
@@ -28,6 +30,11 @@ type pageProps = {
 
 export default function PostForm({onClose}:pageProps) {
     const { categories } = usePage<PageProps>().props
+
+    const [showAuth, setShowAuth] = useState(false);
+    const [authHeadline, setAuthHeadline] = useState('');
+    const [authSubtext, setAuthSubtext] = useState('');
+
 
     function formatCategoryLabel(category: string): string {
         const labels: Record<string, string> = {
@@ -49,6 +56,14 @@ export default function PostForm({onClose}:pageProps) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault()
         post('/feedbacks', {
+            onError: (errors) => {
+                if (errors.auth) {
+                    setAuthHeadline('Sign in required')
+                    setAuthSubtext('This action is available only to authenticated or logged in users. Log in to proceed.')
+                    setShowAuth(true)
+                }
+            },
+
             onSuccess: () => {
                 reset()
                 onClose()
@@ -136,6 +151,13 @@ export default function PostForm({onClose}:pageProps) {
                     </div>
                 </FieldGroup>
             </form>
+
+            <AuthDialog
+                openDialog={showAuth}
+                onClose={() => setShowAuth(false)}
+                authHeadline={authHeadline}
+                authSubtext={authSubtext}
+            />
         </div>
     )
 }

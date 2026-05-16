@@ -213,6 +213,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                 onClose={handleClose}
                 commentModal
                 onFeedbackUpdate={handleFeedbackUpdate}
+                onFeedbackDelete={handleClose}
             />
         </div>
     )
