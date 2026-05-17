@@ -1,13 +1,15 @@
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
+import { Feedback, PageProps, PaginatedFeedbacks } from "@/types/feedbackhub";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
 import PostModal from '../feedback/components/modal';
-import CommentsModal from '../profile/components/modal';
+import CommentsModal from '../profile/components/modals/comment';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { usePage } from '@inertiajs/react';
+import Avatar from '@/components/avatar';
 
 dayjs.extend(relativeTime);
 
@@ -16,6 +18,8 @@ type pageProps = {
 }
 
 export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
+    const { auth } = usePage<PageProps>().props
+
     const [openModal, setOpenModal] = useState(false);
     const [commentModal, setCommentModal] = useState(false);
     const [selectedComment, setSelectedComment] = useState<Feedback | null>(null);
@@ -134,12 +138,19 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                                     key={feedback.id}
                                     className='flex flex-col justify-between gap-5 bg-white border border-slate-100 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer'
                                 >
-                                    <div className="flex items-center gap-1 px-6 pt-6">
-                                        <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
-                                            <p className="font-bold text-2xl">
-                                                {feedback.user.name.charAt(0)}
-                                            </p>
-                                        </div>
+                                    <div className="flex items-center gap-2 px-6 pt-6">
+                                        {auth.user?.avatar ? (
+                                            <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                <img
+                                                    src={auth.user.avatar}
+                                                    alt={auth.user.name}
+                                                    className="w-10 h-10 rounded-full object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <Avatar size="sm"/>
+                                        )}
+
                                         <div className='flex flex-col'>
                                             <p className='font-medium text-base'>
                                                 {feedback.user.name}
@@ -252,6 +263,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
             />
 
             <CommentsModal
+                auth={auth}
                 open={commentModal}
                 commentModal={commentModal}
                 feedback={selectedComment}

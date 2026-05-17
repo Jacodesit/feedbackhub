@@ -29,6 +29,12 @@ class CommentsController extends Controller
      */
     public function store(Request $request, Feedback $feedback)
     {
+        if (!Auth::check()) {
+            return back()->withErrors([
+                'auth' => 'Authentication required'
+            ]);
+        }
+
         $validated = $request->validate([
             'content' => 'nullable|string|max:2000'
         ]);

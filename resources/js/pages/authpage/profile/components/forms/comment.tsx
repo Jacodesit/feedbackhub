@@ -1,4 +1,5 @@
 
+import AuthDialog from "@/components/dialog/error"
 import {
     Field,
     // FieldDescription,
@@ -6,13 +7,14 @@ import {
     // FieldLabel,
     // FieldLegend,
     // FieldSeparator,
-    FieldSet,
+    // FieldSet,
 } from "@/components/ui/field"
 
 import { Input } from "@/components/ui/input"
 import { Feedback } from "@/types/feedbackhub"
 import { useForm } from "@inertiajs/react"
 import { Loader2, Send } from "lucide-react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 type pageProps = {
@@ -20,6 +22,9 @@ type pageProps = {
 }
 export default function CommentForm({feedback}:pageProps) {
     const currentPath = window.location.pathname
+    const [showAuth, setShowAuth] = useState(false);
+    const [authHeadline, setAuthHeadline] = useState('');
+    const [authSubtext, setAuthSubtext] = useState('');
 
     const {data, post, setData, processing, reset} = useForm({
         content: ''
@@ -28,6 +33,14 @@ export default function CommentForm({feedback}:pageProps) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault()
         post(route('feedbacks.comments.store', feedback.id), {
+            onError: (errors) => {
+                if (errors.auth) {
+                    setAuthHeadline('Sign in required')
+                    setAuthSubtext('This action is available only to authenticated or logged in users. Log in to proceed.')
+                    setShowAuth(true)
+                }
+            },
+
             onSuccess: () => [
                 reset(),
                 toast.success('Commented successfully')
@@ -36,19 +49,17 @@ export default function CommentForm({feedback}:pageProps) {
         })
     }
     return (
-        <div className={`${currentPath === '/feedback' ? 'min-w-0 flex-1' : 'hidden'}`}>
-            <form onSubmit={submit} className='flex w-full gap-2'>
-                <FieldSet className='min-w-0 flex-1'>
-                    <Field className='min-w-0'>
-                        <Input
-                            value={data.content}
-                            onChange={(e) => setData('content', e.target.value)}
-                            id="comment"
-                            placeholder="Add a comment..."
-                            className="w-full"
-                        />
-                    </Field>
-                </FieldSet>
+        <div className={`${currentPath === '/feedback' ? 'flex-1' : 'hidden'}`}>
+            <form onSubmit={submit} className='w-full flex gap-2'>
+                <Field className='w-full'>
+                    <Input
+                        value={data.content}
+                        onChange={(e) => setData('content', e.target.value)}
+                        id="comment"
+                        placeholder="Add a comment..."
+                        className="flex-1"
+                    />
+                </Field>
 
                 <button
                     disabled={processing}
@@ -58,6 +69,13 @@ export default function CommentForm({feedback}:pageProps) {
                     {processing ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
                 </button>
             </form>
+
+            <AuthDialog
+                openDialog={showAuth}
+                onClose={() => setShowAuth(false)}
+                authHeadline={authHeadline}
+                authSubtext={authSubtext}
+            />
         </div>
     )
 }

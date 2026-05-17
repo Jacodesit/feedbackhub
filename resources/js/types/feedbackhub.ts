@@ -2,6 +2,8 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    avatar: string;
+    public_id: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
@@ -10,6 +12,7 @@ export interface User {
 export type PageProps = {
     categories: Category[]
     feedbacks: PaginatedFeedbacks
+    csrf_token: string
     auth: {
         user: User | null;
     };
@@ -17,13 +20,12 @@ export type PageProps = {
 
 export type Feedback = {
     id: number;
-    public_id: string;
     comments_count: number;
     comments: Comments[];
     title: string,
     description: string,
     category: string;
-    user: Pick<User, 'id' | 'name'>;
+    user: Pick<User, 'id' | 'name' | 'avatar'>;
     votes: number;
     status: 'open' | 'in_progress' | 'completed';
     created_at: string;
@@ -49,6 +51,7 @@ export type Comments = {
     user: {
         id: number
         name: string
+        avatar: string
     }
 }
 

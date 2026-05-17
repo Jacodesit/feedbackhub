@@ -31,6 +31,12 @@ class VotesController extends Controller
      */
     public function store(Feedback $feedback)
     {
+        if (!Auth::check()) {
+            return back()->withErrors([
+                'auth' => 'Authentication required'
+            ]);
+        }
+
         $vote = FeedbackVote::where('user_id', Auth::id())
             ->where('feedback_id', $feedback->id)
             ->first();

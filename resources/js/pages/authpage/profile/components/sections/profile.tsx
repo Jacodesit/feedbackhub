@@ -4,6 +4,7 @@ import { Contact } from "lucide-react"
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Avatar from "@/components/avatar";
 
 dayjs.extend(relativeTime);
 
@@ -19,28 +20,38 @@ export default function Profile() {
             <div className="relative">
                 <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-lg h-48"></div>
                 <div className="absolute -bottom-14 left-5">
-                    <div className=" w-32 h-32 flex items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 border-4 border-white text-white shadow-lg">
-                        <p className="font-bold text-5xl">
-                            {auth.user?.name.charAt(0)}
-                        </p>
-                    </div>
+                    {auth.user?.avatar ? (
+                        <div className=" w-32 h-32 flex items-center justify-center border-4 border-white rounded-full">
+                            <img
+                                src={auth.user.avatar}
+                                alt={auth.user.name}
+                                className="w-full h-full rounded-full object-cover"
+                            />
+                        </div>
+                    ) : (
+                        <Avatar size="lg"/>
+                    )}
                 </div>
             </div>
 
-            <div className="h-12 pl-38 pt-2 flex justify-between ">
+            <div className="h-12 pl-38 pt-2 flex justify-between items-center">
                 <div>
-                    <p
-                        className="text-2xl font-medium flex items-center gap-2"
-                    >
-                        {auth.user?.name}
-                        <Contact
-                            xlinkTitle="User"
-                            size={15}
-                            className="text-blue-500"
-                        />
-                    </p>
+                    <div className="flex items-center">
+                        <p
+                            className="text-2xl font-medium flex items-center gap-2"
+                        >
+                            {auth.user?.name}
+                            <Contact
+                                xlinkTitle="User"
+                                size={15}
+                                className="text-blue-500"
+                            />
+                        </p>
+
+                    </div>
                     <p className="text-xs text-gray-500">{auth.user?.email} • Joined {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
                 </div>
+                <p className="text-xs text-gray-500">ID: {auth.user?.public_id}</p>
             </div>
         </div>
     )

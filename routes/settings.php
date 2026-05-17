@@ -10,6 +10,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('api/upload-avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar.upload');
+    Route::delete('api/remove-avatar', [ProfileController::class, 'removeAvatar'])->name('profile.avatar.remove');
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');

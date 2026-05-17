@@ -1,6 +1,10 @@
 import { Lock, UserRoundPen } from "lucide-react";
+import { useState } from "react";
+import EditAccount from "../modals/edit";
 
 export default function Settings() {
+    const [showModal, setShowModal] = useState(false)
+
     return (
         <div id="section-settings" className="py-5 px-10 scroll-mt-20">
             <div className="pb-4">
@@ -10,13 +14,16 @@ export default function Settings() {
 
             <div className="grid grid-rows-1 gap-4">
                 <div className="flex gap-5">
-                    <div className="flex items-center justify-between w-1/2 bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer">
+                    <button
+                        onClick={() => setShowModal(true)}
+                        className="flex items-center justify-between w-1/2 bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer"
+                    >
                         <div>
                             <h1 className="">Edit Account Details</h1>
                             <p className="text-xs text-gray-500">Avatar, email, and name</p>
                         </div>
                         <UserRoundPen />
-                    </div>
+                    </button>
                     <div className="w-1/2 p-5">
                         <p className="text-xs">Update your personal information and keep your account details up to date.</p>
                     </div>
@@ -35,6 +42,11 @@ export default function Settings() {
                     </div>
                 </div>
             </div>
+
+            <EditAccount
+                open={showModal}
+                onClose={() => setShowModal(false)}
+            />
         </div>
     )
 }

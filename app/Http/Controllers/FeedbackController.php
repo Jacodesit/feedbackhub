@@ -7,6 +7,7 @@ use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Models\Comments;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class FeedbackController extends Controller
@@ -16,9 +17,9 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::with('user:id,name')
+        $feedbacks = Feedback::with('user:id,name,avatar')
             ->withCount('comments')
-            ->with('comments.user:id,name')
+            ->with('comments.user:id,name,avatar')
             ->latest()
             ->paginate(10);
 
@@ -102,7 +103,7 @@ class FeedbackController extends Controller
     public function forProfile() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
-            ->with('comments.user:id,name')
+            ->with('comments.user:id,name,avatar')
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(5);
@@ -116,7 +117,7 @@ class FeedbackController extends Controller
     public function forPost() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
-            ->with('comments.user:id,name')
+            ->with('comments.user:id,name,avatar')
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
@@ -126,4 +127,6 @@ class FeedbackController extends Controller
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }
+
+
 }

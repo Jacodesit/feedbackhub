@@ -12,16 +12,18 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 
-import { Feedback } from "@/types/feedbackhub"
+import { Feedback, PageProps } from "@/types/feedbackhub"
 import { ThumbsUp } from 'lucide-react';
-import EditDeleteButtons from './buttons';
-import CommentForm from './forms/form';
+import EditDeleteButtons from '../buttons';
+import CommentForm from '../forms/comment';
 import { router } from '@inertiajs/react';
 import { toast } from 'sonner';
+import Avatar from '@/components/avatar';
 
 dayjs.extend(relativeTime);
 
 type pageProps = {
+    auth: PageProps['auth']
     open: boolean
     commentModal: boolean
     onClose: () => void
@@ -30,7 +32,7 @@ type pageProps = {
     onFeedbackDelete?: () => void
 }
 
-export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate, onFeedbackDelete}:pageProps) {
+export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate, onFeedbackDelete, auth}:pageProps) {
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -59,12 +61,22 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
         >
             <DialogContent className="max-w-3xl">
                 <DialogHeader className="mb-5">
-                    <div className="flex items-center gap-1">
-                        <div className="border-2 border-white w-10 h-10 flex items-center justify-center rounded-full bg-violet-500 text-white">
-                            <p className="font-bold text-sm">
-                                {feedback.user.name.charAt(0)}
-                            </p>
-                        </div>
+                    <div className="flex items-center gap-2">
+                        {feedback.user.avatar ? (
+                            <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                <img
+                                    src={feedback.user.avatar}
+                                    alt={feedback.user.name}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            </div>
+                        ) : (
+                            <div className=" w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg">
+                                <p className="font-bold text-sm">
+                                    {feedback.user.name.charAt(0)}
+                                </p>
+                            </div>
+                        )}
                         <div className='flex flex-col'>
                             <p className='font-medium text-base'>
                                 {feedback.user.name}
@@ -114,11 +126,17 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
                                             className='mb-2'
                                         >
                                             <div className='flex gap-3'>
-                                                <div className="border-2 border-white w-10 h-10 flex items-center justify-center rounded-full bg-violet-500 text-white">
-                                                    <p className="font-bold text-sm">
-                                                        {comment.user.name.charAt(0)}
-                                                    </p>
-                                                </div>
+                                                {comment.user.avatar ? (
+                                                    <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                        <img
+                                                            src={comment.user.avatar}
+                                                            alt={comment.user.name}
+                                                            className="w-10 h-10 rounded-full object-cover"
+                                                        />
+                                                        </div>
+                                                    ) : (
+                                                        <Avatar size="sm"/>
+                                                )}
                                                 <div className='border p-3 bg-[#fafafa] flex flex-col gap-2 rounded-md'>
                                                     <div className='flex gap-1 items-center'>
                                                         <p className='text-sm font-medium'>{comment.user.name}</p>

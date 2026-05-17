@@ -8,8 +8,11 @@ import PostModal from "./components/modal";
 import { useEffect, useState } from "react";
 import { Feedback, PageProps } from "@/types/feedbackhub";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
-import CommentsModal from '../profile/components/modal';
-import { toast } from 'sonner';
+import CommentsModal from '../profile/components/modals/comment';
+// import { toast } from 'sonner';
+// import AuthDialog from '@/components/dialog/error';
+import CommentForm from '../profile/components/forms/comment';
+import Avatar from '@/components/avatar';
 
 dayjs.extend(relativeTime);
 
@@ -18,6 +21,9 @@ export default function Home() {
     const [openModal, setOpenModal] = useState(false);
     const [viewFeedback, setViewFeedback] = useState(false)
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null)
+    // const [showAuth, setShowAuth] = useState(false);
+    // const [authHeadline, setAuthHeadline] = useState('');
+    // const [authSubtext, setAuthSubtext] = useState('');
 
     const handleClose = () => {
         setViewFeedback(false)
@@ -43,15 +49,22 @@ export default function Home() {
         }
     }, [feedbacks])
 
-    const handleVote = (feedbackId: number) => {
-        router.post(route('feedbacks.votes.store', feedbackId), {}, {
-            preserveScroll: true,
+    // const handleVote = (feedbackId: number) => {
+    //     router.post(route('feedbacks.votes.store', feedbackId), {}, {
+    //         preserveScroll: true,
+    //         onError: (errors) => {
+    //             if (errors.auth) {
+    //                 setAuthHeadline('Sign in required')
+    //                 setAuthSubtext('This action is available only to authenticated or logged in users. Log in to proceed.')
+    //                 setShowAuth(true)
+    //             }
+    //         },
 
-            onSuccess: () => {
-                toast.success('Vote successfully')
-            }
-        })
-    }
+    //         onSuccess: () => {
+    //             toast.success('Vote successfully')
+    //         }
+    //     })
+    // }
 
     return (
         <AuthenticatedLayout>
@@ -112,7 +125,7 @@ export default function Home() {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             {feedbacks.data.map(feedback => {
                                 const statusConfig = STATUS_CONFIG[feedback.status] || {
                                     label: feedback.status,
@@ -126,19 +139,21 @@ export default function Home() {
 
                                 return (
                                     <div
-                                        // onClick={() => {
-                                        //     setSelectedFeedback(feedback)
-                                        //     setViewFeedback(true)
-                                        // }}
                                         key={feedback.id}
                                         className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
                                     >
-                                        <div className="flex items-center gap-1 px-5 pt-5">
-                                            <div className="border-2 border-white w-12 h-12 flex items-center justify-center rounded-full bg-violet-500 text-white">
-                                                <p className="font-bold text-2xl">
-                                                    {feedback.user.name.charAt(0)}
-                                                </p>
-                                            </div>
+                                        <div className="flex items-center gap-2 px-5 py-3 border-b">
+                                            {feedback.user.avatar ? (
+                                                <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                    <img
+                                                        src={feedback.user.avatar}
+                                                        alt={feedback.user.avatar}
+                                                        className="w-10 h-10 rounded-full object-cover"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <Avatar size="lg"/>
+                                            )}
                                             <div className='flex flex-col'>
                                                 <p className='font-medium text-base'>
                                                     {feedback.user.name}
@@ -148,56 +163,69 @@ export default function Home() {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className='px-5'>
-                                            <div className='flex gap-1'>
-                                                <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
-                                                    {statusConfig.label}
-                                                </span>
-                                                <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
-                                                    {categoryConfig.label}
-                                                </span>
+
+                                        {/* Clickable area */}
+                                        <div
+                                            onClick={() => {
+                                                setSelectedFeedback(feedback)
+                                                setViewFeedback(true)
+                                            }}
+                                            className='px-5 h-48 flex flex-col justify-between'
+                                        >
+                                            <div className=''>
+                                                <div className='flex gap-1 mb-2'>
+                                                    <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
+                                                        {statusConfig.label}
+                                                    </span>
+                                                    <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
+                                                        {categoryConfig.label}
+                                                    </span>
+                                                </div>
+
+                                                <h1 className='text-base font-medium mb-2'>
+                                                    {feedback.title}
+                                                </h1>
+
+                                                <p className='text-sm line-clamp-4 text-gray-500 '>
+                                                    {feedback.description}
+                                                </p>
                                             </div>
 
-                                            <h1 className='my-3 text-sm font-medium'>
-                                                {feedback.title}
-                                            </h1>
-                                            <p className='text-sm line-clamp-4 text-gray-500'>
-                                                {feedback.description}
-                                            </p>
+                                            <div className='flex gap-10'>
+                                                <div className='flex items-center gap-1'>
+                                                    <ThumbsUp
+                                                        size={16}
+                                                        strokeWidth={1.5}
+                                                        className='text-gray-500'
+                                                    />
+                                                    <p className='text-sm'>{feedback.votes} Likes</p>
+                                                </div>
+
+                                                <div className='flex items-center gap-1'>
+                                                    <MessageSquareMore
+                                                        size={16}
+                                                        strokeWidth={1.5}
+                                                        className='text-gray-500'
+                                                    />
+                                                    <p className='text-sm'>{feedback.comments_count || 0} Comments</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className='border border-t-2 w-full grid grid-cols-3 rounded-bl-lg rounded-br-lg'>
-                                            <button
-                                                onClick={() => handleVote(feedback.id)}
-                                                className=' flex justify-center items-center gap-1 py-3'
-                                            >
-                                                <ThumbsUp
-                                                    size={20}
-                                                    strokeWidth={1.5}
-                                                    className={`transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer ${feedback.votes !== 0
-                                                        ? 'text-blue-500 font-medium' : ''
-                                                    }`}
-                                                />
-                                                <p className='text-base'>{feedback.votes}</p>
-                                            </button>
-
-                                            <div className=' flex justify-center py-3'>
-                                                <MessageSquareMore
-                                                    size={20}
-                                                    strokeWidth={1.5}
-                                                    className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
-                                                />
-                                                <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
-                                            </div>
-
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedFeedback(feedback)
-                                                    setViewFeedback(true)
-                                                }}
-                                                className=' flex justify-center items-center py-3'
-                                            >
-                                                <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
-                                            </button>
+                                        <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3'>
+                                            {auth.user?.avatar ? (
+                                                <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                    <img
+                                                        src={auth.user.avatar}
+                                                        alt={auth.user.name}
+                                                        className="w-10 h-10 rounded-full object-cover"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <Avatar size="sm"/>
+                                            )}
+                                            <CommentForm
+                                                feedback={feedback}
+                                            />
                                         </div>
                                     </div>
                                 );
@@ -257,11 +285,19 @@ export default function Home() {
             />
 
             <CommentsModal
+                auth={auth}
                 open={viewFeedback}
                 feedback={selectedFeedback}
                 onClose={handleClose}
                 commentModal
             />
+
+            {/* <AuthDialog
+                openDialog={showAuth}
+                onClose={() => setShowAuth(false)}
+                authHeadline={authHeadline}
+                authSubtext={authSubtext}
+            /> */}
         </AuthenticatedLayout>
     );
 }

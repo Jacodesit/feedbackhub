@@ -26,7 +26,7 @@ class StoreFeedbackRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'category' => 'required|string|in:feature_request,bug_report,ui_ux,performance,other',
-            'description' => 'required|string|max:2000'
+            'description' => 'required|string|max:5000'
         ];
     }
 

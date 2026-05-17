@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MessageSquareMore, ThumbsUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import CommentsModal from '../modal';
+import CommentsModal from '../modals/comment';
 
 dayjs.extend(relativeTime);
 
