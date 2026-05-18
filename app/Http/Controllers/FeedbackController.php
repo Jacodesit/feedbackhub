@@ -22,6 +22,7 @@ class FeedbackController extends Controller
             ->with('comments.user:id,name,avatar')
             ->latest()
             ->paginate(10);
+        $this->normalizeAvatarUrls($feedbacks);
 
         return Inertia::render('authpage/feedback/feedback', [
             'feedbacks' => $feedbacks,
@@ -107,6 +108,7 @@ class FeedbackController extends Controller
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(5);
+        $this->normalizeAvatarUrls($feedbacks);
 
         return Inertia::render('authpage/profile/profile', [
             'feedbacks' => $feedbacks,
@@ -121,11 +123,32 @@ class FeedbackController extends Controller
             ->where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
+        $this->normalizeAvatarUrls($feedbacks);
 
         return Inertia::render('authpage/post/post', [
             'feedbacks' => $feedbacks,
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
+    }
+
+    private function normalizeAvatarUrls($feedbacks): void
+    {
+        $feedbacks->getCollection()->each(function ($feedback) {
+            $this->normalizeUserAvatar($feedback->user);
+
+            $feedback->comments->each(function ($comment) {
+                $this->normalizeUserAvatar($comment->user);
+            });
+        });
+    }
+
+    private function normalizeUserAvatar($user): void
+    {
+        if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
+            return;
+        }
+
+        $user->setAttribute('avatar', Storage::url($user->avatar));
     }
 
 

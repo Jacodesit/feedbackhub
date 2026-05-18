@@ -20,7 +20,7 @@ export default function Settings() {
                     >
                         <div>
                             <h1 className="">Edit Account Details</h1>
-                            <p className="text-xs text-gray-500">Avatar, email, and name</p>
+                            <p className="text-xs text-gray-500 text-left">Avatar, email, and name</p>
                         </div>
                         <UserRoundPen />
                     </button>

@@ -12,7 +12,7 @@ import CommentsModal from '../profile/components/modals/comment';
 // import { toast } from 'sonner';
 // import AuthDialog from '@/components/dialog/error';
 import CommentForm from '../profile/components/forms/comment';
-import Avatar from '@/components/avatar';
+import Avatar from '@/components/avatar/profile';
 
 dayjs.extend(relativeTime);
 
@@ -144,15 +144,15 @@ export default function Home() {
                                     >
                                         <div className="flex items-center gap-2 px-5 py-3 border-b">
                                             {feedback.user.avatar ? (
-                                                <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
                                                     <img
                                                         src={feedback.user.avatar}
-                                                        alt={feedback.user.avatar}
+                                                        alt={feedback.user.name}
                                                         className="w-10 h-10 rounded-full object-cover"
                                                     />
                                                 </div>
                                             ) : (
-                                                <Avatar size="lg"/>
+                                                <Avatar user={feedback.user} size="md"/>
                                             )}
                                             <div className='flex flex-col'>
                                                 <p className='font-medium text-base'>
@@ -221,7 +221,7 @@ export default function Home() {
                                                     />
                                                 </div>
                                             ) : (
-                                                <Avatar size="sm"/>
+                                                <Avatar user={auth.user} size="sm"/>
                                             )}
                                             <CommentForm
                                                 feedback={feedback}

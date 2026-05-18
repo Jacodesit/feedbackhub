@@ -10,6 +10,7 @@ import { PageProps } from "@/types/feedbackhub";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
+import Avatar from "@/components/avatar/profile";
 
 type pageProps = {
     onClose: () => void
@@ -25,7 +26,7 @@ export default function EditDetails({onClose}:pageProps) {
         avatar: auth.user?.avatar
     })
 
-    const [avatarPreview, setAvatarPreview] = useState(null);
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
     const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +131,8 @@ export default function EditDetails({onClose}:pageProps) {
         });
     };
 
+    const avatarSrc = avatarPreview || data.avatar || undefined;
+
     return (
         <form onSubmit={handleSubmit}>
             <FieldGroup className="flex flex-col h-full">
@@ -139,18 +142,14 @@ export default function EditDetails({onClose}:pageProps) {
                             <FieldLabel>Profile Picture</FieldLabel>
                             <div className="flex items-center gap-4">
                                 <div className="relative group">
-                                    {avatarPreview || data.avatar ? (
+                                    {avatarSrc ? (
                                         <img
-                                            src={avatarPreview || data.avatar}
+                                            src={avatarSrc}
                                             alt="Profile"
-                                            className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                                            className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
                                         />
                                     ) : (
-                                        <div className="border-2 border-white w-20 h-20 flex items-center justify-center rounded-full bg-violet-500 text-white">
-                                            <p className="font-bold text-3xl">
-                                                {data.name ? data.name.charAt(0).toUpperCase() : '?'}
-                                            </p>
-                                        </div>
+                                        <Avatar user={auth.user} size="md" />
                                     )}
 
                                     <label

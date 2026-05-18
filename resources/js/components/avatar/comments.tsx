@@ -34,7 +34,7 @@ const getGradientFromId = (id: number | string): string => {
     return gradients[Math.abs(hash) % gradients.length];
 };
 
-const Avatar = ({ size = 'md', className = '' }: AvatarProps) => {
+const Comments = ({ size = 'md', className = '' }: AvatarProps) => {
     const { auth } = usePage<PageProps>().props
     const currentPath = window.location.pathname
     const sizeClass = sizeClasses[size];
@@ -56,7 +56,7 @@ const Avatar = ({ size = 'md', className = '' }: AvatarProps) => {
         : 'from-violet-500 to-indigo-600';
 
     return (
-        <div className={`${sizeClass} flex items-center justify-center rounded-full bg-gradient-to-br ${gradientClass} ${currentPath === '/profile' ? 'border-4 border-white text-white' : 'border-0 text-white w-10 h-10'} shadow-lg ${className}`}>
+        <div className={`${sizeClass} flex items-center justify-center rounded-full bg-gradient-to-br ${gradientClass} ${currentPath === '/profile' ? 'border-4 border-white text-white' : 'border-0 text-white w-12 h-12'} shadow-lg ${className}`}>
             <p className="font-bold">
                 {auth.user?.name.charAt(0)?.toUpperCase()}
             </p>
@@ -64,4 +64,4 @@ const Avatar = ({ size = 'md', className = '' }: AvatarProps) => {
     );
 };
 
-export default Avatar;
+export default Comments;

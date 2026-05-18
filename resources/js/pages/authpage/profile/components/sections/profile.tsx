@@ -4,7 +4,7 @@ import { Contact } from "lucide-react"
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Avatar from "@/components/avatar";
+import Avatar from "@/components/avatar/profile";
 
 dayjs.extend(relativeTime);
 
@@ -20,17 +20,7 @@ export default function Profile() {
             <div className="relative">
                 <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-lg h-48"></div>
                 <div className="absolute -bottom-14 left-5">
-                    {auth.user?.avatar ? (
-                        <div className=" w-32 h-32 flex items-center justify-center border-4 border-white rounded-full">
-                            <img
-                                src={auth.user.avatar}
-                                alt={auth.user.name}
-                                className="w-full h-full rounded-full object-cover"
-                            />
-                        </div>
-                    ) : (
-                        <Avatar size="lg"/>
-                    )}
+                    <Avatar user={auth.user} size="lg" />
                 </div>
             </div>
 

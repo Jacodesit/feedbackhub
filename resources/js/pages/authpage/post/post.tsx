@@ -9,7 +9,8 @@ import PostModal from '../feedback/components/modal';
 import CommentsModal from '../profile/components/modals/comment';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { usePage } from '@inertiajs/react';
-import Avatar from '@/components/avatar';
+import Avatar from '@/components/avatar/profile';
+// import CommentForm from '../profile/components/forms/comment';
 
 dayjs.extend(relativeTime);
 
@@ -116,13 +117,13 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
                         </div>
                     )}
-                    <div className="grid grid-cols-3 gap-4">
+
+                    <div className="grid grid-cols-2 gap-4">
                         {feedbacks.data.map(feedback => {
                             const statusConfig = STATUS_CONFIG[feedback.status] || {
                                 label: feedback.status,
                                 className: 'bg-gray-100 text-gray-700'
                             };
-
 
                             const categoryConfig = CATEGORY_CONFIG[feedback.category as FeedbackCategory] || {
                                 label: feedback.category,
@@ -131,26 +132,21 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
                             return (
                                 <div
-                                    onClick={() => {
-                                        setSelectedComment(feedback)
-                                        setCommentModal(true)
-                                    }}
                                     key={feedback.id}
-                                    className='flex flex-col justify-between gap-5 bg-white border border-slate-100 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl cursor-pointer'
+                                    className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
                                 >
-                                    <div className="flex items-center gap-2 px-6 pt-6">
-                                        {auth.user?.avatar ? (
-                                            <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                    <div className="flex items-center gap-2 px-5 py-3 border-b">
+                                        {feedback.user.avatar ? (
+                                            <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
                                                 <img
-                                                    src={auth.user.avatar}
-                                                    alt={auth.user.name}
+                                                    src={feedback.user.avatar}
+                                                    alt={feedback.user.name}
                                                     className="w-10 h-10 rounded-full object-cover"
                                                 />
                                             </div>
                                         ) : (
-                                            <Avatar size="sm"/>
+                                            <Avatar user={feedback.user} size="md"/>
                                         )}
-
                                         <div className='flex flex-col'>
                                             <p className='font-medium text-base'>
                                                 {feedback.user.name}
@@ -160,51 +156,54 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className='px-6'>
-                                        <div className='flex gap-1'>
-                                            <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
-                                                {statusConfig.label}
-                                            </span>
-                                            <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
-                                                {categoryConfig.label}
-                                            </span>
-                                        </div>
 
-                                        <h1 className='my-3 text-sm font-medium'>
-                                            {feedback.title}
-                                        </h1>
-                                        <p className='text-sm line-clamp-4 text-gray-500'>
-                                            {feedback.description}
-                                        </p>
+                                    {/* Clickable area */}
+                                    <div
+                                        onClick={() => {
+                                            setSelectedComment(feedback)
+                                            setCommentModal(true)
+                                        }}
+                                        className='px-5 flex flex-col justify-between'
+                                    >
+                                        <div className=''>
+                                            <div className='flex gap-1 mb-2'>
+                                                <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
+                                                    {statusConfig.label}
+                                                </span>
+                                                <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
+                                                    {categoryConfig.label}
+                                                </span>
+                                            </div>
+
+                                            <h1 className='text-base font-medium mb-2'>
+                                                {feedback.title}
+                                            </h1>
+
+                                            <p className='text-sm line-clamp-4 text-gray-500 '>
+                                                {feedback.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className='border border-t-2 w-full grid grid-cols-3 rounded-bl-lg rounded-br-lg'>
-                                        <div className=' flex justify-center items-center gap-1 py-3'>
-                                            <ThumbsUp
-                                                size={18}
-                                                strokeWidth={1.5}
-                                                className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
-                                            />
-                                            <p className='text-sm'>{feedback.votes}</p>
-                                        </div>
+                                    <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3'>
+                                        <div className='flex gap-10'>
+                                            <div className='flex items-center gap-1'>
+                                                <ThumbsUp
+                                                    size={16}
+                                                    strokeWidth={1.5}
+                                                    className='text-gray-500'
+                                                />
+                                                <p className='text-sm'>{feedback.votes} Likes</p>
+                                            </div>
 
-                                        <div className=' flex justify-center py-3'>
-                                            <MessageSquareMore
-                                                size={20}
-                                                strokeWidth={1.5}
-                                                className='transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer'
-                                            />
-                                            <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
+                                            <div className='flex items-center gap-1'>
+                                                <MessageSquareMore
+                                                    size={16}
+                                                    strokeWidth={1.5}
+                                                    className='text-gray-500'
+                                                />
+                                                <p className='text-sm'>{feedback.comments_count || 0} Comments</p>
+                                            </div>
                                         </div>
-
-                                        <button
-                                            onClick={() => {
-                                                setSelectedComment(feedback)
-                                                setCommentModal(true)
-                                            }}
-                                            className='flex justify-center items-center py-3'
-                                        >
-                                            <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
-                                        </button>
                                     </div>
                                 </div>
                             );
@@ -271,6 +270,10 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                 onFeedbackUpdate={handleFeedbackUpdate}
                 onFeedbackDelete={handleFeedbackDelete}
             />
+
         </AuthenticatedLayout>
     )
 }
+
+
+
