@@ -41,7 +41,7 @@ const getGradientFromId = (id: number | string): string => {
 export default function Avatar({ user, size = 'md', className = '' }: AvatarProps) {
     const sizeClass = sizeClasses[size];
     const currentPath = window.location.pathname;
-    const borderClass = currentPath === '/profile' ? 'border-4 border-white' : 'border-0';
+    const borderClass = currentPath === '/profile' ? '  border-white' : 'border-0';
     const baseClass = `${sizeClass} box-border shrink-0 overflow-hidden flex items-center justify-center rounded-full ${borderClass} shadow-lg ${className}`;
 
     if (!user) {

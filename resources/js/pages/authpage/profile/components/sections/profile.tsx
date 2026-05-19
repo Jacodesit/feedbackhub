@@ -19,12 +19,12 @@ export default function Profile() {
 
             <div className="relative">
                 <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-lg h-48"></div>
-                <div className="absolute -bottom-14 left-5">
+                <div className="absolute -bottom-14 left-5 border-4 rounded-full">
                     <Avatar user={auth.user} size="lg" />
                 </div>
             </div>
 
-            <div className="h-12 pl-38 pt-2 flex justify-between items-center">
+            <div className="h-12 pl-40 pt-2 flex justify-between items-center">
                 <div>
                     <div className="flex items-center">
                         <p

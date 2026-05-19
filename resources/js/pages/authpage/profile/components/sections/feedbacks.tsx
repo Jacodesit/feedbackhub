@@ -1,5 +1,4 @@
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
-import { Separator } from '@/components/ui/separator';
 import { router } from '@inertiajs/react'
 
 import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
@@ -128,7 +127,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                                         {feedback.description}
                                     </p>
                                 </div>
-                                <Separator />
+
                                 <div className="flex justify-between">
                                     <div className="flex gap-5">
                                         <div className=' flex justify-center items-center gap-1 py-3'>
@@ -148,11 +147,6 @@ export default function Feedbacks({feedbacks}:pageProps) {
                                             />
                                             <p className='text-sm ml-1'>{feedback.comments_count || 0}</p>
                                         </div>
-                                    </div>
-
-
-                                    <div className=' flex justify-center items-center'>
-                                        <p className='transition-all duration-300 hover:text-blue-500 cursor-pointer text-xs'>View Post</p>
                                     </div>
                                 </div>
                             </div>

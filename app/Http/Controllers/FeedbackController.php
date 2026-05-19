@@ -19,6 +19,9 @@ class FeedbackController extends Controller
     {
         $feedbacks = Feedback::with('user:id,name,avatar')
             ->withCount('comments')
+            ->withExists([
+                'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
+            ])
             ->with('comments.user:id,name,avatar')
             ->latest()
             ->paginate(10);
@@ -104,6 +107,9 @@ class FeedbackController extends Controller
     public function forProfile() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
+            ->withExists([
+                'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
+            ])
             ->with('comments.user:id,name,avatar')
             ->where('user_id', Auth::id())
             ->latest()
@@ -119,6 +125,9 @@ class FeedbackController extends Controller
     public function forPost() {
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
+            ->withExists([
+                'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
+            ])
             ->with('comments.user:id,name,avatar')
             ->where('user_id', Auth::id())
             ->latest()

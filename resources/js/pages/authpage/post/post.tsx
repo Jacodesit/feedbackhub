@@ -133,9 +133,9 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                             return (
                                 <div
                                     key={feedback.id}
-                                    className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
+                                    className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer py-2'
                                 >
-                                    <div className="flex items-center gap-2 px-5 py-3 border-b">
+                                    <div className="flex items-center gap-2 px-5 py-3">
                                         {feedback.user.avatar ? (
                                             <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
                                                 <img
@@ -184,15 +184,16 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3'>
-                                        <div className='flex gap-10'>
+
+                                    <div className='flex items-center gap-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3'>
+                                        <div className='flex gap-5'>
                                             <div className='flex items-center gap-1'>
                                                 <ThumbsUp
                                                     size={16}
                                                     strokeWidth={1.5}
                                                     className='text-gray-500'
                                                 />
-                                                <p className='text-sm'>{feedback.votes} Likes</p>
+                                                <p className='text-sm'>{feedback.votes}</p>
                                             </div>
 
                                             <div className='flex items-center gap-1'>
@@ -201,7 +202,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                                                     strokeWidth={1.5}
                                                     className='text-gray-500'
                                                 />
-                                                <p className='text-sm'>{feedback.comments_count || 0} Comments</p>
+                                                <p className='text-sm'>{feedback.comments_count || 0}</p>
                                             </div>
                                         </div>
                                     </div>

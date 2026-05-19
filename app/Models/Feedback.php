@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\FeedbackVote;
 
 class Feedback extends Model
 {
@@ -27,7 +28,7 @@ class Feedback extends Model
         return $this->hasMany(Comments::class);
     }
 
-    public function votes() {
-        return $this->hasMany(Feedback::class);
+    public function feedbackVotes() {
+        return $this->hasMany(FeedbackVote::class);
     }
 }

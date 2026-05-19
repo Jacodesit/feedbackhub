@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { router, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { MessageSquareMore, ThumbsUp } from "lucide-react";
+import { EllipsisVertical, MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
 import { useEffect, useState } from "react";
 import { Feedback, PageProps } from "@/types/feedbackhub";
@@ -13,6 +13,7 @@ import CommentsModal from '../profile/components/modals/comment';
 // import AuthDialog from '@/components/dialog/error';
 import CommentForm from '../profile/components/forms/comment';
 import Avatar from '@/components/avatar/profile';
+import Action from './components/actions';
 
 dayjs.extend(relativeTime);
 
@@ -140,28 +141,32 @@ export default function Home() {
                                 return (
                                     <div
                                         key={feedback.id}
-                                        className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer'
+                                        className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer pt-3'
                                     >
-                                        <div className="flex items-center gap-2 px-5 py-3 border-b">
-                                            {feedback.user.avatar ? (
-                                                <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
-                                                    <img
-                                                        src={feedback.user.avatar}
-                                                        alt={feedback.user.name}
-                                                        className="w-10 h-10 rounded-full object-cover"
-                                                    />
+                                        <div className='flex justify-between items-center'>
+                                            <div className="flex items-center gap-2 px-5 py-3">
+                                                {feedback.user.avatar ? (
+                                                    <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                        <img
+                                                            src={feedback.user.avatar}
+                                                            alt={feedback.user.name}
+                                                            className="w-10 h-10 rounded-full object-cover"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <Avatar user={feedback.user} size="md"/>
+                                                )}
+                                                <div className='flex flex-col'>
+                                                    <p className='font-medium text-base'>
+                                                        {feedback.user.name}
+                                                    </p>
+                                                    <p className='text-xs text-gray-500'>
+                                                        {dayjs(feedback.created_at).format('MMM D, YYYY')} • {dayjs(feedback.created_at).fromNow()}
+                                                    </p>
                                                 </div>
-                                            ) : (
-                                                <Avatar user={feedback.user} size="md"/>
-                                            )}
-                                            <div className='flex flex-col'>
-                                                <p className='font-medium text-base'>
-                                                    {feedback.user.name}
-                                                </p>
-                                                <p className='text-xs text-gray-500'>
-                                                    {dayjs(feedback.created_at).format('MMM D, YYYY')} • {dayjs(feedback.created_at).fromNow()}
-                                                </p>
                                             </div>
+
+                                            <Action />
                                         </div>
 
                                         {/* Clickable area */}
@@ -191,14 +196,14 @@ export default function Home() {
                                                 </p>
                                             </div>
 
-                                            <div className='flex gap-10'>
+                                            <div className='flex gap-5'>
                                                 <div className='flex items-center gap-1'>
                                                     <ThumbsUp
                                                         size={16}
                                                         strokeWidth={1.5}
                                                         className='text-gray-500'
                                                     />
-                                                    <p className='text-sm'>{feedback.votes} Likes</p>
+                                                    <p className='text-sm'>{feedback.votes}</p>
                                                 </div>
 
                                                 <div className='flex items-center gap-1'>
@@ -207,11 +212,12 @@ export default function Home() {
                                                         strokeWidth={1.5}
                                                         className='text-gray-500'
                                                     />
-                                                    <p className='text-sm'>{feedback.comments_count || 0} Comments</p>
+                                                    <p className='text-sm'>{feedback.comments_count || 0}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3'>
+
+                                        <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3 bg-slate-50'>
                                             {auth.user?.avatar ? (
                                                 <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
                                                     <img

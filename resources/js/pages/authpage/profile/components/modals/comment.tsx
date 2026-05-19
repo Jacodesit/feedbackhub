@@ -49,7 +49,7 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
         router.post(route('feedbacks.votes.store', feedbackId), {}, {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Vote successfully')
+                toast.success(feedback.has_liked ? 'Like removed' : 'Feedback liked')
             }
         })
     }
@@ -146,8 +146,8 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
                         <ThumbsUp
                             size={30}
                             strokeWidth={1.5}
-                            className={`transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer ${feedback.votes !== 0
-                                ? 'text-blue-500 font-medium' : ''
+                            className={`transition-all duration-300 transform hover:text-blue-500 hover:-translate-y-1 cursor-pointer ${feedback.has_liked
+                                ? 'text-blue-500 fill-blue-500 font-medium' : ''
                             }`}
                         />
                         {/* <p className='text-xl'>{feedback.votes}</p> */}

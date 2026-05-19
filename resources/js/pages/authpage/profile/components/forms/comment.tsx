@@ -57,7 +57,7 @@ export default function CommentForm({feedback}:pageProps) {
                         onChange={(e) => setData('content', e.target.value)}
                         id="comment"
                         placeholder="Add a comment..."
-                        className="flex-1"
+                        className="flex-1 bg-slate-50 py-4"
                     />
                 </Field>
 
