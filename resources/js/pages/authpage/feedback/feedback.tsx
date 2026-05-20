@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { router, usePage } from "@inertiajs/react";
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { EllipsisVertical, MessageSquareMore, ThumbsUp } from "lucide-react";
+import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
 import { useEffect, useState } from "react";
 import { Feedback, PageProps } from "@/types/feedbackhub";
@@ -166,7 +166,9 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <Action />
+                                            <Action
+                                                feedback={feedback}
+                                            />
                                         </div>
 
                                         {/* Clickable area */}
