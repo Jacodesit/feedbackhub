@@ -8,6 +8,7 @@ import Avatar from "./avatar/profile";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { usePage } from "@inertiajs/react";
+import Stats from "@/pages/authpage/feedback/components/stats";
 
 dayjs.extend(relativeTime);
 
@@ -37,7 +38,7 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
             open={open}
             onOpenChange={handleOpenChange}
         >
-            <SheetContent className="p-0">
+            <SheetContent className="p-0 ">
                 <SheetHeader className="mb-10">
                     <div className="relative">
                         <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-b-lg h-32"></div>
@@ -62,20 +63,7 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
 
                 <main className="p-6">
                     <h5 className="text-gray-500 text-sm mb-2">Contribution Stats</h5>
-                    <div className="grid grid-rows-1 gap-2">
-                        <div className="border shadow-md flex justify-between p-5 rounded-md ">
-                            <div className="flex flex-col justify-between h-20">
-                                <h6 className="text-gray-500 text-sm">Feedback Submitted</h6>
-                                <h1 className="text-3xl">0</h1>
-                            </div>
-                            <img
-                                src="/images/svg/chart-bar.svg"
-                                alt="Chart"
-                                className="opacity-30"
-                            />
-                        </div>
-
-                    </div>
+                    <Stats />
                 </main>
             </SheetContent>
         </Sheet>
