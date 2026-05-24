@@ -18,8 +18,9 @@ Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.in
 Route::get('/login', fn() => Inertia::render('auth/login'));
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::middleware('auth')->group(function () {
+Route::get('/admin', fn() => Inertia::render('admin/page'))->name('admin.login');
 
+Route::middleware('auth')->group(function () {
     Route::get('/my-posts', [FeedbackController::class, 'forPost'])->name('my-posts.index');
     Route::get('/profile', [FeedbackController::class, 'forProfile'])->name('profile.index');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

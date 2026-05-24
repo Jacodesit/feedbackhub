@@ -74,7 +74,7 @@ export default function PostForm({onClose}:pageProps) {
     return (
         <div>
             <form onSubmit={submit}>
-                <FieldGroup>
+                <FieldGroup className="flex flex-col">
                     <FieldSet>
                         <Field>
                             <FieldLabel>Title</FieldLabel>

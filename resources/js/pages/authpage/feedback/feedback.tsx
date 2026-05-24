@@ -219,18 +219,7 @@ export default function Home() {
                                             </div>
                                         </div>
 
-                                        <div className='flex items-center gap-2 border border-t-2 w-full rounded-bl-lg rounded-br-lg px-5 py-3 bg-slate-50'>
-                                            {auth.user?.avatar ? (
-                                                <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
-                                                    <img
-                                                        src={auth.user.avatar}
-                                                        alt={auth.user.name}
-                                                        className="w-10 h-10 rounded-full object-cover"
-                                                    />
-                                                </div>
-                                            ) : (
-                                                <Avatar user={auth.user} size="sm"/>
-                                            )}
+                                        <div className='flex items-center gap-2 border-t w-full rounded-bl-lg rounded-br-lg px-5 py-3 bg-slate-50'>
                                             <CommentForm
                                                 feedback={feedback}
                                             />

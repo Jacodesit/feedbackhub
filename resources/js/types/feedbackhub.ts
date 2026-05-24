@@ -18,6 +18,7 @@ export type PageProps = {
     };
 }
 
+// Array of feedbacks
 export type Feedback = {
     id: number;
     comments_count: number;
@@ -32,6 +33,7 @@ export type Feedback = {
     created_at: string;
 }
 
+// Array of feedbacks with pagination
 export type PaginatedFeedbacks = {
     data: Feedback[];
     links: { url: string | null; label: string; active: boolean }[];

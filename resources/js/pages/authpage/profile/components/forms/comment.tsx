@@ -1,7 +1,9 @@
 
+import Avatar from "@/components/avatar/profile"
 import AuthDialog from "@/components/dialog/error"
 import {
-    Field,
+    // Field,
+    FieldGroup,
     // FieldDescription,
     // FieldGroup,
     // FieldLabel,
@@ -11,8 +13,8 @@ import {
 } from "@/components/ui/field"
 
 import { Input } from "@/components/ui/input"
-import { Feedback } from "@/types/feedbackhub"
-import { useForm } from "@inertiajs/react"
+import { Feedback, PageProps } from "@/types/feedbackhub"
+import { useForm, usePage } from "@inertiajs/react"
 import { Loader2, Send } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -22,6 +24,7 @@ type pageProps = {
 }
 export default function CommentForm({feedback}:pageProps) {
     const currentPath = window.location.pathname
+    const { auth } = usePage<PageProps>().props
     const [showAuth, setShowAuth] = useState(false);
     const [authHeadline, setAuthHeadline] = useState('');
     const [authSubtext, setAuthSubtext] = useState('');
@@ -51,23 +54,40 @@ export default function CommentForm({feedback}:pageProps) {
     return (
         <div className={`${currentPath === '/feedback' ? 'flex-1' : 'hidden'}`}>
             <form onSubmit={submit} className='w-full flex gap-2'>
-                <Field className='w-full'>
+                <FieldGroup className="flex border rounded-full px-3 py-2">
+                    {auth.user?.avatar ? (
+                        <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                            <img
+                                src={auth.user.avatar}
+                                alt={auth.user.name}
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                        </div>
+                    ) : (
+                        <Avatar user={auth.user} size="md"/>
+                    )}
+
                     <Input
                         value={data.content}
                         onChange={(e) => setData('content', e.target.value)}
                         id="comment"
                         placeholder="Add a comment..."
-                        className="flex-1 bg-slate-50 py-4"
+                        className="flex-1 bg-slate-50 py-4 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
-                </Field>
 
-                <button
-                    disabled={processing}
-                    className="cursor-pointer py-2 px-3 border rounded-lg ease-[cubic-bezier(0.23,1,0.32,1)]
-                    hover:-translate-y-1 transition-all duration-300 hover:bg-gray-200 hover:border-white"
-                >
-                    {processing ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
-                </button>
+                    <button
+                        disabled={processing}
+                        className="group flex items-center justify-center cursor-pointer w-10 h-10 border rounded-full bg-white ease-[cubic-bezier(0.23,1,0.32,1)] transition-all duration-300 hover:border-black"
+                    >
+                        {processing ? (
+                            <Loader2 size={20} className="animate-spin" />
+                        ) : (
+                            <Send size={20} className="duration-300 transition-all text-gray-500 group-hover:text-black" />
+                        )}
+                    </button>
+                </FieldGroup>
+
+
             </form>
 
             <AuthDialog
