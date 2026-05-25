@@ -18,7 +18,13 @@ export default function Profile() {
             </div>
 
             <div className="relative">
-                <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-lg h-48"></div>
+                <div className="rounded-lg h-58 w-full cover-photo">
+                    <img
+                        src="/images/cover-photo.jpg"
+                        alt="cover-photo"
+                        className="h-58 w-full object-fill rounded-lg "
+                    />
+                </div>
                 <div className="absolute -bottom-14 left-5 border-4 rounded-full">
                     <Avatar user={auth.user} size="lg" />
                 </div>

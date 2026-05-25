@@ -70,9 +70,10 @@ export default function Avatar({ user, size = 'md', className = '' }: AvatarProp
 
     return (
         <div className={`${baseClass} bg-gradient-to-br ${gradientClass} text-white`}>
-            <p className="font-bold">
+            {/* <p className="font-bold">
                 {user.name?.charAt(0)?.toUpperCase() || '?'}
-            </p>
+            </p> */}
+            <img src="/images/profile-placeholder.jpg" alt="profile-placeholder" />
         </div>
     );
 }

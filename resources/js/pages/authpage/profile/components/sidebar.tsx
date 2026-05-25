@@ -30,7 +30,7 @@ export default function Sidebar({ onNavigate, activeSection }: SidebarProps) {
                             onClick={() => onNavigate(link.key)}
                             className={`flex gap-2 items-center px-4 py-4 cursor-pointer duration-300 transition-all rounded-md mb-1
                                 ${isActive
-                                    ? "bg-blue-500 text-white shadow-sm"
+                                    ? "bg-black text-white shadow-sm"
                                     : "hover:bg-gray-100 text-gray-600"
                                 }`}
                         >

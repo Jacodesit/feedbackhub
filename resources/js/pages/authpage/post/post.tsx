@@ -10,6 +10,7 @@ import CommentsModal from '../profile/components/modals/comment';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { usePage } from '@inertiajs/react';
 import Avatar from '@/components/avatar/profile';
+import Grid from '@/components/grid';
 // import CommentForm from '../profile/components/forms/comment';
 
 dayjs.extend(relativeTime);
@@ -70,16 +71,17 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
     return (
         <AuthenticatedLayout>
-            <div className="flex flex-col gap-10 px-50 py-30">
-                <div className='flex justify-between items-center'>
-                    <div>
+            <div className="flex flex-col gap-5 px-50 py-30 bg-[#fafafa]">
+                <div className='flex justify-between items-center p-10 bg-white shadow w-full rounded-lg relative'>
+                    <Grid />
+                    <div className='relative z-30'>
                         <h1 className="font-semibold text-4xl">My Feedbacks</h1>
                         <p className="text-gray-500">View, manage, and track the feedback you’ve shared with the community.</p>
                     </div>
 
                     <button
                         onClick={() => setOpenModal(true)}
-                        className={`text-xs flex items-center justify-center text-center gap-2
+                        className={`relative z-30 text-xs flex items-center justify-center text-center gap-2
                             border-2 border-white bg-violet-500 text-white rounded-md py-3
                             w-[15%] cursor-pointer transition-all duration-300
                             hover:-translate-y-1 hover:bg-violet-700 hover:border-violet-700 ${
@@ -133,7 +135,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                             return (
                                 <div
                                     key={feedback.id}
-                                    className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow-md transition-all duration-300 hover:shadow-lg cursor-pointer py-2'
+                                    className='flex flex-col justify-between gap-5 border rounded-lg bg-[#fff] shadow transition-all duration-300 hover:shadow-lg cursor-pointer py-2'
                                 >
                                     <div className="flex items-center gap-2 px-5 py-3">
                                         {feedback.user.avatar ? (

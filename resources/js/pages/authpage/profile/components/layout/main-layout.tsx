@@ -2,6 +2,7 @@ import { Feedback } from "@/types/feedbackhub";
 import Sidebar from "../sidebar";
 import ProfileSubLayout from "./sub-layout";
 import { useEffect, useRef, useState } from "react";
+import Grid from "@/components/grid";
 
 type SectionKey = "profile" | "stats" | "feedbacks" | "activity" | "settings";
 
@@ -49,11 +50,15 @@ export default function ProfileMainLayout({ feedbacks }: { feedbacks: Feedback[]
     };
 
     return (
-        <main className="flex flex-col gap-10 items-start relative z-10 px-50 py-30">
-            <div>
-                <h1 className="font-semibold text-4xl">Profile</h1>
-                <p className="text-gray-500">Manage your account, track your feedback activity, and view your contributions in one place.</p>
+        <main className="flex flex-col gap-5 items-start relative z-10 px-50 py-30">
+            <div className="relative bg-white p-10  rounded-lg shadow w-full">
+                <Grid />
+                <div className="relative z-100">
+                    <h1 className="font-semibold text-4xl">Profile</h1>
+                    <p className="text-gray-500">Manage your account, track your feedback activity, and view your contributions in one place.</p>
+                </div>
             </div>
+
             <div className="flex gap-5">
                 <div className="sticky top-30 self-start">
                     <Sidebar onNavigate={scrollToSection} activeSection={activeSection} />

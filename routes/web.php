@@ -14,6 +14,7 @@ Route::resource('feedbacks.votes', VotesController::class);
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');
 
 Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+Route::get('/users/{user}/feedbacks', [FeedbackController::class, 'forUser'])->name('users.feedbacks.index');
 
 Route::get('/login', fn() => Inertia::render('auth/login'));
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);

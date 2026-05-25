@@ -1,12 +1,11 @@
 import { MessageCircle, MessageSquareShare, Vote } from "lucide-react"
 
 export default function Stats() {
-
     const stats = [
-        {icon: <MessageSquareShare strokeWidth={1.5} size={30} />, text: 'Feedback Submitted', data: '0'},
-        {icon: <Vote strokeWidth={1.5} size={30} />, text: 'Total Votes Received', data: '0'},
-        {icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Completed Feedback', data: '0'},
-        {icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Comments Posted', data: '0'},
+        { icon: <MessageSquareShare strokeWidth={1.5} size={30} />, text: 'Feedback Submitted', data: '0' },
+        { icon: <Vote strokeWidth={1.5} size={30} />, text: 'Total Votes Received', data: '0' },
+        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Completed Feedback', data: '0' },
+        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Comments Posted', data: '0' },
     ]
 
     return (

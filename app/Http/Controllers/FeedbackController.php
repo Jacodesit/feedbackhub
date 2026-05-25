@@ -6,6 +6,7 @@ use App\Models\Feedback;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Models\Comments;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -17,11 +18,18 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::with('user:id,name,avatar')
+        $feedbacks = Feedback::with([
+            'user' => fn ($query) => $query
+                ->select('id', 'name', 'avatar')
+                ->withCount('feedbacks', 'comments')
+                ->withSum('feedbacks as total_votes_received', 'votes'),
+            ])
+
             ->withCount('comments')
             ->withExists([
                 'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
             ])
+
             ->with('comments.user:id,name,avatar')
             ->latest()
             ->paginate(10);
@@ -138,6 +146,21 @@ class FeedbackController extends Controller
             'feedbacks' => $feedbacks,
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
+    }
+
+    public function forUser(User $user) {
+        $feedbacks = Feedback::with('user:id,name,avatar')
+            ->withCount('comments')
+            ->withExists([
+                'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
+            ])
+            ->with('comments.user:id,name,avatar')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->paginate(3);
+        $this->normalizeAvatarUrls($feedbacks);
+
+        return response()->json($feedbacks);
     }
 
     private function normalizeAvatarUrls($feedbacks): void

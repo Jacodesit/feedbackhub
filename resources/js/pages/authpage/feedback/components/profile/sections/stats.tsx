@@ -1,10 +1,17 @@
 import VisualStaticGraph from "@/components/visual-grap"
 
-export default function Stats() {
+type pageProps = {
+    feedbackCount: number;
+    commentCount: number;
+    totalVotesReceived: number;
+}
+
+export default function Stats({feedbackCount, commentCount, totalVotesReceived}:pageProps) {
+
     const cards = [
-        {name: 'Feedback Submitted', value: '0'},
-        {name: 'Total Votes Received', value: '0'},
-        {name: 'Comments Posted', value: '0'}
+        { name: 'Feedback Submitted', value: feedbackCount },
+        { name: 'Total Votes Received', value: totalVotesReceived },
+        { name: 'Comments Posted', value: commentCount }
     ]
 
     return (
@@ -17,8 +24,7 @@ export default function Stats() {
                     return (
                         <div
                             key={index}
-                            className={`group bg-white border border-gray-100 rounded-3xl p-6
-                            shadow-[0_8px_30px_rgb(0,0,0,0.02)] transition-all duration-300
+                            className={`group rounded-lg  border-slate-100 bg-white shadow-sm border p-6 transition-all duration-300
                             hover:border-gray-200 hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)]
                             flex justify-between items-center w-full h-32 relative overflow-hidden
                             ${isLastCard ? 'col-span-2' : ''}`}

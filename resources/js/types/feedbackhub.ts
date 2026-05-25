@@ -26,7 +26,11 @@ export type Feedback = {
     title: string,
     description: string,
     category: string;
-    user: Pick<User, 'id' | 'name' | 'avatar'>;
+    user: Pick<User, 'id' | 'name' | 'avatar'> & {
+        feedbacks_count?: number;
+        comments_count?: number;
+        total_votes_received?: number;
+    };
     votes: number;
     has_liked: boolean;
     status: 'open' | 'in_progress' | 'completed';

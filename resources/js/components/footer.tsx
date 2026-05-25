@@ -65,14 +65,14 @@ export default function Footer() {
     };
 
     return (
-        <footer id="footer" className="p-20 bg-violet-500">
+        <footer id="footer" className="p-20 bg-[#101010] text-white">
             <div className="px-30">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center pb-15">
                     <div className="">
                         <img
                             src="/images/branding2.png"
                             alt="feedbackhub"
-                            className="mb-2"
+                            className="mb-2 invert-100"
                         />
                         <p className="text-accent">Collect feedback. Build better products.</p>
                     </div>

@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import AuthDialog from "@/components/dialog/error";
+import { toast } from "sonner";
 
 type pageProps = {
     onClose: () => void
@@ -65,6 +66,7 @@ export default function PostForm({onClose}:pageProps) {
             },
 
             onSuccess: () => {
+                toast.success('Feedback successfully posted.')
                 reset()
                 onClose()
             }

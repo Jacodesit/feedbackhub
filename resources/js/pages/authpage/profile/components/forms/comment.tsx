@@ -54,17 +54,17 @@ export default function CommentForm({feedback}:pageProps) {
     return (
         <div className={`${currentPath === '/feedback' ? 'flex-1' : 'hidden'}`}>
             <form onSubmit={submit} className='w-full flex gap-2'>
-                <FieldGroup className="flex border rounded-full px-3 py-2">
+                <FieldGroup className="flex items-center gap-1 border rounded-full px-3 py-1 bg-slate-50">
                     {auth.user?.avatar ? (
-                        <div className=" w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                        <div className=" w-8 h-8 flex items-center justify-center rounded-full shadow-lg">
                             <img
                                 src={auth.user.avatar}
                                 alt={auth.user.name}
-                                className="w-10 h-10 rounded-full object-cover"
+                                className="w-8 h-8 rounded-full object-cover"
                             />
                         </div>
                     ) : (
-                        <Avatar user={auth.user} size="md"/>
+                        <Avatar user={auth.user} size="sm" />
                     )}
 
                     <Input
@@ -72,22 +72,20 @@ export default function CommentForm({feedback}:pageProps) {
                         onChange={(e) => setData('content', e.target.value)}
                         id="comment"
                         placeholder="Add a comment..."
-                        className="flex-1 bg-slate-50 py-4 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="flex-1 bg-slate-50 py-2 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
 
                     <button
                         disabled={processing}
-                        className="group flex items-center justify-center cursor-pointer w-10 h-10 border rounded-full bg-white ease-[cubic-bezier(0.23,1,0.32,1)] transition-all duration-300 hover:border-black"
+                        className="group flex items-center justify-center cursor-pointer w-8 h-8 border rounded-full bg-white ease-[cubic-bezier(0.23,1,0.32,1)] transition-all duration-300 hover:border-black"
                     >
                         {processing ? (
                             <Loader2 size={20} className="animate-spin" />
                         ) : (
-                            <Send size={20} className="duration-300 transition-all text-gray-500 group-hover:text-black" />
+                            <Send size={15} className="duration-300 transition-all text-gray-500 group-hover:text-black" />
                         )}
                     </button>
                 </FieldGroup>
-
-
             </form>
 
             <AuthDialog

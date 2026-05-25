@@ -10,7 +10,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { usePage } from "@inertiajs/react";
 import Stats from "@/pages/authpage/feedback/components/profile/sections/stats";
 import Feedbacks from "@/pages/authpage/feedback/components/profile/sections/feedbacks";
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 dayjs.extend(relativeTime);
 
@@ -41,23 +40,29 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
             onOpenChange={handleOpenChange}
         >
             <SheetContent className="p-0 z-[9999] w-[35%] sm:max-w-none">
-                <ScrollArea className="h-screen">
+                <div className="h-screen overflow-y-auto scroll-smooth hide-scrollbar">
                     <SheetHeader className="mb-10">
                         <div className="relative">
-                            <div className="bg-gradient-to-tr from-indigo-600 via-violet-500 to-purple-400 rounded-b-lg h-32"></div>
-                            <div className="absolute -bottom-13 left-4 border-4 rounded-full">
-                                <Avatar user={feedback.user} className="h-22 w-22" />
+                            <div className="h-48 w-full cover-photo">
+                                <img
+                                    src="/images/cover-photo.jpg"
+                                    alt="cover-photo"
+                                    className="h-48 w-full object-fill"
+                                />
+                            </div>
+                            <div className="absolute -bottom-15 left-4 border-4 rounded-full">
+                                <Avatar user={feedback.user} className="h-28 w-28 !text-5xl" />
                             </div>
                         </div>
 
-                        <div className="h-4 pl-30 pt-2 flex justify-between items-center">
+                        <div className="h-4 pl-36 pt-5 flex justify-between items-center">
                             <div>
                                 <div className="">
-                                    <p
-                                        className="text-base font-medium flex items-center gap-2"
+                                    <h1
+                                        className="text-2xl font-medium flex items-center gap-2"
                                     >
                                         {feedback.user?.name}
-                                    </p>
+                                    </h1>
                                 </div>
                                 <p className="text-xs text-gray-500">Joined: {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
                             </div>
@@ -66,11 +71,15 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
 
                     <main className="p-6">
                         <section className="grid grid-cols-1 gap-5">
-                            <Stats />
-                            <Feedbacks feedback={feedback} />
+                            <Stats
+                                feedbackCount={feedback.user.feedbacks_count ?? 0}
+                                commentCount={feedback.user.comments_count ?? 0}
+                                totalVotesReceived={feedback.user.total_votes_received ?? 0}
+                            />
+                            <Feedbacks feedback={feedback} enabled={open} />
                         </section>
                     </main>
-                </ScrollArea>
+                </div>
             </SheetContent>
         </Sheet>
     )
