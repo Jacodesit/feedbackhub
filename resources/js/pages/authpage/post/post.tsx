@@ -81,10 +81,10 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
                     <button
                         onClick={() => setOpenModal(true)}
-                        className={`relative z-30 text-xs flex items-center justify-center text-center gap-2
-                            border-2 border-white bg-violet-500 text-white rounded-md py-3
-                            w-[15%] cursor-pointer transition-all duration-300
-                            hover:-translate-y-1 hover:bg-violet-700 hover:border-violet-700 ${
+                        className={`relative z-30 text-sm flex items-center justify-center text-center gap-2
+                            border-2 border-white bg-gray-900 text-white rounded-md py-3 px-4
+                            cursor-pointer transition-all duration-300
+                            hover:-translate-y-1 hover:bg-black ${
                                 feedbacks.data.length !== 0 ? 'block' : 'hidden'
                             }`}
                     >

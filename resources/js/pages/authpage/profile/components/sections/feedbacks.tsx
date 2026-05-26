@@ -123,7 +123,7 @@ export default function Feedbacks({feedbacks}:pageProps) {
                                     <h1 className='my-3 text-sm font-medium'>
                                         {feedback.title}
                                     </h1>
-                                    <p className='text-sm line-clamp-3 text-gray-500'>
+                                    <p className='text-sm line-clamp-2 text-gray-500'>
                                         {feedback.description}
                                     </p>
                                 </div>

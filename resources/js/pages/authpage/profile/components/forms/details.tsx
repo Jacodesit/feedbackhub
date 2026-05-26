@@ -255,8 +255,8 @@ export default function EditDetails({onClose}:pageProps) {
                     <button
                         type="submit"
                         disabled={processing || uploadingAvatar}
-                        className="cursor-pointer px-6 py-2 bg-violet-500 rounded-lg text-sm text-white ease-[cubic-bezier(0.23,1,0.32,1)]
-                        hover:-translate-y-1 transition-all duration-300 hover:bg-violet-700 hover:border-violet-700"
+                        className="cursor-pointer px-6 py-2 bg-gray-900 rounded-lg text-sm text-white ease-[cubic-bezier(0.23,1,0.32,1)]
+                        hover:-translate-y-1 transition-all duration-300 hover:bg-black"
                     >
                         {processing ? 'Submitting Feedback' : 'Submit'}
                     </button>
