@@ -1,16 +1,17 @@
 import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
-import { Feedback } from "@/types/feedbackhub";
+import { PaginatedFeedbacks, UserStats } from "@/types/feedbackhub";
 import ProfileMainLayout from "./components/layout/main-layout";
 
 type pageProps = {
-    feedbacks: Feedback[]
+    feedbacks: PaginatedFeedbacks
+    stats: UserStats
 }
 
-export default function Profile({feedbacks}:pageProps) {
+export default function Profile({feedbacks, stats}:pageProps) {
     return (
         <AuthenticatedLayout>
             <div className="bg-[#fafafa]">
-                <ProfileMainLayout feedbacks={feedbacks}/>
+                <ProfileMainLayout feedbacks={feedbacks} stats={stats}/>
             </div>
         </AuthenticatedLayout>
     )

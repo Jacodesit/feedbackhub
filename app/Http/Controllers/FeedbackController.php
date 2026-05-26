@@ -21,8 +21,8 @@ class FeedbackController extends Controller
         $feedbacks = Feedback::with([
             'user' => fn ($query) => $query
                 ->select('id', 'name', 'avatar')
-                ->withCount('feedbacks', 'comments')
-                ->withSum('feedbacks as total_votes_received', 'votes'),
+                ->withCount('feedbacks', 'comments', 'commentsReceived as total_comments_received')
+                ->withSum('feedbacks as total_votes_received', 'votes')
             ])
 
             ->withCount('comments')
@@ -113,6 +113,17 @@ class FeedbackController extends Controller
     }
 
     public function forProfile() {
+        $stats = User::query()
+            ->whereKey(Auth::id())
+            ->withCount([
+                'feedbacks',
+                'comments',
+                'commentsReceived as total_comments_received',
+                'feedbacks as completed_feedbacks_count' => fn ($query) => $query->where('status', 'completed'),
+            ])
+            ->withSum('feedbacks as total_votes_received', 'votes')
+            ->first();
+
         $feedbacks = Feedback::with('user')
             ->withCount('comments')
             ->withExists([
@@ -126,6 +137,13 @@ class FeedbackController extends Controller
 
         return Inertia::render('authpage/profile/profile', [
             'feedbacks' => $feedbacks,
+            'stats' => [
+                'feedbacks_count' => $stats?->feedbacks_count ?? 0,
+                'total_votes_received' => $stats?->total_votes_received ?? 0,
+                'completed_feedbacks_count' => $stats?->completed_feedbacks_count ?? 0,
+                'comments_count' => $stats?->comments_count ?? 0,
+                'total_comments_received' => $stats?->total_comments_received ?? 0,
+            ],
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }

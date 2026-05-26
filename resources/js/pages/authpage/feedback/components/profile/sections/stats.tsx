@@ -4,14 +4,16 @@ type pageProps = {
     feedbackCount: number;
     commentCount: number;
     totalVotesReceived: number;
+    totalCommentsReceived: number;
 }
 
-export default function Stats({feedbackCount, commentCount, totalVotesReceived}:pageProps) {
+export default function Stats({feedbackCount, commentCount, totalVotesReceived, totalCommentsReceived}:pageProps) {
 
     const cards = [
         { name: 'Feedback Submitted', value: feedbackCount },
         { name: 'Total Votes Received', value: totalVotesReceived },
-        { name: 'Comments Posted', value: commentCount }
+        { name: 'Comments Posted', value: commentCount },
+        { name: 'Comments Received', value: totalCommentsReceived },
     ]
 
     return (
@@ -27,7 +29,7 @@ export default function Stats({feedbackCount, commentCount, totalVotesReceived}:
                             className={`group rounded-lg  border-slate-100 bg-white shadow-sm border p-6 transition-all duration-300
                             hover:border-gray-200 hover:shadow-[0_12px_40px_rgba(0,0,0,0.03)]
                             flex justify-between items-center w-full h-32 relative overflow-hidden
-                            ${isLastCard ? 'col-span-2' : ''}`}
+                            ${isLastCard ? '' : ''}`}
                         >
                             <div className="flex flex-col justify-center h-full space-y-0.5 z-10 pointer-events-none">
                                 <span className="text-gray-400 text-sm font-medium tracking-tight">{card.name}</span>

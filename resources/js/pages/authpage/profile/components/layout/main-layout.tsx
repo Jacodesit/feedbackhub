@@ -1,4 +1,4 @@
-import { Feedback } from "@/types/feedbackhub";
+import { PaginatedFeedbacks, UserStats } from "@/types/feedbackhub";
 import Sidebar from "../sidebar";
 import ProfileSubLayout from "./sub-layout";
 import { useEffect, useRef, useState } from "react";
@@ -6,7 +6,7 @@ import Grid from "@/components/grid";
 
 type SectionKey = "profile" | "stats" | "feedbacks" | "activity" | "settings";
 
-export default function ProfileMainLayout({ feedbacks }: { feedbacks: Feedback[] }) {
+export default function ProfileMainLayout({ feedbacks, stats }: { feedbacks: PaginatedFeedbacks, stats: UserStats }) {
     const [activeSection, setActiveSection] = useState<SectionKey>("profile");
 
     const sectionRefs = {
@@ -64,7 +64,7 @@ export default function ProfileMainLayout({ feedbacks }: { feedbacks: Feedback[]
                     <Sidebar onNavigate={scrollToSection} activeSection={activeSection} />
                 </div>
 
-                <ProfileSubLayout feedbacks={feedbacks} refs={sectionRefs} />
+                <ProfileSubLayout feedbacks={feedbacks} stats={stats} refs={sectionRefs} />
             </div>
 
         </main>

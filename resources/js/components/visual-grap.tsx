@@ -9,10 +9,10 @@ export default function VisualStaticGraph() {
                 className="relative flex-1 h-full flex items-end group/bar cursor-pointer"
             >
                 <div
-                    className="w-full bg-gray-50 group-hover:bg-gray-100/40 rounded-full h-full absolute inset-0 transition-colors duration-300 pointer-events-none" />
+                    className="w-full bg-gray-100 group-hover:bg-gray-100/40 rounded-full h-full absolute inset-0 transition-colors duration-300 pointer-events-none" />
 
                 <div
-                    className="w-full bg-gray-500/50 group-hover/bar:bg-blue-500 rounded-full transition-all duration-300 origin-bottom relative z-10"
+                    className="w-full bg-gray-500 group-hover/bar:bg-blue-500 rounded-full transition-all duration-300 origin-bottom relative z-10"
                     style={{ height: `${height}%` }}
                 >
 

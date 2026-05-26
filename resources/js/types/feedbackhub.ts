@@ -30,11 +30,20 @@ export type Feedback = {
         feedbacks_count?: number;
         comments_count?: number;
         total_votes_received?: number;
+        total_comments_received?: number;
     };
     votes: number;
     has_liked: boolean;
     status: 'open' | 'in_progress' | 'completed';
     created_at: string;
+}
+
+export type UserStats = {
+    feedbacks_count: number;
+    total_votes_received: number;
+    completed_feedbacks_count: number;
+    comments_count: number;
+    total_comments_received: number;
 }
 
 // Array of feedbacks with pagination

@@ -1,11 +1,13 @@
 import { MessageCircle, MessageSquareShare, Vote } from "lucide-react"
+import { UserStats } from "@/types/feedbackhub"
 
-export default function Stats() {
-    const stats = [
-        { icon: <MessageSquareShare strokeWidth={1.5} size={30} />, text: 'Feedback Submitted', data: '0' },
-        { icon: <Vote strokeWidth={1.5} size={30} />, text: 'Total Votes Received', data: '0' },
-        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Completed Feedback', data: '0' },
-        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Comments Posted', data: '0' },
+export default function Stats({ stats }: { stats: UserStats }) {
+    const cards = [
+        { icon: <MessageSquareShare strokeWidth={1.5} size={30} />, text: 'Feedback Submitted', data: stats.feedbacks_count },
+        { icon: <Vote strokeWidth={1.5} size={30} />, text: 'Total Votes Received', data: stats.total_votes_received },
+        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Completed Feedback', data: stats.completed_feedbacks_count },
+        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Comments Posted', data: stats.comments_count },
+        { icon: <MessageCircle strokeWidth={1.5} size={30} />, text: 'Comments Received', data: stats.total_comments_received },
     ]
 
     return (
@@ -15,7 +17,7 @@ export default function Stats() {
                 <p className="text-sm text-gray-400">Contribution/Activity</p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-                {stats.map((stat, index) => (
+                {cards.map((stat, index) => (
                     <div
                         key={index}
                         className="group relative bg-white border border-slate-100 p-6 rounded-2xl transition-all duration-300 shadow-md hover:border-violet-200 hover:shadow-xl "
