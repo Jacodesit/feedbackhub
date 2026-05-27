@@ -19,12 +19,20 @@ Route::get('/users/{user}/feedbacks', [FeedbackController::class, 'forUser'])->n
 Route::get('/login', fn() => Inertia::render('auth/login'));
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::get('/admin', fn() => Inertia::render('admin/page'))->name('admin.login');
+Route::get('/admin', fn() => Inertia::render('admin/page', [
+    'canResetPassword' => Route::has('password.request'),
+    'status' => session('status'),
+]))->name('admin.login');
+Route::post('/admin', [AuthenticatedSessionController::class, 'adminStore'])->name('admin.login.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/my-posts', [FeedbackController::class, 'forPost'])->name('my-posts.index');
     Route::get('/profile', [FeedbackController::class, 'forProfile'])->name('profile.index');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', fn() => Inertia::render('authpage/admin/pages/dashboard/page'))->name('admin.dashboard');
 });
 
 require __DIR__.'/settings.php';
