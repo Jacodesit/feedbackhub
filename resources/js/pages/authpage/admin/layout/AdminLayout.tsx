@@ -14,11 +14,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const [ open, setOpen ] = useState(false)
 
     return (
-        <div className="flex">
+        <div className="flex gap-5 bg-[#fafafa] p-4">
             <AdminSidebar open={open} />
 
-            <main className="w-full h-screen">
-                <header className="border-b px-6 py-5 flex items-center justify-between ">
+            <main className="w-full h-screen bg-white rounded-lg">
+                <header className="border-b px-6 py-5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setOpen(!open)}
@@ -31,7 +31,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                                 <Input
                                     type="search"
                                     placeholder="Search feedback title, users"
-                                    className="h-8 border-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                    className="h-8 bg-[#fafafa] border-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                 />
 
                                 <div className="pr-3">

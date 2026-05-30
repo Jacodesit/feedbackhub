@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { SidebarFooter } from "@/components/ui/sidebar";
 import { LayoutDashboard, MessageSquareMore, MessageSquareWarning, Settings, Users } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -6,38 +8,65 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ open }: AdminSidebarProps) {
     const navlinks = [
-        { icon: <LayoutDashboard />, name: 'Dashboard', url: '/dashboard' },
-        { icon: <MessageSquareMore />, name: 'Feedbacks', url: '/feedbacks' },
-        { icon: <Users />, name: 'Users', url: '/users' },
-        { icon: <MessageSquareWarning />, name: 'Reports', url: '/reports' },
-        { icon: <Settings />, name: 'Settings', url: '/settings' }
+        { icon: <LayoutDashboard size={20} />, name: 'Dashboard', url: '/dashboard' },
+        { icon: <MessageSquareMore size={20} />, name: 'Feedbacks', url: '/feedbacks' },
+        { icon: <Users size={20} />, name: 'Users', url: '/users' },
+        { icon: <MessageSquareWarning size={20} />, name: 'Reports', url: '/reports' },
+        { icon: <Settings size={20} />, name: 'Settings', url: '/settings' }
     ]
+
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'Asia/Manila' // Explicitly set Philippine timezone
+    });
 
     return (
         <aside
             className={`
-                h-screen bg-[#1e1e1e] text-white overflow-hidden transition-all duration-300 ease-in-out
+                flex flex-col justify-between h-screen text-white overflow-hidden transition-all duration-300 ease-in-out
                 ${open ? 'w-[300px] opacity-100' : 'w-0 opacity-0 '}
             `}
         >
             <div className="">
-                <div className="px-6 py-10 border-b border-white/10">
+                <div className="px-6 py-10">
                     <img
                         src="/images/branding2.png"
                         alt="FeedbackHub"
-                        className="w-38 invert-100"
+                        className="w-34"
                     />
                 </div>
 
-                <ul className="space-y-6 px-6 py-10">
+                <div className="px-6 py-5 bg-white rounded-lg text-black mb-5">
+                    <div className="flex flex-col gap-2">
+                        <div className="rounded-full">
+                            <img
+                                src="/images/profile-placeholder.jpg"
+                                alt="profile-placeholder"
+                                className="h-10 rounded-full"
+                            />
+                        </div>
+                        <p>{currentDate}</p>
+                        <h1 className="font-medium text-2xl">Welcome back, Admin!</h1>
+                    </div>
+                </div>
+
+                <ul className="bg-white rounded-lg text-black">
                     {navlinks.map((link, index) => (
-                        <li key={index} className="hover:opacity-80 cursor-pointer flex gap-2">
+                        <li key={index} className="cursor-pointer flex gap-2 transition-all duration-300 hover:bg-black hover:text-white py-5 px-6">
                             <i>{link.icon}</i>
-                            <p className="font-medium">{link.name}</p>
+                            <p className="font-medium text-sm">{link.name}</p>
                         </li>
                     ))}
                 </ul>
             </div>
+
+            <SidebarFooter>
+                <Button>
+                    Logout
+                </Button>
+            </SidebarFooter>
         </aside>
     )
 }
