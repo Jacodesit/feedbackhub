@@ -19,7 +19,7 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
-        timeZone: 'Asia/Manila' // Explicitly set Philippine timezone
+        timeZone: 'Asia/Manila'
     });
 
     return (
@@ -47,7 +47,7 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
                                 className="h-10 rounded-full"
                             />
                         </div>
-                        <p>{currentDate}</p>
+                        <p className="text-sm">{currentDate}</p>
                         <h1 className="font-medium text-2xl">Welcome back, Admin!</h1>
                     </div>
                 </div>

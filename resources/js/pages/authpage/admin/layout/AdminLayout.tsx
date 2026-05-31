@@ -14,7 +14,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const [ open, setOpen ] = useState(false)
 
     return (
-        <div className="flex gap-5 bg-[#fafafa] p-4">
+        <div className="flex gap-4 bg-[#fafafa] p-4">
             <AdminSidebar open={open} />
 
             <main className="w-full h-screen bg-white rounded-lg">
