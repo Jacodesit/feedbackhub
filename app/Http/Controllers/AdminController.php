@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -21,6 +22,16 @@ class AdminController extends Controller
         ->latest()
         ->take(5)
         ->get();
+
+        $recentFeedbacks->each(function ($feedback) {
+            $user = $feedback->user;
+
+            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
+                return;
+            }
+
+            $user->setAttribute('avatar', Storage::url($user->avatar));
+        });
 
         return Inertia::render('authpage/admin/pages/dashboard/page', [
             'recentFeedbacks' => $recentFeedbacks,

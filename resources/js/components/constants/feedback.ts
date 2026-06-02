@@ -2,14 +2,17 @@ export const STATUS_CONFIG = {
     open: {
         label: 'Open',
         className: 'bg-amber-100 text-amber-700 border-amber-300',
+        borderClass: 'before:bg-amber-500'
     },
     in_progress: {
         label: 'In Progress',
         className: 'bg-blue-100 text-blue-700 border-blue-300',
+        borderClass: 'before:bg-blue-500'
     },
     completed: {
         label: 'Completed',
         className: 'bg-green-100 text-green-700 border-green-300',
+        borderClass: 'before:bg-green-500'
     },
 } as const;
 

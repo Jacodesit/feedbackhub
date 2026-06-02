@@ -55,6 +55,7 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
                     </div>
                 </div>
 
+                <p className="capitalize text-gray-500 font-medium text-sm px-6 mb-3">Main Menu</p>
                 <ul className="bg-white rounded-lg text-black">
                     {navlinks.map((link, index) => (
                         <li key={index} className="border-b border-b-zinc-50 cursor-pointer flex gap-2 transition-all duration-300 hover:bg-black hover:text-white py-5 px-6 first:rounded-t-lg last:rounded-b-lg last:border-0">

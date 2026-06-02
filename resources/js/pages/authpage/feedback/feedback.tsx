@@ -156,6 +156,7 @@ export default function Home() {
                                                 ) : (
                                                     <Avatar user={feedback.user} size="md"/>
                                                 )}
+
                                                 <div className='flex flex-col'>
                                                     <p className='font-medium text-base'>
                                                         {feedback.user.name}

@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     ${open ? 'ml-[320px]' : 'ml-0'}
                 `}
             >
-                <header className="px-6 py-5 bg-white rounded-lg">
+                <header className="px-6 py-5 bg-white shadow-md rounded-lg">
                     <div className="flex items-center justify-between gap-3">
                         <div className="flex gap-5">
                             <button onClick={() => setOpen(!open)}>
