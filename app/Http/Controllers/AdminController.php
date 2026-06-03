@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -20,7 +21,21 @@ class AdminController extends Controller
             ])
 
         ->latest()
-        ->take(5)
+        ->take(4)
+        ->get();
+
+        $topFeedbacks = Feedback::with([
+            'user' => fn ($query) => $query
+                ->select('id', 'name', 'avatar')
+            ])
+
+        ->orderByDesc('votes')
+        ->take(3)
+        ->get();
+
+        $recentUsers = User::select('id', 'name', 'avatar', 'created_at')
+        ->latest()
+        ->take(4)
         ->get();
 
         $recentFeedbacks->each(function ($feedback) {
@@ -33,8 +48,29 @@ class AdminController extends Controller
             $user->setAttribute('avatar', Storage::url($user->avatar));
         });
 
+        $topFeedbacks->each(function ($feedback) {
+            $user = $feedback->user;
+
+            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
+                return;
+            }
+
+            $user->setAttribute('avatar', Storage::url($user->avatar));
+        });
+
+        $recentUsers->each(function ($user) {
+            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
+                return;
+            }
+
+            $user->setAttribute('avatar', Storage::url($user->avatar));
+        });
+
+
         return Inertia::render('authpage/admin/pages/dashboard/page', [
             'recentFeedbacks' => $recentFeedbacks,
+            'topFeedbacks' => $topFeedbacks,
+            'recentUsers' => $recentUsers,
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }

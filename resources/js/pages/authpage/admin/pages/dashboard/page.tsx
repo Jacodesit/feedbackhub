@@ -2,13 +2,17 @@ import { Feedback } from "@/types/feedbackhub";
 import AdminLayout from "../../layout/AdminLayout";
 import StatisticsCard from "./components/cards/statistics/statistics";
 import RecentFeedbacks from "./components/cards/feedbacks/feedbacks";
-import { Link } from "@inertiajs/react";
+import TopVotedFeedback from "./components/cards/counts/countsFeedback";
+import RecentUsers from "./components/cards/users/users";
+import { User } from "@/types";
 
 type pageProps = {
     recentFeedbacks: Feedback[];
+    topFeedbacks: Feedback[];
+    recentUsers: User[];
 }
 
-export default function Dashboard({recentFeedbacks}:pageProps) {
+export default function Dashboard({recentFeedbacks, topFeedbacks, recentUsers}:pageProps) {
     return (
         <AdminLayout>
             <div className="flex flex-col gap-5">
@@ -17,17 +21,25 @@ export default function Dashboard({recentFeedbacks}:pageProps) {
                     <StatisticsCard />
                 </div>
 
-                <div>
-                    <div className="flex items-center justify-between mb-5">
-                        <h1 className="">Recent Feedback</h1>
-                        <Link
-                            href="/feedbacks"
-                            className="text-xs text-gray-500 underline transition-all duration-300 hover:text-blue-500"
-                        >
-                            View all feedbacks
-                        </Link>
+                <div className="flex gap-3">
+                    <div className="w-2/3">
+                        <div className="flex items-center justify-between mb-5">
+                            <h1 className="">Recent Feedback</h1>
+
+                        </div>
+                        <RecentFeedbacks recentFeedbacks={recentFeedbacks} />
                     </div>
-                    <RecentFeedbacks recentFeedbacks={recentFeedbacks} />
+
+                    <div className="w-1/3">
+                        <h1 className="mb-5">Most Voted Feedback</h1>
+                        <TopVotedFeedback topFeedbacks={topFeedbacks} />
+                    </div>
+                </div>
+
+
+                <div>
+                    <h1 className="mb-5">Recent Users</h1>
+                    <RecentUsers recentUsers={recentUsers} />
                 </div>
             </div>
         </AdminLayout>

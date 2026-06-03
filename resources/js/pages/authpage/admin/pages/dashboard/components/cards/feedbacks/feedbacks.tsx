@@ -12,7 +12,7 @@ dayjs.extend(relativeTime);
 
 export default function RecentFeedbacks({recentFeedbacks}:pageProps) {
     return (
-        <section className="rounded-md grid grid-cols-3 gap-3">
+        <section className="rounded-md grid grid-cols-2 gap-3">
             {recentFeedbacks.map(recentFeedbacks => {
                 const statusConfig = STATUS_CONFIG[recentFeedbacks.status] || {
                     label: recentFeedbacks.status,
