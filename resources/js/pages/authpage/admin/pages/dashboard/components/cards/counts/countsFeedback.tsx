@@ -7,7 +7,7 @@ type pageProps = {
 
 export default function TopVotedFeedback({topFeedbacks}:pageProps) {
     return (
-        <section className="rounded-md grid grid-rows-1 gap-3">
+        <section className="rounded-md flex-1 flex flex-col gap-3">
             {topFeedbacks.map((topFeedback, index ) => {
                 const statusConfig = STATUS_CONFIG[topFeedback.status] || {
                     label: topFeedback.status,
@@ -21,29 +21,28 @@ export default function TopVotedFeedback({topFeedbacks}:pageProps) {
                 return (
                     <div
                         key={topFeedback.id}
-                        className="bg-white px-5 py-[29px] rounded-lg shadow-md flex items-center"
+                        className="bg-white px-5 py-3 rounded-lg shadow-md flex items-center flex-1"
                     >
                         <div className='flex flex-col gap-4 w-4/5'>
                             <div className='flex items-center gap-2'>
                                 <span className="text-[10px] text-gray-500 font-bold border h-6 w-6 rounded-full p-3 flex justify-center items-center bg-zinc-100">
                                     #{index + 1}
                                 </span>
-
-                                <h1 className='text-sm font-medium'>{topFeedback.title}</h1>
+                                <h1 className='text-base font-medium'>{topFeedback.title}</h1>
                             </div>
 
                             <div className='flex gap-1'>
-                                <span className={`text-[9px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
+                                <span className={`text-[8px] px-3 py-1 rounded-md border uppercase ${statusConfig.className}`}>
                                     {statusConfig.label}
                                 </span>
-                                <span className={`text-[9px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
+                                <span className={`text-[8px] px-3 py-1 rounded-md font-medium ${categoryConfig.className}`}>
                                     {categoryConfig.label}
                                 </span>
                             </div>
                         </div>
                         <div className='flex items-center justify-center w-1/5'>
                             <div>
-                                <h1 className='text-5xl'>{topFeedback.votes}</h1>
+                                <h1 className='text-4xl'>{topFeedback.votes}</h1>
                                 <p className='text-gray-500 text-xs font-medium'>Votes</p>
                             </div>
                         </div>

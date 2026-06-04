@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AdminSidebar from "../components/sidebar"
-import { PanelLeftClose, PanelRightClose, Search } from "lucide-react"
+import { PanelLeftClose, PanelRightClose, Search, SidebarOpen } from "lucide-react"
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import AdminHeading from "../components/heading"
@@ -10,15 +10,22 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState<boolean>(() => {
+        const savedState = localStorage.getItem('admin_sidebar_open');
+        return savedState !== null ? JSON.parse(savedState) : true;
+    })
+
+    useEffect(() => {
+        localStorage.setItem('admin_sidebar_open', JSON.stringify(SidebarOpen));
+    }, [SidebarOpen])
 
     return (
-        <div className="flex gap-4 bg-[#fafafa] p-4 min-h-screen">
+        <div className="flex gap-4 bg-[#fafafa] p-4 min-h-screen overflow-x-auto">
             <AdminSidebar open={open} />
 
             <main
                 className={`
-                    flex flex-col gap-5 flex-1 rounded-lg transition-all duration-300 ease-in-out
+                    flex flex-col gap-5 flex-1 min-w-0 rounded-lg transition-all duration-300 ease-in-out
                     ${open ? 'ml-[320px]' : 'ml-0'}
                 `}
             >
@@ -48,7 +55,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     </div>
                 </header>
 
-                <div className="">
+                <div className="min-w-0">
                     {children}
                 </div>
             </main>

@@ -2,11 +2,11 @@ export default function AdminHeading() {
     const currPath = window.location.pathname
 
     const headings: { [key: string]: string } = {
-        '/dashboard': 'Dashboard',
-        '/feedbacks': 'Feedbacks',
-        '/users': 'Users',
-        '/reports': 'Reports',
-        '/settings': 'Settings',
+        '/admin/dashboard': 'Dashboard',
+        '/admin/feedbacks': 'Feedbacks',
+        '/admin/users': 'Users',
+        '/admin/reports': 'Reports',
+        '/admin/settings': 'Settings',
     }
 
     return (

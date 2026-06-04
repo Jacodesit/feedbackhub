@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\FeedbackService;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -13,8 +14,7 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function forDashboard() {
         $recentFeedbacks = Feedback::with([
             'user' => fn ($query) => $query
                 ->select('id', 'name', 'avatar')
@@ -30,7 +30,7 @@ class AdminController extends Controller
             ])
 
         ->orderByDesc('votes')
-        ->take(3)
+        ->take(4)
         ->get();
 
         $recentUsers = User::select('id', 'name', 'avatar', 'created_at')
@@ -66,11 +66,18 @@ class AdminController extends Controller
             $user->setAttribute('avatar', Storage::url($user->avatar));
         });
 
-
         return Inertia::render('authpage/admin/pages/dashboard/page', [
             'recentFeedbacks' => $recentFeedbacks,
             'topFeedbacks' => $topFeedbacks,
             'recentUsers' => $recentUsers,
+            'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
+        ]);
+    }
+
+    public function index(FeedbackService $feedbackService)
+    {
+        return Inertia::render('authpage/admin/pages/feedbacks/page', [
+            'feedbacks' => $feedbackService->getGlobalFeedbacks(10),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
         ]);
     }

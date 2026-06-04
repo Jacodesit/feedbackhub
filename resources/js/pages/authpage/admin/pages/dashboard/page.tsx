@@ -5,6 +5,7 @@ import RecentFeedbacks from "./components/cards/feedbacks/feedbacks";
 import TopVotedFeedback from "./components/cards/counts/countsFeedback";
 import RecentUsers from "./components/cards/users/users";
 import { User } from "@/types";
+import CategoryBreakdown from "./components/graph/categorybreakdown";
 
 type pageProps = {
     recentFeedbacks: Feedback[];
@@ -15,7 +16,7 @@ type pageProps = {
 export default function Dashboard({recentFeedbacks, topFeedbacks, recentUsers}:pageProps) {
     return (
         <AdminLayout>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 ">
                 <div>
                     <h1 className="mb-5">Statistics</h1>
                     <StatisticsCard />
@@ -30,16 +31,20 @@ export default function Dashboard({recentFeedbacks, topFeedbacks, recentUsers}:p
                         <RecentFeedbacks recentFeedbacks={recentFeedbacks} />
                     </div>
 
-                    <div className="w-1/3">
+                    <div className="w-1/3 flex flex-col">
                         <h1 className="mb-5">Most Voted Feedback</h1>
                         <TopVotedFeedback topFeedbacks={topFeedbacks} />
                     </div>
                 </div>
 
-
                 <div>
                     <h1 className="mb-5">Recent Users</h1>
                     <RecentUsers recentUsers={recentUsers} />
+                </div>
+
+                <div className="w-full min-w-0">
+                    <h1 className="mb-5">Category Breakdown</h1>
+                    <CategoryBreakdown  />
                 </div>
             </div>
         </AdminLayout>

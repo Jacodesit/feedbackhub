@@ -1,5 +1,6 @@
 import LogoutDialog from "@/components/dialog/logout";
 import { SidebarFooter } from "@/components/ui/sidebar";
+import { Link } from "@inertiajs/react";
 import { LayoutDashboard, LogOut, MessageSquareMore, MessageSquareWarning, Settings, User, Users } from "lucide-react";
 import { useState } from "react";
 
@@ -9,11 +10,11 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ open }: AdminSidebarProps) {
     const navlinks = [
-        { icon: <LayoutDashboard size={20} />, name: 'Dashboard', url: '/dashboard' },
-        { icon: <MessageSquareMore size={20} />, name: 'Feedbacks', url: '/feedbacks' },
+        { icon: <LayoutDashboard size={20} />, name: 'Dashboard', url: '/admin/dashboard' },
+        { icon: <MessageSquareMore size={20} />, name: 'Feedbacks', url: '/admin/feedbacks' },
         { icon: <Users size={20} />, name: 'Users', url: '/users' },
-        { icon: <MessageSquareWarning size={20} />, name: 'Reports', url: '/reports' },
-        { icon: <Settings size={20} />, name: 'Settings', url: '/settings' },
+        { icon: <MessageSquareWarning size={20} />, name: 'Reports', url: '/admin/reports' },
+        { icon: <Settings size={20} />, name: 'Settings', url: '/admin/settings' },
     ]
 
     const [logout, setLogout] = useState(false);
@@ -24,6 +25,12 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
         day: 'numeric',
         timeZone: 'Asia/Manila'
     });
+
+    const currentPath = window.location.pathname;
+
+    const isActiveLink = (url:string) => {
+        return currentPath === url;
+    }
 
     return (
         <aside
@@ -56,13 +63,29 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
                 </div>
 
                 <p className="capitalize text-gray-500 font-medium text-sm px-6 mb-3">Main Menu</p>
-                <ul className="bg-white rounded-lg text-black">
-                    {navlinks.map((link, index) => (
-                        <li key={index} className="border-b border-b-zinc-50 cursor-pointer flex gap-2 transition-all duration-300 hover:bg-black hover:text-white py-5 px-6 first:rounded-t-lg last:rounded-b-lg last:border-0">
-                            <i>{link.icon}</i>
-                            <p className="font-medium text-sm">{link.name}</p>
-                        </li>
-                    ))}
+                <ul className="rounded-lg overflow-hidden">
+                    {navlinks.map((link, index) => {
+                        const active = isActiveLink(link.url);
+
+                        return (
+                            <Link
+                                href={link.url}
+                                key={index}
+                                className={`
+                                    border-b border-b-zinc-50 cursor-pointer flex gap-2 transition-all duration-300 py-5 px-6 last:border-0
+
+                                    /* Combined clean conditional logic for both background and text color states */
+                                    ${active
+                                        ? 'bg-black text-white'
+                                        : 'bg-white text-black hover:bg-black hover:text-white'
+                                    }
+                                `}
+                            >
+                                <i>{link.icon}</i>
+                                <p className="font-medium text-sm">{link.name}</p>
+                            </Link>
+                        );
+                    })}
                 </ul>
             </div>
 
