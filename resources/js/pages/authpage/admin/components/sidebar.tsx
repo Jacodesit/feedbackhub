@@ -12,7 +12,7 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
     const navlinks = [
         { icon: <LayoutDashboard size={20} />, name: 'Dashboard', url: '/admin/dashboard' },
         { icon: <MessageSquareMore size={20} />, name: 'Feedbacks', url: '/admin/feedbacks' },
-        { icon: <Users size={20} />, name: 'Users', url: '/users' },
+        { icon: <Users size={20} />, name: 'Users', url: '/admin/users' },
         { icon: <MessageSquareWarning size={20} />, name: 'Reports', url: '/admin/reports' },
         { icon: <Settings size={20} />, name: 'Settings', url: '/admin/settings' },
     ]
@@ -73,15 +73,16 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
                                 key={index}
                                 className={`
                                     border-b border-b-zinc-50 cursor-pointer flex gap-2 transition-all duration-300 py-5 px-6 last:border-0
-
-                                    /* Combined clean conditional logic for both background and text color states */
                                     ${active
                                         ? 'bg-black text-white'
                                         : 'bg-white text-black hover:bg-black hover:text-white'
                                     }
                                 `}
                             >
-                                <i>{link.icon}</i>
+                                <i
+                                    className={`${active ? 'text-purple-500' : ''}`}
+                                    >{link.icon}
+                                </i>
                                 <p className="font-medium text-sm">{link.name}</p>
                             </Link>
                         );

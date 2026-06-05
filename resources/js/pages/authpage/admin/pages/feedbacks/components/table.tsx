@@ -1,9 +1,11 @@
-import { PaginatedFeedbacks } from "@/types/feedbackhub";
+import { Feedback, PaginatedFeedbacks } from "@/types/feedbackhub";
 import { CATEGORY_CONFIG, FeedbackCategory, STATUS_CONFIG } from '@/components/constants/feedback';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from "react";
+import FeedbackDetails from "./details";
 
 dayjs.extend(relativeTime);
 
@@ -12,6 +14,9 @@ type pageProps = {
 }
 
 export default function FeedbacksTable({feedbacks}:pageProps) {
+    const [viewSelected, setViewSelectedDetails] = useState(false);
+    const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
+
     return (
         <section>
             <Table>
@@ -68,11 +73,18 @@ export default function FeedbacksTable({feedbacks}:pageProps) {
                                 </TableCell>
 
                                 <TableCell>
-                                    <button className="text-blue-600 hover:underline text-xs">View</button>
+                                    <button
+                                        onClick={() => {
+                                            setViewSelectedDetails(true)
+                                            setSelectedFeedback(feedback);
+                                        }}
+                                        className="text-blue-600 hover:underline text-xs"
+                                    >
+                                        View
+                                    </button>
                                 </TableCell>
                             </TableRow>
                         )
-
                     })}
                 </TableBody>
             </Table>
@@ -118,7 +130,14 @@ export default function FeedbacksTable({feedbacks}:pageProps) {
                     </PaginationContent>
                 </Pagination>
             </div>
-        </section>
 
+            {selectedFeedback && (
+                <FeedbackDetails
+                    open={viewSelected}
+                    onClose={() => setViewSelectedDetails(false)}
+                    feedback={selectedFeedback}
+                />
+            )}
+        </section>
     )
 }

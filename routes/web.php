@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'forDashboard'])->name('admin.dashboard');
     Route::get('/admin/feedbacks', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/users', fn() => Inertia::render('authpage/admin/pages/users/page'))->name('admin.users');
 });
 
 require __DIR__.'/settings.php';

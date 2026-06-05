@@ -23,10 +23,11 @@ export type Feedback = {
     id: number;
     comments_count: number;
     comments: Comments[];
+    feedback_votes?: FeedbackVote[];
     title: string,
     description: string,
     category: string;
-    user: Pick<User, 'id' | 'name' | 'avatar'> & {
+    user: Pick<User, 'id' | 'name' | 'public_id' | 'avatar'> & {
         feedbacks_count?: number;
         comments_count?: number;
         total_votes_received?: number;
@@ -36,6 +37,13 @@ export type Feedback = {
     has_liked: boolean;
     status: 'open' | 'in_progress' | 'completed';
     created_at: string;
+}
+
+export type FeedbackVote = {
+    id: number;
+    user_id: number;
+    feedback_id: number;
+    user: Pick<User, 'id' | 'name' | 'avatar' | 'email'>;
 }
 
 export type UserStats = {
@@ -68,6 +76,7 @@ export type Comments = {
         id: number
         name: string
         avatar: string | null
+        email: string
     }
 }
 

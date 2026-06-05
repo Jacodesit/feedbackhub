@@ -17,15 +17,16 @@ class FeedbackService
     {
         $feedbacks = Feedback::with([
                 'user' => fn ($query) => $query
-                    ->select('id', 'name', 'avatar')
+                    ->select('id', 'name', 'avatar', 'public_id')
                     ->withCount('feedbacks', 'comments', 'commentsReceived as total_comments_received')
-                    ->withSum('feedbacks as total_votes_received', 'votes')
+                    ->withSum('feedbacks as total_votes_received', 'votes'),
+                'feedbackVotes.user:id,name,avatar,email',
+                'comments.user:id,name,avatar,email',
             ])
             ->withCount('comments')
             ->withExists([
                 'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
             ])
-            ->with('comments.user:id,name,avatar')
             ->latest()
             ->paginate($perPage);
 
@@ -90,6 +91,10 @@ class FeedbackService
 
             $feedback->comments->each(function ($comment) {
                 $this->normalizeUserAvatar($comment->user);
+            });
+
+            $feedback->feedbackVotes->each(function ($vote) {
+                $this->normalizeUserAvatar($vote->user);
             });
         });
     }
