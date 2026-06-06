@@ -24,7 +24,7 @@ export default function FeedbacksTable({feedbacks}:pageProps) {
                     <TableRow>
                         <TableHead>User</TableHead>
                         <TableHead>Title</TableHead>
-                        <TableHead>Likes</TableHead>
+                        <TableHead>Votes</TableHead>
                         <TableHead>Comments</TableHead>
                         <TableHead>Posted</TableHead>
                         <TableHead>Category</TableHead>
@@ -88,6 +88,7 @@ export default function FeedbacksTable({feedbacks}:pageProps) {
                     })}
                 </TableBody>
             </Table>
+
             <div className="mt-8">
                 <Pagination>
                     <PaginationContent>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use App\Models\User;
+use App\Services\AdminRelatedService;
 use Illuminate\Http\Request;
 use App\Services\FeedbackService;
 use Illuminate\Support\Facades\Storage;
@@ -79,6 +80,13 @@ class AdminController extends Controller
         return Inertia::render('authpage/admin/pages/feedbacks/page', [
             'feedbacks' => $feedbackService->getGlobalFeedbacks(10),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
+        ]);
+    }
+
+    public function users(AdminRelatedService $adminRelatedService)
+    {
+        return Inertia::render('authpage/admin/pages/users/page', [
+            'users' => $adminRelatedService->getUsers(10)
         ]);
     }
 

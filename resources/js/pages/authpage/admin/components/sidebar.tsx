@@ -1,7 +1,7 @@
 import LogoutDialog from "@/components/dialog/logout";
 import { SidebarFooter } from "@/components/ui/sidebar";
 import { Link } from "@inertiajs/react";
-import { LayoutDashboard, LogOut, MessageSquareMore, MessageSquareWarning, Settings, User, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Medal, MessageSquareMore, MessageSquareWarning, Settings, Users } from "lucide-react";
 import { useState } from "react";
 
 interface AdminSidebarProps {
@@ -13,8 +13,8 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
         { icon: <LayoutDashboard size={20} />, name: 'Dashboard', url: '/admin/dashboard' },
         { icon: <MessageSquareMore size={20} />, name: 'Feedbacks', url: '/admin/feedbacks' },
         { icon: <Users size={20} />, name: 'Users', url: '/admin/users' },
+        { icon: <Medal size={20} />, name: 'Leaderboard', url: '/admin/leaderboard'},
         { icon: <MessageSquareWarning size={20} />, name: 'Reports', url: '/admin/reports' },
-        { icon: <Settings size={20} />, name: 'Settings', url: '/admin/settings' },
     ]
 
     const [logout, setLogout] = useState(false);
@@ -93,8 +93,8 @@ export default function AdminSidebar({ open }: AdminSidebarProps) {
             <SidebarFooter className="p-0">
                 <ul className="bg-white rounded-lg text-black">
                     <li className="border-b border-b-zinc-50 cursor-pointer flex gap-2 transition-all duration-300 hover:bg-black hover:text-white py-5 px-6 first:rounded-t-lg ">
-                        <i><User size={20} /></i>
-                        <p className="font-medium text-sm">Profile</p>
+                        <i><Settings size={20} /></i>
+                        <p className="font-medium text-sm">Settings</p>
                     </li>
 
                     <button

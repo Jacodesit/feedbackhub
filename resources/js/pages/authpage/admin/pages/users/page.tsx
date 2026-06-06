@@ -1,9 +1,15 @@
+import { PaginatedUsers } from "@/types/feedbackhub";
 import AdminLayout from "../../layout/AdminLayout";
+import UsersTable from "./components/table";
 
-export default function Users() {
+type pageProps = {
+    users: PaginatedUsers
+}
+
+export default function Users({users}:pageProps) {
     return (
         <AdminLayout>
-            <div></div>
+            <UsersTable users={users} />
         </AdminLayout>
     )
 }
