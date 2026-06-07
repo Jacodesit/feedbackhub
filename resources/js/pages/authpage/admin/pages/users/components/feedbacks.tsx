@@ -3,7 +3,8 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { AdminUser } from "@/types/feedbackhub"
 import { MessageSquareMore, ThumbsUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
+import { Link } from "@inertiajs/react"
 
 dayjs.extend(relativeTime)
 
@@ -66,12 +67,12 @@ export default function RecentFeedbacks({user}:pageProps) {
 
             <div className="text-center mt-3">
                 {user.feedbacks_count > user.feedbacks.length && (
-                    <Button
-                        className="text-blue-500 cursor-pointer"
-                        variant={"link"}
+                    <Link
+                        href={route("admin.users.feedbacks", {user: user.id})}
+                        className="text-blue-500 cursor-pointer text-xs font-medium hover:border-b hover:border-blue-500"
                     >
                         View Full Activity
-                    </Button>
+                    </Link>
                 )}
             </div>
         </section>

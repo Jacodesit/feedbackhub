@@ -46,7 +46,8 @@ class FeedbackService
             ->withExists([
                 'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
             ])
-            ->with('comments.user:id,name,avatar')
+            ->with('comments.user:id,name,avatar,email')
+            ->with('feedbackVotes.user:id,name,avatar,email')
             ->where('user_id', $userId)
             ->latest()
             ->paginate($perPage);

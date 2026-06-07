@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Feedback;
+use App\Models\FeedbackVote;
 use App\Models\User;
 use App\Services\AdminRelatedService;
 use Illuminate\Http\Request;
@@ -87,6 +88,24 @@ class AdminController extends Controller
     {
         return Inertia::render('authpage/admin/pages/users/page', [
             'users' => $adminRelatedService->getUsers(10)
+        ]);
+    }
+
+    public function userFeedbacks(User $user, FeedbackService $feedbackService)
+    {
+        $stats = User::query()
+            ->whereKey($user->id)
+            ->withCount(['feedbacks', 'comments'])
+            ->first();
+
+        return Inertia::render('authpage/admin/pages/users/components/activity', [
+            'user' => $user->only(['id', 'name', 'email', 'public_id', 'avatar', 'created_at']),
+            'feedbacks' => $feedbackService->getUserFeedbacks($user->id, 10),
+            'activityCounts' => [
+                'feedbacks' => $stats?->feedbacks_count ?? 0,
+                'comments' => $stats?->comments_count ?? 0,
+                'votes' => FeedbackVote::where('user_id', $user->id)->count(),
+            ],
         ]);
     }
 
