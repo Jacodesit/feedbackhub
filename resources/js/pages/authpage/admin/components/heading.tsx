@@ -7,9 +7,19 @@ export default function AdminHeading() {
         '/admin/users': 'Users',
         '/admin/reports': 'Reports',
         '/admin/settings': 'Settings',
+        '/admin/users/{user}/feedbacks': 'User Activity'
     }
 
+    const heading = Object.entries(headings).find(([path]) => {
+        if (path.includes('{user}')) {
+            const regex = new RegExp(`^${path.replace('{user}', '[^/]+')}$`)
+            return regex.test(currPath)
+        }
+
+        return path === currPath
+    })?.[1]
+
     return (
-        <h1 className="font-medium text-xl">{headings[currPath] || 'Dashboard'}</h1>
+        <h1 className="font-medium text-xl">{heading || 'Dashboard'}</h1>
     )
 }

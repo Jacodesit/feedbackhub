@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use App\Models\FeedbackVote;
+use App\Models\Comments;
 use App\Models\User;
 use App\Services\AdminRelatedService;
 use Illuminate\Http\Request;
@@ -98,14 +99,42 @@ class AdminController extends Controller
             ->withCount(['feedbacks', 'comments'])
             ->first();
 
+        if (
+            $user->avatar &&
+            !str_starts_with($user->avatar, '/storage/') &&
+            !str_starts_with($user->avatar, 'http')
+        ) {
+            $user->avatar = Storage::url($user->avatar);
+        }
+
+        $comments = Comments::with([
+            'feedback:id,title,status',
+            'user:id,name,avatar,email',
+        ])
+        ->where('user_id', $user->id)
+        ->latest()
+        ->paginate(10);
+
+        $votes = FeedbackVote::with([
+            'feedback:id,title,user_id,status',
+            'feedback.user:id,name,avatar,email',
+            'user:id,name,avatar,email'
+        ])
+        ->where('user_id', $user->id)
+        ->latest()
+        ->paginate(10);
+
         return Inertia::render('authpage/admin/pages/users/components/activity', [
             'user' => $user->only(['id', 'name', 'email', 'public_id', 'avatar', 'created_at']),
             'feedbacks' => $feedbackService->getUserFeedbacks($user->id, 10),
+            'comments' => $comments,
+            'votes' => $votes,
             'activityCounts' => [
                 'feedbacks' => $stats?->feedbacks_count ?? 0,
                 'comments' => $stats?->comments_count ?? 0,
                 'votes' => FeedbackVote::where('user_id', $user->id)->count(),
             ],
+            'activeTab' => request('tab', 'feedbacks'),
         ]);
     }
 

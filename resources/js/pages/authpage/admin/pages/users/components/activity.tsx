@@ -1,7 +1,7 @@
 import AdminLayout from "../../../layout/AdminLayout";
 import FeedbacksTable from "../../feedbacks/components/table";
 import { Button } from "@/components/ui/button";
-import { PaginatedFeedbacks, User } from "@/types/feedbackhub";
+import { PaginatedComments, PaginatedFeedbacks, PaginatedVotes, User } from "@/types/feedbackhub";
 import { Link } from "@inertiajs/react";
 import {
     Tabs,
@@ -9,18 +9,26 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import CommentsTable from "./tables/comments";
+import VotesTable from "./tables/votes";
+import { useState } from "react";
 
 type PageProps = {
     user: Pick<User, "id" | "name" | "email" | "public_id" | "avatar" | "created_at">;
     feedbacks: PaginatedFeedbacks;
+    comments: PaginatedComments;
+    votes: PaginatedVotes;
     activityCounts: {
         feedbacks: number;
         comments: number;
         votes: number;
     };
+    activeTab?: string;
 }
 
-export default function FullActivity({user, feedbacks, activityCounts}: PageProps) {
+export default function FullActivity({user, feedbacks, comments, activityCounts, votes, activeTab = 'feedbacks'}: PageProps) {
+    const [currentTab, setCurrentTab] = useState(activeTab);
+
     return (
         <AdminLayout>
             <section className="space-y-5">
@@ -34,17 +42,25 @@ export default function FullActivity({user, feedbacks, activityCounts}: PageProp
                         <Link href={route("admin.users")}>Back to users</Link>
                     </Button>
                 </div>
-                <Tabs defaultValue="feedbacks" className="">
+                <Tabs
+                    value={currentTab}
+                    onValueChange={setCurrentTab}
+                >
                     <TabsList className="bg-[#fafafa] border">
-                        <TabsTrigger value="feedbacks">Feedbacks ({activityCounts.feedbacks})</TabsTrigger>
-                        <TabsTrigger value="comments">Comments ({activityCounts.comments})</TabsTrigger>
-                        <TabsTrigger value="votes">Votes ({activityCounts.votes})</TabsTrigger>
+                        <TabsTrigger className="text-xs" value="feedbacks">Feedbacks ({activityCounts.feedbacks})</TabsTrigger>
+                        <TabsTrigger className="text-xs" value="comments">Comments ({activityCounts.comments})</TabsTrigger>
+                        <TabsTrigger className="text-xs" value="votes">Votes ({activityCounts.votes})</TabsTrigger>
                     </TabsList>
                     <TabsContent value="feedbacks">
-                        <FeedbacksTable feedbacks={feedbacks} />
+                        <FeedbacksTable feedbacks={feedbacks} tab="feedbacks" />
+                    </TabsContent>
+                    <TabsContent value="comments">
+                        <CommentsTable comments={comments} tab="comments" />
+                    </TabsContent>
+                    <TabsContent value="votes">
+                        <VotesTable votes={votes} tab="votes" />
                     </TabsContent>
                 </Tabs>
-
             </section>
         </AdminLayout>
     )

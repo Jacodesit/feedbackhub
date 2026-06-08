@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/button';
 import { AdminUser } from "@/types/feedbackhub";
 import UserStats from "./stats";
 import RecentFeedbacks from "./feedbacks";
-import { Toggle } from "@/components/ui/toggle";
-import { Pin } from "lucide-react";
+import { Link } from "@inertiajs/react";
 
 dayjs.extend(relativeTime);
 
@@ -31,12 +30,7 @@ export default function UserDetails({user, open, onClose}:pageProps) {
             <SheetContent className=" w-[35%] sm:max-w-none flex flex-col justify-between bg-[#fafafa] max-h-screen overflow-y-auto">
                 <div className='flex flex-col gap-5'>
                     <SheetHeader className="bg-white p-5 rounded-xl">
-                        <div className="flex justify-between">
-                            <Avatar user={user} className="h-18 w-18" />
-                            <Toggle variant={"outline"}>
-                                <Pin />
-                            </Toggle>
-                        </div>
+                        <Avatar user={user} className="h-18 w-18" />
                         <section>
                             <h1 className="font-medium text-2xl">{user.name}</h1>
                             <div className="flex items-center justify-between">
@@ -61,6 +55,13 @@ export default function UserDetails({user, open, onClose}:pageProps) {
                         Close
                     </Button>
                     <div className='flex gap-2'>
+                        <Link
+                            as="button"
+                            href={route("admin.users.feedbacks", {user: user.id})}
+                            className="px-4 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-600"
+                        >
+                            View Activity
+                        </Link>
                         <Button variant={"destructive"}>Delete</Button>
                     </div>
                 </section>

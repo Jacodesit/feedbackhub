@@ -111,4 +111,6 @@ class FeedbackService
 
         $user->setAttribute('avatar', Storage::url($user->avatar));
     }
+
+
 }

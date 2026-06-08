@@ -68,9 +68,18 @@ export type Feedback = {
 
 export type FeedbackVote = {
     id: number;
+    title: string;
     user_id: number;
+    user_name: string;
     feedback_id: number;
     user: Pick<User, 'id' | 'name' | 'avatar' | 'email'>;
+    feedback?: {
+        id: number;
+        title: string;
+        user_id: number;
+        status: 'open' | 'in_progress' | 'completed';
+        user: Pick<User, 'id' | 'name' | 'avatar' | 'email'>;
+    };
 }
 
 export type Comments = {
@@ -85,6 +94,10 @@ export type Comments = {
         name: string
         avatar: string | null
         email: string
+    }
+    feedback?: {
+        id: number
+        title: string
     }
 }
 
@@ -118,5 +131,25 @@ export type PaginatedUsers = {
     next_page_url: string | null;
     total: number;
 };
+
+export type PaginatedComments = {
+    data: Comments[]
+    links: { url: string | null; label: string; active: boolean }[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    total: number;
+}
+
+export type PaginatedVotes = {
+    data: FeedbackVote[]
+    links: { url: string | null; label: string; active: boolean }[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    total: number;
+}
 
 

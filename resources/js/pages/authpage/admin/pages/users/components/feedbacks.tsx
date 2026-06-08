@@ -4,7 +4,6 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import { AdminUser } from "@/types/feedbackhub"
 import { MessageSquareMore, ThumbsUp } from "lucide-react"
 // import { Button } from "@/components/ui/button"
-import { Link } from "@inertiajs/react"
 
 dayjs.extend(relativeTime)
 
@@ -15,7 +14,7 @@ type pageProps = {
 export default function RecentFeedbacks({user}:pageProps) {
     return (
         <section>
-            <h5 className="text-gray-500 text-sm mb-2">Feedbacks</h5>
+            <h5 className="text-gray-500 text-sm mb-2">Recent Feedbacks</h5>
             <div className="grid gap-3">
                 {user.feedbacks?.map((item) => {
                     const statusConfig = STATUS_CONFIG[item.status] || {
@@ -65,7 +64,7 @@ export default function RecentFeedbacks({user}:pageProps) {
                 })}
             </div>
 
-            <div className="text-center mt-3">
+            {/* <div className="text-center mt-3">
                 {user.feedbacks_count > user.feedbacks.length && (
                     <Link
                         href={route("admin.users.feedbacks", {user: user.id})}
@@ -74,7 +73,7 @@ export default function RecentFeedbacks({user}:pageProps) {
                         View Full Activity
                     </Link>
                 )}
-            </div>
+            </div> */}
         </section>
     )
 }

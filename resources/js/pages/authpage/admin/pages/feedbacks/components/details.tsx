@@ -12,6 +12,8 @@ import VotesList from './popover/votes';
 import CommentsList from './popover/comments';
 import StatusDropdown from './status';
 import { Button } from '@/components/ui/button';
+import { Toggle } from '@/components/ui/toggle';
+import { Pin } from 'lucide-react';
 
 dayjs.extend(relativeTime);
 
@@ -39,7 +41,12 @@ export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
             <SheetContent className=" w-[35%] sm:max-w-none flex flex-col justify-between bg-[#fafafa] max-h-screen overflow-y-auto">
                 <div className='flex flex-col gap-5'>
                     <SheetHeader className="bg-white p-5 rounded-xl">
-                        <Avatar user={feedback.user} className="h-18 w-18" />
+                        <div className="flex justify-between">
+                            <Avatar user={feedback.user} className="h-18 w-18" />
+                            <Toggle variant={"outline"}>
+                                <Pin />
+                            </Toggle>
+                        </div>
                         <section>
                             <h1 className="font-medium text-2xl">{feedback.user.name}</h1>
                             <div className="flex items-center justify-between">

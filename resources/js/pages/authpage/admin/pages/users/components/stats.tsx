@@ -36,7 +36,6 @@ export default function UserStats({user}:pageProps) {
                             <VisualStaticGraph />
                         </div>
                     )
-
                 })}
             </div>
 
