@@ -51,7 +51,7 @@ export default function CommentsTable({comments, tab}:pageProps) {
             </Table>
 
             {comments.data.length === 0 ? (
-                <EmptyData />
+                <EmptyData tab={tab}/>
             ) : (
                 <div className="mt-8">
                     <Pagination>

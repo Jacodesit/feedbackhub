@@ -88,7 +88,7 @@ export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
                     </section>
                 </div>
 
-                <section className='flex items-center justify-between'>
+                <section className='flex justify-end gap-2'>
                     <Button
                         onClick={onClose}
                         variant={"outline"}
@@ -96,8 +96,11 @@ export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
                         Close
                     </Button>
                     <div className='flex gap-2'>
-                        <Button>Pin Feedback</Button>
-                        <Button variant={"destructive"}>Delete</Button>
+                        <Button
+                            variant={"destructive"}
+                        >
+                            Delete
+                        </Button>
                     </div>
                 </section>
             </SheetContent>

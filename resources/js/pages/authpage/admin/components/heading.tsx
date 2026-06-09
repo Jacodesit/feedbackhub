@@ -5,8 +5,8 @@ export default function AdminHeading() {
         '/admin/dashboard': 'Dashboard',
         '/admin/feedbacks': 'Feedbacks',
         '/admin/users': 'Users',
+        '/admin/leaderboard': 'Leaderboard',
         '/admin/reports': 'Reports',
-        '/admin/settings': 'Settings',
         '/admin/users/{user}/feedbacks': 'User Activity'
     }
 

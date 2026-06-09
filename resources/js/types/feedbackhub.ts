@@ -73,12 +73,14 @@ export type FeedbackVote = {
     user_name: string;
     feedback_id: number;
     user: Pick<User, 'id' | 'name' | 'avatar' | 'email'>;
+    created_at:string
     feedback?: {
         id: number;
         title: string;
         user_id: number;
         status: 'open' | 'in_progress' | 'completed';
         user: Pick<User, 'id' | 'name' | 'avatar' | 'email'>;
+
     };
 }
 

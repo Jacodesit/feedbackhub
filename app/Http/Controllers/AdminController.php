@@ -117,7 +117,7 @@ class AdminController extends Controller
 
         $votes = FeedbackVote::with([
             'feedback:id,title,user_id,status',
-            'feedback.user:id,name,avatar,email',
+            'feedback.user:id,name,avatar,email,created_at',
             'user:id,name,avatar,email'
         ])
         ->where('user_id', $user->id)

@@ -3,21 +3,47 @@ import {
     EmptyDescription,
     EmptyHeader,
     EmptyMedia,
-    // EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty"
-import { MessageSquareMore } from "lucide-react"
+import { MessageSquareMore, MessageCircle, ThumbsUp } from "lucide-react"
 
-export function EmptyData() {
+type PageProps = {
+    tab: string
+}
+
+const emptyStateConfig = {
+    feedbacks: {
+        icon: MessageSquareMore,
+        title: "No feedbacks submitted yet",
+        description: "This user hasn't shared any feedback or feature requests yet."
+    },
+    comments: {
+        icon: MessageCircle,
+        title: "No comments made yet",
+        description: "This user hasn't commented on any feedback or discussions yet."
+    },
+    votes: {
+        icon: ThumbsUp,
+        title: "No votes cast yet",
+        description: "This user hasn't voted on any feedback or suggestions yet."
+    }
+} as const
+
+type TabKey = keyof typeof emptyStateConfig
+
+export function EmptyData({ tab }: PageProps) {
+    const config = emptyStateConfig[tab as TabKey] || emptyStateConfig.feedbacks
+    const IconComponent = config.icon
+
     return (
-        <Empty>
+        <Empty className="">
             <EmptyHeader>
                 <EmptyMedia className="bg-gray-200 p-2 rounded-lg">
-                    <MessageSquareMore size={20} />
+                    <IconComponent size={20} />
                 </EmptyMedia>
-                <EmptyTitle>No comments submitted yet</EmptyTitle>
+                <EmptyTitle>{config.title}</EmptyTitle>
                 <EmptyDescription>
-                    This user hasn't shared any feedback or feature requests yet.
+                    {config.description}
                 </EmptyDescription>
             </EmptyHeader>
         </Empty>

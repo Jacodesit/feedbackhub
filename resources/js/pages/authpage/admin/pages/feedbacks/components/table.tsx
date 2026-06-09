@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from "react";
 import FeedbackDetails from "./details";
 import { Link } from "@inertiajs/react";
+import { EmptyData } from "../../users/components/empty/no-data";
 
 dayjs.extend(relativeTime);
 
@@ -18,9 +19,12 @@ type pageProps = {
 export default function FeedbacksTable({feedbacks, tab}:pageProps) {
     const [viewSelected, setViewSelectedDetails] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
+    const currentPage = window.location.pathname;
 
     return (
-        <section className="flex flex-col justify-between h-[60vh]">
+        <section className={`flex flex-col justify-between
+            ${currentPage === '/admin/feedbacks' ? 'h-[80vh]' : 'h-[60vh]'}
+        `}>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -91,77 +95,81 @@ export default function FeedbacksTable({feedbacks, tab}:pageProps) {
                 </TableBody>
             </Table>
 
-            <div className={`${feedbacks.data.length === 0 ? 'hidden' : 'mt-8'}`}>
-                <Pagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            {feedbacks.prev_page_url ? (
-                                <Link
-                                    href={`${feedbacks.prev_page_url}&tab=${tab}`}
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5"
-                                    preserveScroll
-                                >
-                                    Previous
-                                </Link>
-                            ) : (
-                                <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pl-2.5 opacity-50 pointer-events-none">
-                                    Previous
-                                </span>
-                            )}
-                        </PaginationItem>
+            {feedbacks.data.length === 0 ? (
+                <EmptyData tab={tab} />
+            ) : (
+                <div className={`${feedbacks.data.length === 0 ? 'hidden' : 'mt-8'}`}>
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                {feedbacks.prev_page_url ? (
+                                    <Link
+                                        href={`${feedbacks.prev_page_url}&tab=${tab}`}
+                                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5"
+                                        preserveScroll
+                                    >
+                                        Previous
+                                    </Link>
+                                ) : (
+                                    <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pl-2.5 opacity-50 pointer-events-none">
+                                        Previous
+                                    </span>
+                                )}
+                            </PaginationItem>
 
-                        {feedbacks.links.map((link, i) => {
-                            if (link.label.includes('Previous') || link.label.includes('Next')) return null;
+                            {feedbacks.links.map((link, i) => {
+                                if (link.label.includes('Previous') || link.label.includes('Next')) return null;
 
-                            if (link.label === "...") {
+                                if (link.label === "...") {
+                                    return (
+                                        <PaginationItem key={i}>
+                                            <PaginationEllipsis />
+                                        </PaginationItem>
+                                    );
+                                }
+
                                 return (
                                     <PaginationItem key={i}>
-                                        <PaginationEllipsis />
+                                        {link.url ? (
+                                            <Link
+                                                href={`${link.url}&tab=${tab}`}
+                                                className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 ${
+                                                    link.active
+                                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                                        : "hover:bg-accent hover:text-accent-foreground"
+                                                }`}
+                                                preserveScroll
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        ) : (
+                                            <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 opacity-50 pointer-events-none">
+                                                {link.label}
+                                            </span>
+                                        )}
                                     </PaginationItem>
                                 );
-                            }
+                            })}
 
-                            return (
-                                <PaginationItem key={i}>
-                                    {link.url ? (
-                                        <Link
-                                            href={`${link.url}&tab=${tab}`}
-                                            className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 ${
-                                                link.active
-                                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                                    : "hover:bg-accent hover:text-accent-foreground"
-                                            }`}
-                                            preserveScroll
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    ) : (
-                                        <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 opacity-50 pointer-events-none">
-                                            {link.label}
-                                        </span>
-                                    )}
-                                </PaginationItem>
-                            );
-                        })}
-
-                        <PaginationItem>
-                            {feedbacks.next_page_url ? (
-                                <Link
-                                    href={`${feedbacks.next_page_url}&tab=${tab}`}
-                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
-                                    preserveScroll
-                                >
-                                    Next
-                                </Link>
-                            ) : (
-                                <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pr-2.5 opacity-50 pointer-events-none">
-                                    Next
-                                </span>
-                            )}
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
-            </div>
+                            <PaginationItem>
+                                {feedbacks.next_page_url ? (
+                                    <Link
+                                        href={`${feedbacks.next_page_url}&tab=${tab}`}
+                                        className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
+                                        preserveScroll
+                                    >
+                                        Next
+                                    </Link>
+                                ) : (
+                                    <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pr-2.5 opacity-50 pointer-events-none">
+                                        Next
+                                    </span>
+                                )}
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
+            )}
 
             {selectedFeedback && (
                 <FeedbackDetails
