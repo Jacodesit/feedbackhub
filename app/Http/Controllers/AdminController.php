@@ -94,47 +94,15 @@ class AdminController extends Controller
 
     public function userFeedbacks(User $user, FeedbackService $feedbackService)
     {
-        $stats = User::query()
-            ->whereKey($user->id)
-            ->withCount(['feedbacks', 'comments'])
-            ->first();
+        return Inertia::render('authpage/admin/pages/users/components/activity',
+            $feedbackService->getUserActivityProfile($user, 10)
+        );
+    }
 
-        if (
-            $user->avatar &&
-            !str_starts_with($user->avatar, '/storage/') &&
-            !str_starts_with($user->avatar, 'http')
-        ) {
-            $user->avatar = Storage::url($user->avatar);
-        }
-
-        $comments = Comments::with([
-            'feedback:id,title,status',
-            'user:id,name,avatar,email',
-        ])
-        ->where('user_id', $user->id)
-        ->latest()
-        ->paginate(10);
-
-        $votes = FeedbackVote::with([
-            'feedback:id,title,user_id,status',
-            'feedback.user:id,name,avatar,email,created_at',
-            'user:id,name,avatar,email'
-        ])
-        ->where('user_id', $user->id)
-        ->latest()
-        ->paginate(10);
-
-        return Inertia::render('authpage/admin/pages/users/components/activity', [
-            'user' => $user->only(['id', 'name', 'email', 'public_id', 'avatar', 'created_at']),
-            'feedbacks' => $feedbackService->getUserFeedbacks($user->id, 10),
-            'comments' => $comments,
-            'votes' => $votes,
-            'activityCounts' => [
-                'feedbacks' => $stats?->feedbacks_count ?? 0,
-                'comments' => $stats?->comments_count ?? 0,
-                'votes' => FeedbackVote::where('user_id', $user->id)->count(),
-            ],
-            'activeTab' => request('tab', 'feedbacks'),
+    public function userLeaderboardData(AdminRelatedService $adminRelatedService)
+    {
+        return Inertia::render('authpage/admin/pages/leaderboard/page', [
+            'users' => $adminRelatedService->getLeaderboardUsers(10)
         ]);
     }
 

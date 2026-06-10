@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Feedback;
+use App\Models\Comments;
+use App\Models\FeedbackVote;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +39,6 @@ class FeedbackService
 
     /**
      * Get a list of feedbacks filtered strictly by a specific user ID.
-     * Fits perfectly for profile pages, user posts, or external profiles.
      */
     public function getUserFeedbacks(int $userId, int $perPage = 10): LengthAwarePaginator
     {
@@ -55,6 +56,67 @@ class FeedbackService
         $this->normalizeAvatarUrls($feedbacks);
 
         return $feedbacks;
+    }
+
+    /**
+     * Get paginated comments for a specific user.
+     */
+    public function getUserComments(int $userId, int $perPage = 10): LengthAwarePaginator
+    {
+        return Comments::with([
+                'feedback:id,title,status',
+                'user:id,name,avatar,email',
+            ])
+            ->where('user_id', $userId)
+            ->latest()
+            ->paginate($perPage)
+            ->through(function ($comment) {
+                $this->normalizeUserAvatar($comment->user);
+                return $comment;
+            });
+    }
+
+    /**
+     * Get paginated votes for a specific user.
+     */
+    public function getUserVotes(int $userId, int $perPage = 10): LengthAwarePaginator
+    {
+        return FeedbackVote::with([
+                'feedback:id,title,user_id,status',
+                'feedback.user:id,name,avatar,email,created_at',
+                'user:id,name,avatar,email'
+            ])
+            ->where('user_id', $userId)
+            ->latest()
+            ->paginate($perPage)
+            ->through(function ($vote) {
+                $this->normalizeUserAvatar($vote->user);
+                if ($vote->feedback && $vote->feedback->user) {
+                    $this->normalizeUserAvatar($vote->feedback->user);
+                }
+                return $vote;
+            });
+    }
+
+    /**
+     * Get complete user activity profile data.
+     */
+    public function getUserActivityProfile(User $user, int $perPage = 10): array
+    {
+        $this->normalizeUserAvatar($user);
+
+        return [
+            'user' => $user->only(['id', 'name', 'email', 'public_id', 'avatar', 'created_at']),
+            'feedbacks' => $this->getUserFeedbacks($user->id, $perPage),
+            'comments' => $this->getUserComments($user->id, $perPage),
+            'votes' => $this->getUserVotes($user->id, $perPage),
+            'activityCounts' => [
+                'feedbacks' => $user->feedbacks()->count(),
+                'comments' => $user->comments()->count(),
+                'votes' => FeedbackVote::where('user_id', $user->id)->count(),
+            ],
+            'activeTab' => request('tab', 'feedbacks'),
+        ];
     }
 
     /**
@@ -111,6 +173,4 @@ class FeedbackService
 
         $user->setAttribute('avatar', Storage::url($user->avatar));
     }
-
-
 }

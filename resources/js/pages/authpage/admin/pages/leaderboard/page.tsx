@@ -1,9 +1,15 @@
 import AdminLayout from "../../layout/AdminLayout";
+import LeaderboardTable from "./components/table";
+import { PaginatedUsers } from "@/types/feedbackhub";
 
-export default function Leaderboard() {
+type pageProps = {
+    users: PaginatedUsers
+}
+
+export default function Leaderboard({users}: pageProps) {
     return (
         <AdminLayout>
-            <section></section>
+            <LeaderboardTable users={users}/>
         </AdminLayout>
     )
 }

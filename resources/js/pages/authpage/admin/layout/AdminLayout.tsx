@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import AdminSidebar from "../components/sidebar"
-import { PanelLeftClose, PanelRightClose, Search, SidebarOpen } from "lucide-react"
-import { Field } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import { PanelLeftClose, PanelRightClose, SidebarOpen } from "lucide-react"
 import AdminHeading from "../components/heading"
 
 interface AdminLayoutProps {
@@ -37,20 +35,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                             </button>
 
                             <AdminHeading />
-                        </div>
-
-
-                        <div>
-                            <Field orientation={"horizontal"} className="w-96 border rounded-lg">
-                                <Input
-                                    type="search"
-                                    placeholder="Search feedback title, users"
-                                    className="h-8   border-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                                />
-                                <div className="pr-3">
-                                    <Search size={15} />
-                                </div>
-                            </Field>
                         </div>
                     </div>
                 </header>

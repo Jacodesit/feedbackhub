@@ -52,4 +52,35 @@ class AdminRelatedService
 
         return $users;
     }
+
+    public function getLeaderboardUsers(int $perPage = 10): LengthAwarePaginator
+    {
+        $users = User::select('id', 'name', 'email', 'public_id', 'avatar', 'is_admin', 'created_at')
+            ->withCount([
+                'feedbacks',
+                'comments',
+                'commentsReceived as comments_received_count',
+            ])
+            ->withSum('feedbacks as total_votes_received', 'votes')
+            ->orderByDesc('total_votes_received') // Order by votes received
+            ->paginate($perPage);
+
+        $this->normalizeAvatars($users);
+
+        return $users;
+    }
+
+    private function normalizeAvatars($users): void
+    {
+        $users->getCollection()->transform(function ($user) {
+            if (
+                $user->avatar &&
+                !str_starts_with($user->avatar, '/storage/') &&
+                !str_starts_with($user->avatar, 'http')
+            ) {
+                $user->avatar = Storage::url($user->avatar);
+            }
+            return $user;
+        });
+    }
 }

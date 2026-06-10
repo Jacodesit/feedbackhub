@@ -19,12 +19,9 @@ type pageProps = {
 export default function FeedbacksTable({feedbacks, tab}:pageProps) {
     const [viewSelected, setViewSelectedDetails] = useState(false);
     const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(null);
-    const currentPage = window.location.pathname;
 
     return (
-        <section className={`flex flex-col justify-between
-            ${currentPage === '/admin/feedbacks' ? 'h-[80vh]' : 'h-[60vh]'}
-        `}>
+        <section className={`flex flex-col justify-between`}>
             <Table>
                 <TableHeader>
                     <TableRow>

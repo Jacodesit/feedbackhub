@@ -127,6 +127,7 @@ export type PaginatedFeedbacks = {
 export type PaginatedUsers = {
     data: AdminUser[];
     links: { url: string | null; label: string; active: boolean }[];
+    per_page: number;
     current_page: number;
     last_page: number;
     prev_page_url: string | null;

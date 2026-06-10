@@ -1,21 +1,15 @@
 import Avatar from "@/components/avatar/profile"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Field, FieldGroup } from "@/components/ui/field"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AdminUser, PaginatedUsers } from "@/types/feedbackhub"
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import UserDetails from "./details"
 import { useState } from "react"
-
-dayjs.extend(relativeTime);
+import UserDetails from "../../users/components/details"
 
 type pageProps = {
     users: PaginatedUsers
 }
 
-export default function UsersTable({users}:pageProps) {
+export default function LeaderboardTable({users}:pageProps) {
     const [viewProfile, setViewProfile] =  useState(false)
     const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null)
 
@@ -24,73 +18,48 @@ export default function UsersTable({users}:pageProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead></TableHead>
-                        <TableHead>Profile</TableHead>
-                        <TableHead>Public ID</TableHead>
-                        <TableHead>Joined</TableHead>
+                        <TableHead>Rank</TableHead>
+                        <TableHead>User</TableHead>
                         <TableHead>Votes</TableHead>
                         <TableHead>Feedbacks</TableHead>
-                        <TableHead>Comments</TableHead>
-                        <TableHead>Role</TableHead>
                         <TableHead>Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {users.data.map(user => (
-                        <TableRow
-                            key={user.id}
-                            className=""
-                        >
-                            <TableCell>
-                                <FieldGroup>
-                                    <Field>
-                                        <Checkbox />
-                                    </Field>
-                                </FieldGroup>
-                            </TableCell>
+                    {users.data.map((user, index) => {
+                        const currentPage = users.current_page || 1;
+                        const perPage = users.per_page || 10;
+                        const rank = (currentPage - 1) * perPage + index + 1;
 
-                            <TableCell className="flex items-center gap-2">
-                                <Avatar user={user} size="sm" />
-                                <div>
-                                    <h3 className="font-medium text-xs">{user.name}</h3>
-                                    <p className="text-xs text-gray-500">{user.email}</p>
-                                </div>
-                            </TableCell>
+                        const rankDisplay = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
 
-                            <TableCell className="text-xs">{user.public_id}</TableCell>
+                        return (
+                            <TableRow key={user.id}>
+                                <TableCell className="text-xs font-medium">{rankDisplay}</TableCell>
+                                <TableCell className="flex items-center gap-2">
+                                    <Avatar user={user} size="sm" />
+                                    <div>
+                                        <h3 className="font-medium text-xs">{user.name}</h3>
+                                        <p className="text-xs text-gray-500">{user.email}</p>
+                                    </div>
+                                </TableCell>
 
-                            <TableCell>
-                                <div>
-                                    <p className="font-medium text-xs">{dayjs(user.created_at).format('MMM D, YYYY')}</p>
-                                    <p className="text-xs text-gray-500">{dayjs(user.created_at).fromNow()}</p>
-                                </div>
-                            </TableCell>
-
-                            <TableCell className="text-xs">{user.total_votes_received ?? 0}</TableCell>
-
-                            <TableCell className="text-xs">{user.feedbacks_count}</TableCell>
-
-                            <TableCell className="text-xs">{user.comments_count}</TableCell>
-
-                            <TableCell
-                                className="text-xs"
-                            >
-                                {!user.is_admin ? 'User' : 'Admin'}
-                            </TableCell>
-
-                            <TableCell>
-                                <button
-                                    onClick={() => {
+                                <TableCell className="text-xs">{user.total_votes_received || 0}</TableCell>
+                                <TableCell className="text-xs">{user.feedbacks_count}</TableCell>
+                                <TableCell>
+                                    <button
+                                        onClick={() => {
                                         setViewProfile(true)
                                         setSelectedUser(user)
                                     }}
-                                    className="text-blue-600 hover:underline text-xs"
-                                >
-                                    View
-                                </button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                                        className="text-blue-600 hover:underline text-xs"
+                                    >
+                                        View
+                                    </button>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
 
