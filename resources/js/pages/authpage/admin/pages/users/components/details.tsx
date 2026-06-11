@@ -13,6 +13,9 @@ import UserStats from "./stats";
 import RecentFeedbacks from "./feedbacks";
 import { Link } from "@inertiajs/react";
 import AdminEmpty from "./empty/admin";
+import { UserRoundCog } from "lucide-react";
+import ManageAccount from "./manage";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
@@ -23,8 +26,8 @@ type pageProps = {
 }
 
 export default function UserDetails({user, open, onClose}:pageProps) {
+    const [manageUser, setManageUser] = useState(false)
     if(!user) return null
-
 
     return (
         <Sheet open={open} onOpenChange={onClose}>
@@ -49,7 +52,17 @@ export default function UserDetails({user, open, onClose}:pageProps) {
                         </SheetHeader>
                     ) : (
                         <SheetHeader className="bg-white p-5 rounded-xl">
-                            <Avatar user={user} className="h-18 w-18" />
+                            <div className="flex justify-between items-center">
+                                <Avatar user={user} className="h-18 w-18" />
+                                <Button
+                                    size={"sm"}
+                                    onClick={() => setManageUser(true)}
+                                >
+                                    <UserRoundCog />
+                                </Button>
+
+                            </div>
+
                             <section>
                                 <h1 className="font-medium text-2xl">{user.name}</h1>
                                 <div className="flex items-center justify-between">
@@ -92,10 +105,14 @@ export default function UserDetails({user, open, onClose}:pageProps) {
                         >
                             View Activity
                         </Link>
-                        <Button variant={"destructive"}>Suspend</Button>
                     </div>
                 </section>
             </SheetContent>
+
+            <ManageAccount
+                open={manageUser}
+                onClose={() => setManageUser(false)}
+            />
         </Sheet>
     )
 }
