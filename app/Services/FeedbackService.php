@@ -15,7 +15,7 @@ class FeedbackService
     /**
      * Get the main global list of feedbacks with rich user analytics.
      */
-    public function getGlobalFeedbacks(int $perPage = 10): LengthAwarePaginator
+    public function getGlobalFeedbacks(int $perPage = 10, ?bool $isPinned = null): LengthAwarePaginator
     {
         $feedbacks = Feedback::with([
                 'user' => fn ($query) => $query
@@ -28,15 +28,18 @@ class FeedbackService
             ->withCount('comments')
             ->withExists([
                 'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),
-            ])
-            ->latest()
-            ->paginate($perPage);
+            ]);
+
+        if ($isPinned !== null) {
+            $feedbacks->where('is_pinned', $isPinned);
+        }
+
+        $feedbacks = $feedbacks->latest()->paginate($perPage);
 
         $this->normalizeAvatarUrls($feedbacks);
 
         return $feedbacks;
     }
-
     /**
      * Get a list of feedbacks filtered strictly by a specific user ID.
      */

@@ -5,9 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useState } from "react";
-import FeedbackDetails from "./details";
+import FeedbackDetails from "../details";
 import { Link } from "@inertiajs/react";
-import { EmptyData } from "../../users/components/empty/no-data";
+import { EmptyData } from "../../../users/components/empty/no-data";
 import Avatar from "@/components/avatar/profile";
 
 dayjs.extend(relativeTime);
@@ -100,7 +100,10 @@ export default function FeedbacksTable({feedbacks, tab}:pageProps) {
             </Table>
 
             {feedbacks.data.length === 0 ? (
-                <EmptyData tab={tab} />
+                <div className="h-screen">
+                    <EmptyData tab={tab} />
+                </div>
+
             ) : (
                 <div className={`${feedbacks.data.length === 0 ? 'hidden' : 'mt-8'}`}>
                     <Pagination>

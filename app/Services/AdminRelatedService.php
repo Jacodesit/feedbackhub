@@ -62,7 +62,7 @@ class AdminRelatedService
                 'commentsReceived as comments_received_count',
             ])
             ->withSum('feedbacks as total_votes_received', 'votes')
-            ->orderByDesc('total_votes_received') // Order by votes received
+            ->orderByDesc('total_votes_received')
             ->paginate($perPage);
 
         $this->normalizeAvatars($users);

@@ -1,5 +1,5 @@
 import AdminLayout from "../../../layout/AdminLayout";
-import FeedbacksTable from "../../feedbacks/components/table";
+import FeedbacksTable from "../../feedbacks/components/tables/table";
 import { PaginatedComments, PaginatedFeedbacks, PaginatedVotes, User } from "@/types/feedbackhub";
 import { Link } from "@inertiajs/react";
 import {

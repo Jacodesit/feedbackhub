@@ -77,11 +77,15 @@ class AdminController extends Controller
         ]);
     }
 
-    public function index(FeedbackService $feedbackService)
+    public function index(Request $request, FeedbackService $feedbackService)
     {
+        $tab = $request->query('tab', 'feedback');
+
         return Inertia::render('authpage/admin/pages/feedbacks/page', [
             'feedbacks' => $feedbackService->getGlobalFeedbacks(10),
+            'pinnedFeedbacks' => $feedbackService->getGlobalFeedbacks(10, true),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
+            'tab' => $tab,
         ]);
     }
 
