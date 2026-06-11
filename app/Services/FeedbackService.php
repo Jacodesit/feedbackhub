@@ -19,7 +19,7 @@ class FeedbackService
     {
         $feedbacks = Feedback::with([
                 'user' => fn ($query) => $query
-                    ->select('id', 'name', 'avatar', 'public_id')
+                    ->select('id', 'name', 'avatar', 'public_id', 'email')
                     ->withCount('feedbacks', 'comments', 'commentsReceived as total_comments_received')
                     ->withSum('feedbacks as total_votes_received', 'votes'),
                 'feedbackVotes.user:id,name,avatar,email',
@@ -42,7 +42,7 @@ class FeedbackService
      */
     public function getUserFeedbacks(int $userId, int $perPage = 10): LengthAwarePaginator
     {
-        $feedbacks = Feedback::with('user:id,name,avatar')
+        $feedbacks = Feedback::with('user:id,name,avatar,email')
             ->withCount('comments')
             ->withExists([
                 'feedbackVotes as has_liked' => fn ($query) => $query->where('user_id', Auth::id()),

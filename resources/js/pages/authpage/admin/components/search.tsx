@@ -3,12 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 export default function SearchComponent() {
+    const currentPath = window.location.pathname
     return (
         <div className="mb-2">
             <Field orientation={"horizontal"} className="w-96 border rounded-lg bg-white">
                 <Input
                     type="search"
-                    placeholder="Search feedback title, users"
+                    placeholder={`${currentPath === "/admin/feedbacks" ? 'Search User, Feedback Title' : 'Search User Name, Email, or Public ID'}`}
                     className="h-10 border-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <div className="pr-3 ">

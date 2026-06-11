@@ -41,6 +41,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/reports', fn() => Inertia::render('authpage/admin/pages/reports/page'))->name('admin.reports');
 
     Route::get('/admin/users/{user}/feedbacks', [AdminController::class, 'userFeedbacks'])->name('admin.users.feedbacks');
+    Route::patch('/admin/feedback/{feedback}/toggle-pin', [FeedbackController::class, 'togglePin'])->name('feedback.toggle-pin');
 });
 
 require __DIR__.'/settings.php';

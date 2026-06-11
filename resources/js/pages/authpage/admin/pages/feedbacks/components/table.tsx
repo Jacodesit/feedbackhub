@@ -8,6 +8,7 @@ import { useState } from "react";
 import FeedbackDetails from "./details";
 import { Link } from "@inertiajs/react";
 import { EmptyData } from "../../users/components/empty/no-data";
+import Avatar from "@/components/avatar/profile";
 
 dayjs.extend(relativeTime);
 
@@ -51,7 +52,13 @@ export default function FeedbacksTable({feedbacks, tab}:pageProps) {
                             <TableRow
                                 key={feedback.id}
                             >
-                                <TableCell className="text-xs">{feedback.user.name}</TableCell>
+                                <TableCell className="flex items-center gap-2">
+                                    <Avatar user={feedback.user} size="sm" />
+                                    <div>
+                                        <h3 className="font-medium text-xs">{feedback.user.name}</h3>
+                                        <p className="text-xs text-gray-500">{feedback.user.email}</p>
+                                    </div>
+                                </TableCell>
 
                                 <TableCell className="text-xs">{feedback.title}</TableCell>
 

@@ -18,6 +18,7 @@ class Feedback extends Model
         'status',
         'votes',
         'user_id',
+        'is_pinned',
     ];
 
     public function user() {

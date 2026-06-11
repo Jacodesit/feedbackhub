@@ -14,6 +14,9 @@ import StatusDropdown from './status';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
 import { Pin } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { router } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 dayjs.extend(relativeTime);
 
@@ -24,6 +27,14 @@ type pageProps = {
 }
 
 export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
+    const [isPinned, setIsPinned] = useState(feedback.is_pinned);
+
+    useEffect(() => {
+        setIsPinned(feedback.is_pinned);
+    }, [feedback.id, feedback.is_pinned]);
+
+    if(!feedback) return null
+
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -36,6 +47,26 @@ export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
         className: 'bg-gray-100 text-gray-700'
     };
 
+    const handleTogglePin = () => {
+        const newPinnedState = !isPinned;
+
+        setIsPinned(newPinnedState);
+
+        router.patch(route('feedback.toggle-pin', feedback.id), {
+            is_pinned: newPinnedState,
+        }, {
+            onSuccess: () => {
+                toast.success(newPinnedState ? 'Feedback pinned!' : 'Feedback unpinned!');
+            },
+            onError: () => {
+                setIsPinned(!newPinnedState);
+                toast.error('Failed to update pin status');
+            },
+            preserveScroll: true,
+            preserveState: true
+        });
+    }
+
     return (
         <Sheet open={open} onOpenChange={onClose}>
             <SheetContent className=" w-[35%] sm:max-w-none flex flex-col justify-between bg-[#fafafa] max-h-screen overflow-y-auto">
@@ -43,8 +74,13 @@ export default function FeedbackDetails({feedback, open, onClose}:pageProps) {
                     <SheetHeader className="bg-white p-5 rounded-xl">
                         <div className="flex justify-between">
                             <Avatar user={feedback.user} className="h-18 w-18" />
-                            <Toggle variant={"outline"}>
-                                <Pin />
+                            <Toggle
+                                variant={"outline"}
+                                pressed={isPinned}
+                                onPressedChange={handleTogglePin}
+                                aria-label='Toggle feedbacj'
+                            >
+                                <Pin className={isPinned ? 'fill-current': ''} />
                             </Toggle>
                         </div>
                         <section>

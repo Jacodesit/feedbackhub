@@ -54,7 +54,7 @@ export type Feedback = {
     title: string,
     description: string,
     category: string;
-    user: Pick<User, 'id' | 'name' | 'public_id' | 'avatar'> & {
+    user: Pick<User, 'id' | 'name' | 'public_id' | 'avatar' | 'email'> & {
         feedbacks_count?: number;
         comments_count?: number;
         total_votes_received?: number;
@@ -63,6 +63,7 @@ export type Feedback = {
     votes: number;
     has_liked: boolean;
     status: 'open' | 'in_progress' | 'completed';
+    is_pinned: boolean
     created_at: string;
 }
 

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Services\FeedbackService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -103,5 +104,18 @@ class FeedbackController extends Controller
     {
         $feedbacks = $this->feedbackService->getUserFeedbacks($user->id, 3);
         return response()->json($feedbacks);
+    }
+
+    public function togglePin(Feedback $feedback, Request $request)
+    {
+        $request->validate([
+            'is_pinned' => 'required|boolean',
+        ]);
+
+        $feedback->update([
+            'is_pinned' => $request->is_pinned,
+        ]);
+
+        return back();
     }
 }
