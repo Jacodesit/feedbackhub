@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Feedback;
 use App\Models\FeedbackVote;
 use App\Models\Comments;
+use App\Models\Report;
 use App\Models\User;
 use App\Services\AdminRelatedService;
 use Illuminate\Http\Request;
 use App\Services\FeedbackService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -80,12 +82,14 @@ class AdminController extends Controller
     public function index(Request $request, FeedbackService $feedbackService)
     {
         $tab = $request->query('tab', 'feedback');
+        $reasons = Report::REASONS;
 
         return Inertia::render('authpage/admin/pages/feedbacks/page', [
             'feedbacks' => $feedbackService->getGlobalFeedbacks(10),
             'pinnedFeedbacks' => $feedbackService->getGlobalFeedbacks(10, true),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
             'tab' => $tab,
+            'reasons' => $reasons
         ]);
     }
 
@@ -110,6 +114,11 @@ class AdminController extends Controller
         ]);
     }
 
+    public function getReportedFeedbacks(AdminRelatedService $adminRelatedService) {
+        return Inertia::render('authpage/admin/pages/reports/page', [
+            'reports' => $adminRelatedService->getReportedFeedbacks(10)
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */

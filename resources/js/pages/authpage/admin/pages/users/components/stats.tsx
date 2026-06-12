@@ -8,11 +8,11 @@ type pageProps = {
 export default function UserStats({user}:pageProps) {
 
     const cards = [
-        { name: 'Feedback Submitted', value: user.feedbacks_count },
+        { name: 'Feedback Submitted', value: user.feedbacks_count || 0 },
         { name: 'Total Votes Received', value: user.total_votes_received || 0},
-        { name: 'Comments Posted', value: user.comments_count },
-        { name: 'Comments Received', value: user.comments_received_count },
-        { name: 'Completed Feedbacks', value: user.completed_feedbacks_count}
+        { name: 'Comments Posted', value: user.comments_count || 0},
+        { name: 'Comments Received', value: user.comments_received_count || 0},
+        { name: 'Completed Feedbacks', value: user.completed_feedbacks_count || 0}
     ]
 
     return (

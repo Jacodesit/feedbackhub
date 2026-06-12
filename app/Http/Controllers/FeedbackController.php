@@ -6,6 +6,7 @@ use App\Models\Feedback;
 use App\Models\User;
 use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
+use App\Models\Report;
 use App\Services\FeedbackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,9 +23,11 @@ class FeedbackController extends Controller
      */
     public function index()
     {
+        $reasons = Report::REASONS;
         return Inertia::render('authpage/feedback/feedback', [
             'feedbacks' => $this->feedbackService->getGlobalFeedbacks(10),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
+            'reasons' => $reasons
         ]);
     }
 
@@ -117,5 +120,9 @@ class FeedbackController extends Controller
         ]);
 
         return back();
+    }
+
+    public function storingReportedFeedbacks() {
+
     }
 }

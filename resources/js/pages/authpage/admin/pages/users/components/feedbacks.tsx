@@ -18,10 +18,12 @@ type pageProps = {
 }
 
 export default function RecentFeedbacks({user}:pageProps) {
+    const feedbacks = user.feedbacks ?? [];
+
     return (
         <section>
             <h5 className="text-gray-500 text-sm mb-2">Recent Feedbacks</h5>
-            {user.feedbacks.length === 0 ? (
+            {feedbacks.length === 0 ? (
                 <Empty className="border bg-gray-50">
                     <EmptyHeader>
                         <EmptyMedia className="bg-gray-200 p-2 rounded-lg" variant="icon">

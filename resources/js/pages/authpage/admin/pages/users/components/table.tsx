@@ -1,13 +1,14 @@
 import Avatar from "@/components/avatar/profile"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldGroup } from "@/components/ui/field"
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from "@/components/ui/pagination"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AdminUser, PaginatedUsers } from "@/types/feedbackhub"
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import UserDetails from "./details"
 import { useState } from "react"
+import { Link } from "@inertiajs/react"
 
 dayjs.extend(relativeTime);
 
@@ -94,14 +95,23 @@ export default function UsersTable({users}:pageProps) {
                 </TableBody>
             </Table>
 
-            <div className="mt-8">
+            <div className={`${users.data.length === 0 ? 'hidden' : 'mt-8'}`}>
                 <Pagination>
                     <PaginationContent>
                         <PaginationItem>
-                            <PaginationPrevious
-                                href={users.prev_page_url || "#"}
-                                className={!users.prev_page_url ? "pointer-events-none opacity-50" : ""}
-                            />
+                            {users.prev_page_url ? (
+                                <Link
+                                    href={`${users.prev_page_url}}`}
+                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pl-2.5"
+                                    preserveScroll
+                                >
+                                    Previous
+                                </Link>
+                            ) : (
+                                <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pl-2.5 opacity-50 pointer-events-none">
+                                    Previous
+                                </span>
+                            )}
                         </PaginationItem>
 
                         {users.links.map((link, i) => {
@@ -117,21 +127,41 @@ export default function UsersTable({users}:pageProps) {
 
                             return (
                                 <PaginationItem key={i}>
-                                    <PaginationLink
-                                        href={link.url || "#"}
-                                        isActive={link.active}
-                                    >
-                                        {link.label}
-                                    </PaginationLink>
+                                    {link.url ? (
+                                        <Link
+                                            href={`${link.url}`}
+                                            className={`inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 ${
+                                                link.active
+                                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                                    : "hover:bg-accent hover:text-accent-foreground"
+                                            }`}
+                                            preserveScroll
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    ) : (
+                                        <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 opacity-50 pointer-events-none">
+                                            {link.label}
+                                        </span>
+                                    )}
                                 </PaginationItem>
                             );
                         })}
 
                         <PaginationItem>
-                            <PaginationNext
-                                href={users.next_page_url || "#"}
-                                className={!users.next_page_url ? "pointer-events-none opacity-50" : ""}
-                            />
+                            {users.next_page_url ? (
+                                <Link
+                                    href={`${users.next_page_url}`}
+                                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 gap-1 pr-2.5"
+                                    preserveScroll
+                                >
+                                    Next
+                                </Link>
+                            ) : (
+                                <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 gap-1 pr-2.5 opacity-50 pointer-events-none">
+                                    Next
+                                </span>
+                            )}
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>

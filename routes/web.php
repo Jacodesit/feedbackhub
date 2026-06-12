@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VotesController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,6 +12,10 @@ use Inertia\Inertia;
 Route::resource('feedbacks', FeedbackController::class)->except('index');
 Route::resource('feedbacks.comments', CommentsController::class);
 Route::resource('feedbacks.votes', VotesController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+});
 
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');
 
@@ -38,7 +43,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/feedbacks', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/admin/leaderboard', [AdminController::class, 'userLeaderboardData'])->name('admin.leaderboard');
-    Route::get('/admin/reports', fn() => Inertia::render('authpage/admin/pages/reports/page'))->name('admin.reports');
+    Route::get('/admin/reports', [AdminController::class, 'getReportedFeedbacks'])->name('admin.reported.feedbacks');
 
     Route::get('/admin/users/{user}/feedbacks', [AdminController::class, 'userFeedbacks'])->name('admin.users.feedbacks');
     Route::patch('/admin/feedback/{feedback}/toggle-pin', [FeedbackController::class, 'togglePin'])->name('feedback.toggle-pin');

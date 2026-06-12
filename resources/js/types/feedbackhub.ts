@@ -156,4 +156,56 @@ export type PaginatedVotes = {
     total: number;
 }
 
+export type PaginatedReports = {
+    data: Report[]
+    links: { url: string | null; label: string; active: boolean }[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    total: number;
+}
+
+export interface Report {
+    id: number;
+    feedback_id: number;
+    reported_by: number;
+    details: string | null;
+    reason: ReportReason;
+    status: ReportStatus;
+    created_at: string;
+    updated_at: string;
+
+    reporter: {
+        id: number;
+        name: string;
+        avatar: string | null;
+        email: string;
+    };
+
+    feedback: {
+        id: number;
+        title: string;
+    };
+}
+
+export type ReportReason =
+    | 'spam'
+    | 'duplicate_feedback'
+    | 'offensive_content'
+    | 'harassment'
+    | 'misleading_information'
+    | 'other';
+
+export type ReportStatus =
+    | 'pending'
+    | 'reviewed'
+    | 'resolved'
+    | 'dismissed';
+
+export interface SelectOption {
+    value: string;
+    label: string;
+}
+
 

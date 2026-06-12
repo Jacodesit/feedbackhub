@@ -6,7 +6,7 @@ import {
     DialogTitle,
     // DialogTrigger,
 } from "@/components/ui/dialog"
-import PostForm from "./form";
+import PostForm from "./forms/form";
 import { Separator } from "@/components/ui/separator";
 import { MessageSquareMore } from "lucide-react";
 

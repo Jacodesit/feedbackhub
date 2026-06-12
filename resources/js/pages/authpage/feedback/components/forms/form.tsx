@@ -74,7 +74,7 @@ export default function PostForm({onClose}:pageProps) {
     }
 
     return (
-        <div>
+        <section>
             <form onSubmit={submit}>
                 <FieldGroup className="flex flex-col">
                     <FieldSet>
@@ -160,6 +160,6 @@ export default function PostForm({onClose}:pageProps) {
                 authHeadline={authHeadline}
                 authSubtext={authSubtext}
             />
-        </div>
+        </section>
     )
 }

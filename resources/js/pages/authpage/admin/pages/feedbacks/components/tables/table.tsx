@@ -66,8 +66,11 @@ export default function FeedbacksTable({feedbacks, tab}:pageProps) {
 
                                 <TableCell className="text-xs">{feedback.comments_count}</TableCell>
 
-                                <TableCell className='text-xs text-gray-500'>
-                                    {dayjs(feedback.created_at).format('MMM D, YYYY')} • {dayjs(feedback.created_at).fromNow()}
+                                <TableCell className=''>
+                                    <div>
+                                        <p className="font-medium text-xs">{dayjs(feedback.created_at).format('MMM D, YYYY')}</p>
+                                        <p className="text-xs text-gray-500">{dayjs(feedback.created_at).fromNow()}</p>
+                                    </div>
                                 </TableCell>
 
                                 <TableCell>

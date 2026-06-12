@@ -6,23 +6,37 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ViewProfile from "@/components/view-profile"
-import { Feedback } from "@/types/feedbackhub"
-import { EllipsisVertical, Eye } from "lucide-react"
+import { Feedback, PageProps, ReportReason } from "@/types/feedbackhub"
+import { EllipsisVertical, Eye, Flag } from "lucide-react"
 import { useState } from "react"
+import ReportFeedback from "./report"
+import { usePage } from "@inertiajs/react"
 
 type pageProps = {
     feedback: Feedback
+    reasons: Record<ReportReason, string>
 }
 
-export default function Options({feedback}:pageProps) {
+export default function Options({feedback, reasons}:pageProps) {
+    const { auth } = usePage<PageProps>().props
+    const user = auth.user;
+
     const [openDropdown, setOpenDropdown] = useState(false);
     const [openView, setOpenView] = useState(false);
+
+    const [reportFeedback, setReportFeedback] = useState(false);
 
     const handleViewProfile = () => {
         setOpenDropdown(false);
         window.setTimeout(() => setOpenView(true), 0);
     }
 
+    const handleReportFeedback = () => {
+        setOpenDropdown(false);
+        window.setTimeout(() => setReportFeedback(true), 0);
+    }
+
+    const canReport = user && user.id !== feedback.user.id;
     return (
         <>
             <DropdownMenu
@@ -39,7 +53,7 @@ export default function Options({feedback}:pageProps) {
                     </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="w-40" align="end">
+                <DropdownMenuContent className="w-46" align="end">
                     <DropdownMenuGroup>
                         <DropdownMenuItem
                             onSelect={handleViewProfile}
@@ -48,6 +62,15 @@ export default function Options({feedback}:pageProps) {
                             View Profile
                             <Eye />
                         </DropdownMenuItem>
+                        {canReport && (
+                            <DropdownMenuItem
+                                onSelect={handleReportFeedback}
+                                className='flex justify-between items-center'
+                            >
+                                Report Feedback
+                                <Flag />
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>
@@ -56,6 +79,13 @@ export default function Options({feedback}:pageProps) {
                 open={openView}
                 feedback={feedback}
                 onClose={() => setOpenView(false)}
+            />
+
+            <ReportFeedback
+                open={reportFeedback}
+                feedback={feedback}
+                reasons={reasons}
+                onClose={() => setReportFeedback(false)}
             />
         </>
     )

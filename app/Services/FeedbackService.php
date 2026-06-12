@@ -6,6 +6,7 @@ use App\Models\Feedback;
 use App\Models\Comments;
 use App\Models\FeedbackVote;
 use App\Models\User;
+use App\Models\Report;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -145,6 +146,17 @@ class FeedbackService
             'comments_count' => $stats?->comments_count ?? 0,
             'total_comments_received' => $stats?->total_comments_received ?? 0,
         ];
+    }
+
+    public function storingReportedFeedback(int $feedbackId, string $reason, ?string $details = null, int $reportedBy): Report
+    {
+        return Report::create([
+            'feedback_id' => $feedbackId,
+            'reported_by' => $reportedBy,
+            'reason' => $reason,
+            'details' => $details,
+            'status' => 'pending',
+        ]);
     }
 
     /**
