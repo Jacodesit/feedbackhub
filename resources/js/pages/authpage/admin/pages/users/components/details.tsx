@@ -52,7 +52,7 @@ export default function UserDetails({user, open, onClose}:pageProps) {
                         </SheetHeader>
                     ) : (
                         <SheetHeader className="bg-white p-5 rounded-xl">
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between">
                                 <Avatar user={user} className="h-18 w-18" />
                                 <Button
                                     size={"sm"}

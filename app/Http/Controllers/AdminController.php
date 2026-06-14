@@ -107,10 +107,10 @@ class AdminController extends Controller
         );
     }
 
-    public function userLeaderboardData(AdminRelatedService $adminRelatedService)
+    public function userLeaderboardData(AdminRelatedService $adminRelatedService, FeedbackService $feedbackService)
     {
         return Inertia::render('authpage/admin/pages/leaderboard/page', [
-            'users' => $adminRelatedService->getLeaderboardUsers(10)
+            'users' => $adminRelatedService->getLeaderboardUsers(10),
         ]);
     }
 

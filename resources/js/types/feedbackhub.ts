@@ -181,12 +181,10 @@ export interface Report {
         name: string;
         avatar: string | null;
         email: string;
+        public_id: string
     };
 
-    feedback: {
-        id: number;
-        title: string;
-    };
+    feedback: Feedback;
 }
 
 export type ReportReason =

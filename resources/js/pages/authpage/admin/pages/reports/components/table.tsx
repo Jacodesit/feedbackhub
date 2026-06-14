@@ -1,9 +1,11 @@
 import Avatar from "@/components/avatar/profile"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { STATUS_CONFIG, REASON_CONFIG } from "@/components/constants/reports";
-import { PaginatedReports } from "@/types/feedbackhub"
+import { PaginatedReports, Report } from "@/types/feedbackhub"
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from "react";
+import ReportDetails from "./details";
 
 dayjs.extend(relativeTime)
 
@@ -12,13 +14,16 @@ type pageProps = {
 }
 
 export default function ReportTable({reports}:pageProps) {
+    const [openReport, setOpenReport] = useState(false);
+    const [selectedReport, setSelectedReport] = useState<Report | null>(null)
+
     return (
         <section className="flex flex-col justify-between">
             <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Reporter</TableHead>
-                        <TableHead>Feedback</TableHead>
+                        <TableHead>Feedback Title</TableHead>
                         <TableHead>Reason</TableHead>
                         <TableHead>Reported At</TableHead>
                         <TableHead>Status</TableHead>
@@ -72,17 +77,29 @@ export default function ReportTable({reports}:pageProps) {
 
                                 <TableCell>
                                     <button
+                                        onClick={() => {
+                                            setOpenReport(true)
+                                            setSelectedReport(report)
+                                        }}
                                         className="text-blue-600 hover:underline text-xs"
                                     >
                                         View
                                     </button>
                                 </TableCell>
-
                             </TableRow>
                         )
                     })}
                 </TableBody>
             </Table>
+
+            {selectedReport && (
+                <ReportDetails
+                    open={openReport}
+                    onClose={() => setOpenReport(false)}
+                    report={selectedReport}
+                />
+            )}
+
         </section>
     )
 }

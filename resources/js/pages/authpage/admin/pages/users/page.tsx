@@ -2,8 +2,8 @@ import { PaginatedUsers } from "@/types/feedbackhub";
 import AdminLayout from "../../layout/AdminLayout";
 import UsersTable from "./components/table";
 import SearchComponent from "../../components/search";
-import RoleFilter from "./components/dropdowns/role";
-import TimelineFilter from "./components/dropdowns/timeline";
+import RoleFilter from "./components/filters/dropdowns/role";
+import TimelineFilter from "./components/filters/dropdowns/timeline";
 
 type pageProps = {
     users: PaginatedUsers

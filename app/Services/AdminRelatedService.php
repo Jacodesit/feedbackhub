@@ -83,8 +83,15 @@ class AdminRelatedService
     public function getReportedFeedbacks(int $perPage = 10): LengthAwarePaginator
     {
         $reports = Report::with([
-            'reporter:id,name,avatar,email',
-            'feedback:id,title'
+            'reporter:id,name,avatar,email,public_id',           // Reports reporter
+            'feedback' => function ($query) {
+                $query
+                    ->select('id', 'user_id', 'title', 'description', 'votes')
+                    ->withCount('comments');
+            },
+            'feedback.user:id,name,avatar,email,created_at',     // Feedback's owner
+            'feedback.feedbackVotes.user:id,name,avatar,email',  // Feedback votes with voters
+            'feedback.comments.user:id,name,avatar,email',       // Feedback comments with commenters
         ])
         ->latest()
         ->paginate(10);
@@ -117,7 +124,33 @@ class AdminRelatedService
                 $item->reporter->avatar = Storage::url($item->reporter->avatar);
             }
 
+            if (isset($item->feedback) && $item->feedback) {
+                $this->normalizeUserAvatar($item->feedback->user);
+
+                $item->feedback->comments->each(function ($comment) {
+                    $this->normalizeUserAvatar($comment->user);
+                });
+
+                $item->feedback->feedbackVotes->each(function ($vote) {
+                    $this->normalizeUserAvatar($vote->user);
+                });
+            }
+
             return $item;
         });
+    }
+
+    private function normalizeUserAvatar($user): void
+    {
+        if (
+            !$user ||
+            !$user->avatar ||
+            str_starts_with($user->avatar, '/storage/') ||
+            str_starts_with($user->avatar, 'http')
+        ) {
+            return;
+        }
+
+        $user->avatar = Storage::url($user->avatar);
     }
 }
