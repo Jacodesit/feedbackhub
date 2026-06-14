@@ -68,7 +68,7 @@ export default function ReportDetails({report, open, onClose}:pageProps) {
                     </SheetHeader>
 
                     <section className="flex flex-col justify-between">
-                        <p className="text-sm text-gray-500 mb-2 px-5">Reporters Reason</p>
+                        <p className="text-sm text-gray-500 mb-2 px-5">Reporter Reason</p>
                         <div className="bg-white p-5 w-fit rounded-xl mb-2">
                             <p className="uppercase text-gray-700 text-[9px] font-semibold mb-1">Reason</p>
                             <h2 className="font-light text-sm">{report.details}</h2>

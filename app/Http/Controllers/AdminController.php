@@ -82,14 +82,37 @@ class AdminController extends Controller
     public function index(Request $request, FeedbackService $feedbackService)
     {
         $tab = $request->query('tab', 'feedback');
+        $search = $request->query('search');
+        $sort = $request->query('sort', 'newest');
+        $status = $request->query('status', 'all');
+        $category = $request->query('category', 'all');
         $reasons = Report::REASONS;
 
         return Inertia::render('authpage/admin/pages/feedbacks/page', [
-            'feedbacks' => $feedbackService->getGlobalFeedbacks(10),
-            'pinnedFeedbacks' => $feedbackService->getGlobalFeedbacks(10, true),
+            'feedbacks' => $feedbackService->getGlobalFeedbacks(
+                perPage: 10,
+                sort: $sort,
+                search: $search,
+                status: $status,
+                category: $category
+            ),
+            'pinnedFeedbacks' => $feedbackService->getGlobalFeedbacks(
+                perPage: 10,
+                isPinned: true,
+                sort: $sort,
+                search: $search,
+                status: $status,
+                category: $category
+            ),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
             'tab' => $tab,
-            'reasons' => $reasons
+            'reasons' => $reasons,
+            'filters' => [
+                'search' => $search,
+                'sort' => $sort,
+                'status' => $status,
+                'category' => $category,
+            ],
         ]);
     }
 

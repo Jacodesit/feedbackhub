@@ -103,10 +103,7 @@ export default function FeedbacksTable({feedbacks, tab}:pageProps) {
             </Table>
 
             {feedbacks.data.length === 0 ? (
-                <div className="h-screen">
-                    <EmptyData tab={tab} />
-                </div>
-
+                <EmptyData tab={tab} />
             ) : (
                 <div className={`${feedbacks.data.length === 0 ? 'hidden' : 'mt-8'}`}>
                     <Pagination>

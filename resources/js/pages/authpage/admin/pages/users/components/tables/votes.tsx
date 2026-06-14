@@ -18,7 +18,7 @@ export default function VotesTable({ votes, tab }: pageProps) {
     const safeVotes = votes ?? [];
 
     return (
-        <section className="flex flex-col justify-between h-[60vh]">
+        <section className="flex flex-col justify-between">
             <Table>
                 <TableHeader>
                     <TableRow>

@@ -16,7 +16,7 @@ class FeedbackService
     /**
      * Get the main global list of feedbacks with rich user analytics.
      */
-    public function getGlobalFeedbacks(int $perPage = 10, ?bool $isPinned = null): LengthAwarePaginator
+    public function getGlobalFeedbacks( int $perPage = 10, ?bool $isPinned = null, ?string $search = null, string $sort = 'newest', string $status = 'all', string $category = 'all' ): LengthAwarePaginator
     {
         $feedbacks = Feedback::with([
                 'user' => fn ($query) => $query
@@ -35,7 +35,47 @@ class FeedbackService
             $feedbacks->where('is_pinned', $isPinned);
         }
 
+        if ($search) {
+            $feedbacks->where(function ($query) use ($search) {
+                // search by title
+                $query->where('title', 'like', "%{$search}%")
+                // search by user name
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // Status
+        if ($status !== 'all') {
+            $feedbacks->where('status', $status);
+        }
+
+        // Sorting
+        if ($sort === 'oldest') {
+            $feedbacks->oldest();
+        } else {
+            $feedbacks->latest();
+        }
+
+        // Category
+        if ($category !== 'all') {
+            $feedbacks->where('category', $category);
+        }
+
         $feedbacks = $feedbacks->latest()->paginate($perPage);
+
+        // Keep query string for pagination
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($sort !== 'newest') $queryParams['sort'] = $sort;
+        if ($status !== 'all') $queryParams['status'] = $status;
+        if ($category !== 'all') $queryParams['category'] = $category;
+
+        if (!empty($queryParams)) {
+            $feedbacks->appends($queryParams);
+        }
 
         $this->normalizeAvatarUrls($feedbacks);
 

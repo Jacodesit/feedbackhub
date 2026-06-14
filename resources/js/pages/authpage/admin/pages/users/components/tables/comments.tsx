@@ -16,7 +16,7 @@ type pageProps = {
 export default function CommentsTable({comments, tab}:pageProps) {
     console.log('CommentsTable received:', comments);
     return (
-        <section className="flex flex-col justify-between h-[60vh]">
+        <section className="flex flex-col justify-between">
             <Table>
                 <TableHeader>
                     <TableRow>
