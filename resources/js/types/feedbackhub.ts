@@ -201,6 +201,21 @@ export type ReportStatus =
     | 'resolved'
     | 'dismissed';
 
+export type UserReportReason =
+    | 'spam_or_promotional_activity'
+    | 'harassment_or_bullying'
+    | 'hate_speech_or_offensive_behavior'
+    | 'impersonation'
+    | 'misleading_or_fraudulent_activity'
+    | 'repeated_community_guidelines_violations'
+    | 'other';
+
+export type UserReportStatus =
+    | 'pending'
+    | 'reviewed'
+    | 'action_taken'
+    | 'dismissed';
+
 export interface SelectOption {
     value: string;
     label: string;

@@ -79,7 +79,6 @@ export default function ReportForm({ feedback, reasons = {}, onClose }: pageProp
                                 value={feedback.title}
                                 id="title"
                                 autoComplete="false"
-                                placeholder="Enter a title for your feedback"
                                 className="w-full"
                             />
                         </Field>

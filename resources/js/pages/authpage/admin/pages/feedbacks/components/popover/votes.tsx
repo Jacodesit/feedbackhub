@@ -50,8 +50,6 @@ export default function VotesList({feedback}:pageProps) {
                         ))
                     )}
                 </section>
-
-
             </PopoverContent>
         </Popover>
     )

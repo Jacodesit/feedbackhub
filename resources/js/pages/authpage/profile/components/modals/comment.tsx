@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/dialog"
 
 import { Feedback, PageProps } from "@/types/feedbackhub"
-import { ThumbsUp } from 'lucide-react';
+import { Edit, ThumbsUp } from 'lucide-react';
 import EditDeleteButtons from '../buttons';
 import CommentForm from '../forms/comment';
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { toast } from 'sonner';
 import Avatar from '@/components/avatar/profile';
 
@@ -33,6 +33,9 @@ type pageProps = {
 }
 
 export default function CommentsModal({open, onClose, feedback, commentModal, onFeedbackUpdate, onFeedbackDelete}:pageProps) {
+    const {auth} = usePage<PageProps>().props
+    const user = auth.user;
+
     if(!feedback) return null
 
     const statusConfig = STATUS_CONFIG[feedback.status] || {
@@ -118,12 +121,24 @@ export default function CommentsModal({open, onClose, feedback, commentModal, on
                                             <div className='flex gap-3'>
                                                 <Avatar user={comment.user} size="md" />
                                                 <div className='border p-3 bg-[#fafafa] flex flex-col gap-2 rounded-md'>
-                                                    <div className='flex gap-1 items-center'>
-                                                        <p className='text-sm font-medium'>{comment.user.name}</p>
-                                                        <p className='text-xs text-gray-500'>
-                                                            • {dayjs(comment.created_at).fromNow()}
-                                                            </p>
+                                                    <div className='flex items-center justify-between'>
+                                                        <div className='flex gap-1 items-center'>
+                                                            <p className='text-sm font-medium'>{comment.user.name}</p>
+                                                            <p className='text-xs text-gray-500'>
+                                                                • {dayjs(comment.created_at).fromNow()}
+                                                                </p>
+                                                        </div>
+
+                                                        {user?.id === comment.user.id && (
+                                                            <button
+                                                                className='text-gray-500 transition-all duration-300 hover:text-blue-500 cursor-pointer'
+                                                            >
+                                                                <Edit size={15} />
+                                                            </button>
+                                                        )}
+
                                                     </div>
+
                                                     <div className='w-[40vw]'>
                                                         <p className='text-sm text-gray-500'>{comment.content}</p>
                                                     </div>

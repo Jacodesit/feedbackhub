@@ -6,7 +6,7 @@ import AuthenticatedLayout from "@/layouts/auth/authenticated-layout";
 import { MessageSquareMore, ThumbsUp } from "lucide-react";
 import PostModal from "./components/modal";
 import { useEffect, useState } from "react";
-import { Feedback, PageProps, ReportReason } from "@/types/feedbackhub";
+import { Feedback, PageProps, ReportReason, UserReportReason } from "@/types/feedbackhub";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import CommentsModal from '../profile/components/modals/comment';
 // import { toast } from 'sonner';
@@ -19,9 +19,10 @@ dayjs.extend(relativeTime);
 
 type pageProps = {
     reasons: Record<ReportReason, string>
+    user_reasons: Record<UserReportReason, string>
 }
 
-export default function Home({reasons}:pageProps) {
+export default function Home({reasons, user_reasons}:pageProps) {
     const { auth, feedbacks } = usePage<PageProps>().props;
     const [openModal, setOpenModal] = useState(false);
     const [viewFeedback, setViewFeedback] = useState(false)
@@ -174,6 +175,7 @@ export default function Home({reasons}:pageProps) {
                                             <Action
                                                 reasons={reasons}
                                                 feedback={feedback}
+                                                userReasons={user_reasons}
                                             />
                                         </div>
 

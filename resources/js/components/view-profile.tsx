@@ -3,13 +3,17 @@ import {
     SheetContent,
     SheetHeader,
 } from "@/components/ui/sheet"
-import { Feedback, PageProps } from "@/types/feedbackhub";
+import { Feedback, PageProps, UserReportReason } from "@/types/feedbackhub";
 import Avatar from "./avatar/profile";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { usePage } from "@inertiajs/react";
 import Stats from "@/pages/authpage/feedback/components/profile/sections/stats";
 import Feedbacks from "@/pages/authpage/feedback/components/profile/sections/feedbacks";
+import ReportUserPopover from "@/pages/authpage/feedback/components/report/user";
+// import { Flag } from "lucide-react";
+// import ReportUser from "@/pages/authpage/feedback/components/report/user";
+// import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
@@ -17,10 +21,14 @@ type pageProps = {
     open: boolean;
     onClose: () => void
     feedback: Feedback
+    userReasons: Record<UserReportReason, string>
 }
 
-export default function ViewProfile({open, onClose, feedback}:pageProps) {
+export default function ViewProfile({open, onClose, feedback, userReasons}:pageProps) {
     const {auth} = usePage<PageProps>().props
+    const user = auth.user;
+    // const [reportUser, setReportUser] = useState(false);
+    // const [selectedUser, setSelectedUser] =  useState<Feedback | null>(null);
 
     const handleOpenChange = (isOpen: boolean) => {
         if (isOpen) {
@@ -34,6 +42,7 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
         }, 0)
     }
 
+    const canReport = user && user.id !== feedback.user.id;
     return (
         <Sheet
             open={open}
@@ -56,16 +65,24 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
                         </div>
 
                         <div className="h-4 pl-36 pt-5 flex justify-between items-center">
-                            <div>
-                                <div className="">
+                            <div className=" w-full pr-6">
+                                <div className="flex items-center justify-between relative">
                                     <h1
-                                        className="text-2xl font-medium flex items-center gap-2"
+                                        className="text-xl font-medium flex items-center gap-2"
                                     >
                                         {feedback.user?.name}
                                     </h1>
                                 </div>
                                 <p className="text-xs text-gray-500">Joined: {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
                             </div>
+                            {canReport && (
+                                <div className="pr-6">
+                                    <ReportUserPopover
+                                        userReasons={userReasons}
+                                    />
+                                </div>
+                            )}
+
                         </div>
                     </SheetHeader>
 
@@ -82,6 +99,15 @@ export default function ViewProfile({open, onClose, feedback}:pageProps) {
                     </main>
                 </div>
             </SheetContent>
+
+
+            {/* {selectedUser && (
+                <ReportUser
+                    open={reportUser}
+                    feedback={selectedUser}
+                    onClose={() => setReportUser(true)}
+                />
+            )} */}
         </Sheet>
     )
 }

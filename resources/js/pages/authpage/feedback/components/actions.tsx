@@ -6,18 +6,19 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ViewProfile from "@/components/view-profile"
-import { Feedback, PageProps, ReportReason } from "@/types/feedbackhub"
+import { Feedback, PageProps, ReportReason, UserReportReason } from "@/types/feedbackhub"
 import { EllipsisVertical, Eye, Flag } from "lucide-react"
 import { useState } from "react"
-import ReportFeedback from "./report"
+import ReportFeedback from "./report/feedback"
 import { usePage } from "@inertiajs/react"
 
 type pageProps = {
     feedback: Feedback
     reasons: Record<ReportReason, string>
+    userReasons: Record<UserReportReason, string>
 }
 
-export default function Options({feedback, reasons}:pageProps) {
+export default function Options({feedback, reasons, userReasons}:pageProps) {
     const { auth } = usePage<PageProps>().props
     const user = auth.user;
 
@@ -79,6 +80,7 @@ export default function Options({feedback, reasons}:pageProps) {
                 open={openView}
                 feedback={feedback}
                 onClose={() => setOpenView(false)}
+                userReasons={userReasons}
             />
 
             <ReportFeedback

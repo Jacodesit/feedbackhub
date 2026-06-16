@@ -8,7 +8,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Flag } from "lucide-react";
 import { Feedback, ReportReason } from "@/types/feedbackhub";
-import ReportForm from "./forms/report";
+import ReportForm from "../forms/feedback";
 
 type pageProps = {
     open: boolean

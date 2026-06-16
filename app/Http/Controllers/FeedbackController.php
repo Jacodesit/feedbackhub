@@ -24,10 +24,12 @@ class FeedbackController extends Controller
     public function index()
     {
         $reasons = Report::REASONS;
+        $user_reasons = Report::USER_REPORT_REASONS;
         return Inertia::render('authpage/feedback/feedback', [
             'feedbacks' => $this->feedbackService->getGlobalFeedbacks(10),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
-            'reasons' => $reasons
+            'reasons' => $reasons,
+            'user_reasons' => $user_reasons
         ]);
     }
 
