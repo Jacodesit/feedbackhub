@@ -13,19 +13,17 @@ class AdminRelatedService
     /**
      * Create a new class instance.
      */
-    public function getUsers(int $perPage = 10): LengthAwarePaginator
+    public function getUsers(int $perPage = 10, ?string $search = null, string $sort = 'newest', string $role = 'all'): LengthAwarePaginator
     {
         $users = User::select('id', 'name', 'email', 'public_id', 'avatar', 'is_admin', 'created_at')
             ->with([
                 'feedbacks' => function ($query) {
-                    $query
-                        ->select('id', 'user_id', 'title', 'description','category', 'status', 'votes', 'created_at')
+                    $query->select('id', 'user_id', 'title', 'description', 'category', 'status', 'votes', 'created_at')
                         ->withCount('comments')
                         ->latest()
                         ->limit(5);
                 },
             ])
-
             ->withCount([
                 'feedbacks',
                 'comments',
@@ -34,10 +32,36 @@ class AdminRelatedService
                     $query->where('status', 'completed');
                 },
             ])
+            ->withSum('feedbacks as total_votes_received', 'votes');
 
-            ->withSum('feedbacks as total_votes_received', 'votes')
-            ->latest()
-            ->paginate($perPage);
+        if ($search) {
+            $users->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('public_id', 'like', "%{$search}%");
+            });
+        }
+
+        if ($sort === 'oldest') {
+            $users->oldest();
+        } else {
+            $users->latest();
+        }
+
+        if ($role !== 'all') {
+            $users->where('is_admin', $role === 'admin');
+        }
+
+        $users = $users->paginate($perPage);
+
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($sort !== 'newest') $queryParams['sort'] = $sort;
+        if ($role !== 'all') $queryParams['role'] = $role;
+
+        if (!empty($queryParams)) {
+            $users->appends($queryParams);
+        }
 
         $users->getCollection()->transform(function ($user) {
             if (
@@ -47,7 +71,6 @@ class AdminRelatedService
             ) {
                 $user->avatar = Storage::url($user->avatar);
             }
-
             return $user;
         });
 
@@ -80,21 +103,58 @@ class AdminRelatedService
         return $users;
     }
 
-    public function getReportedFeedbacks(int $perPage = 10): LengthAwarePaginator
+    public function getReportedFeedbacks(int $perPage = 10, ?string $search = null, string $sort = 'newest', string $reason = 'all', string $status = 'all'): LengthAwarePaginator
     {
         $reports = Report::with([
-            'reporter:id,name,avatar,email,public_id',           // Reports reporter
+            'reporter:id,name,avatar,email,public_id',
             'feedback' => function ($query) {
                 $query
                     ->select('id', 'user_id', 'title', 'description', 'votes')
                     ->withCount('comments');
             },
-            'feedback.user:id,name,avatar,email,created_at',     // Feedback's owner
-            'feedback.feedbackVotes.user:id,name,avatar,email',  // Feedback votes with voters
-            'feedback.comments.user:id,name,avatar,email',       // Feedback comments with commenters
-        ])
-        ->latest()
-        ->paginate(10);
+            'feedback.user:id,name,avatar,email,created_at',
+            'feedback.feedbackVotes.user:id,name,avatar,email',
+            'feedback.comments.user:id,name,avatar,email',
+        ]);
+
+        if ($search) {
+            $reports->where(function ($query) use ($search) {
+                $query->whereHas('reporter', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('public_id', 'like', "%{$search}%");
+                })
+                ->orWhereHas('feedback', function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        if ($sort === 'oldest') {
+            $reports->oldest();
+        } else {
+            $reports->latest();
+        }
+
+        if ($reason !== 'all') {
+            $reports->where('reason', $reason);
+        }
+
+        if ($status !== 'all') {
+            $reports->where('status', $status);
+        }
+
+        $reports = $reports->latest()->paginate($perPage);
+
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($sort !== 'newest') $queryParams['sort'] = $sort;
+        if ($reason !== 'all') $queryParams['reason'] = $reason;
+        if ($status !== 'all') $queryParams['status'] = $status;
+
+        if (!empty($queryParams)) {
+            $reports->appends($queryParams);
+        }
 
         $this->normalizeAvatars($reports);
 

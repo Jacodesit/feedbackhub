@@ -4,6 +4,7 @@ import AdminLayout from "../../layout/AdminLayout";
 import ReportTable from "./components/table";
 import StatusFilter from "./components/filters/dropdowns/status";
 import ReasonFilter from "./components/filters/dropdowns/reasons";
+import TimelineFilter from "../users/components/filters/dropdowns/timeline";
 
 type pageProps = {
     reports: PaginatedReports
@@ -14,6 +15,7 @@ export default function Reports({reports}:pageProps) {
         <AdminLayout>
             <div className="flex justify-end gap-2">
                 <SearchComponent />
+                <TimelineFilter />
                 <ReasonFilter />
                 <StatusFilter />
             </div>

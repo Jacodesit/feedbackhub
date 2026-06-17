@@ -8,9 +8,28 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { router, usePage } from "@inertiajs/react";
 import { Copy, FileWarning, MailWarning, MessageSquareX, MoreHorizontal, SlidersHorizontal, UserX } from "lucide-react"
 
 export default function ReasonFilter() {
+    const { filters } = usePage().props as any;
+    const currentReason = filters?.reason || 'all';
+
+    const handleReasonChange = (reason: string) => {
+        router.get(
+            window.location.pathname,
+            {
+                ...filters,
+                reason: reason
+            },
+            {
+                preserveState: true,
+                replace: true,
+                preserveScroll: true
+            }
+        );
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -24,34 +43,48 @@ export default function ReasonFilter() {
             <DropdownMenuContent>
                 <DropdownMenuGroup>
                     <DropdownMenuLabel>Reasons</DropdownMenuLabel>
-                    <DropdownMenuItem>
+
+                    <DropdownMenuItem onClick={() => handleReasonChange('all')}>
+                        Show All
+                        {currentReason === 'all' && ' ✓'}
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem onClick={() => handleReasonChange('spam')}>
                         <MailWarning />
-                        <span>Spam</span>
+                        Spam
+                        {currentReason === 'spam' && ' ✓'}
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleReasonChange('duplicate_feedback')}>
                         <Copy />
-                        <span>Duplicate Feedback</span>
+                        Duplicate Feedback
+                        {currentReason === 'duplicate_feedback' && ' ✓'}
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleReasonChange('offensive_content')}>
                         <MessageSquareX />
-                        <span>Offensive Content</span>
+                        Offensive Content
+                        {currentReason === 'offensive_content' && ' ✓'}
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleReasonChange('harassment')}>
                         <UserX />
-                        <span>Harassment</span>
+                        Harassment
+                        {currentReason === 'harassment' && ' ✓'}
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleReasonChange('misleading_information')}>
                         <FileWarning />
-                        <span>Misleading Information</span>
+                        Misleading Information
+                        {currentReason === 'misleading_information' && ' ✓'}
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleReasonChange('other')}>
                         <MoreHorizontal />
-                        <span>Other</span>
+                        Other
+                        {currentReason === 'other' && ' ✓'}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

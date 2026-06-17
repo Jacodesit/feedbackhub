@@ -14,8 +14,8 @@ export default function Users({users}:pageProps) {
         <AdminLayout>
             <div className="flex justify-end gap-2">
                 <SearchComponent />
-                <RoleFilter />
                 <TimelineFilter />
+                <RoleFilter />
             </div>
             <UsersTable users={users} />
         </AdminLayout>

@@ -30,14 +30,14 @@ export default function StatusFilter() {
         );
     };
 
-    const getStatusIcon = (status: string) => {
-        switch(status) {
-            case 'open': return <Circle />;
-            case 'in_progress': return <LoaderCircle />;
-            case 'completed': return <CircleCheckBig />;
-            default: return null;
-        }
-    };
+    // const getStatusIcon = (status: string) => {
+    //     switch(status) {
+    //         case 'open': return <Circle />;
+    //         case 'in_progress': return <LoaderCircle />;
+    //         case 'completed': return <CircleCheckBig />;
+    //         default: return null;
+    //     }
+    // };
 
     return (
         <DropdownMenu>

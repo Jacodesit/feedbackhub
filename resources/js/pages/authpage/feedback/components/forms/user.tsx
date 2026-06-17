@@ -1,26 +1,26 @@
 import { Button } from "@/components/ui/button"
+import { UserReportReason } from "@/types/feedbackhub"
 import { Flag } from "lucide-react"
 
-export default function UserReportForm() {
-    const reasons = [
-        { label: 'Spam or Promotional Activity', name: 'report_reason', value: 'spam_or_promotional_activity' },
-        { label: 'Harassment or Bullying', name: 'report_reason', value: 'harassment_or_bullying' },
-        { label: 'Hate Speech or Offensive Behavior', name: 'report_reason', value: 'hate_speech_or_offensive_behavior' },
-        { label: 'Impersonation', name: 'report_reason', value: 'impersonation' },
-        { label: 'Misleading or Fraudulent Activity', name: 'report_reason', value: 'misleading_or_fraudulent_activity' },
-        { label: 'Repeated Community Guidelines Violations', name: 'report_reason', value: 'repeated_community_guidelines_violations' },
-        { label: 'Other', name: 'report_reason', value: 'other'},
-    ]
+type pageProps = {
+    userReasons: Partial<Record<UserReportReason, string>>
+}
+
+export default function UserReportForm({userReasons}:pageProps) {
+    const reasonOptions = Object.entries(userReasons).map(([value, label]) => ({
+        value,
+        label,
+    }));
 
     return (
         <form>
             <ul className="flex flex-col gap-1">
-                {reasons.map((reason, index) => (
+                {reasonOptions.map((reason, index) => (
                     <li
                         key={index}
-                        className="flex items-center gap-1 border p-2 rounded-md"
+                        className="flex items-center gap-1 border p-2 rounded-md text-xs"
                     >
-                        <input type="radio" name={reason.name} value={reason.value} required />
+                        <input type="radio" name="report_reason" value={reason.value} required />
                         {reason.label}
                     </li>
                 ))}
@@ -34,11 +34,3 @@ export default function UserReportForm() {
         </form>
     )
 }
-
-// spam_or_promotional_activity
-// harassment_or_bullying
-// hate_speech_or_offensive_behavior
-// impersonation
-// misleading_or_fraudulent_activity
-// repeated_community_guidelines_violations
-// other

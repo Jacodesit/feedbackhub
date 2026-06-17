@@ -11,7 +11,6 @@ export default function SearchComponent() {
     const [search, setSearch] = useState(filters?.search || "");
     const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-    // Debounce effect
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(search);
@@ -20,12 +19,22 @@ export default function SearchComponent() {
         return () => clearTimeout(timer);
     }, [search]);
 
-    // Search effect
+    const getRouteName = () => {
+        if (currentPath === "/admin/feedbacks" || currentPath.startsWith("/admin/feedbacks")) {
+            return "admin.index";
+        }
+        if (currentPath === "/admin/users" || currentPath.startsWith("/admin/users")) {
+            return "admin.users";
+        }
+        if (currentPath === "/admin/reports" || currentPath.startsWith("/admin/reports")) {
+            return "admin.reported.feedbacks";
+        }
+        return window.location.pathname;
+    };
+
     useEffect(() => {
         if (debouncedSearch !== (filters?.search || "")) {
-            const routeName = currentPath === "/admin/feedbacks"
-                ? "admin.index"
-                : "admin.users.index";
+            const routeName = getRouteName();
 
             router.get(
                 route(routeName),
@@ -41,9 +50,21 @@ export default function SearchComponent() {
         }
     }, [debouncedSearch]);
 
-    // Clear search
     const handleClear = () => {
         setSearch("");
+    };
+
+    const getPlaceholder = () => {
+        if (currentPath.includes("/admin/feedbacks")) {
+            return 'Search User Name, Email, or Feedback Title';
+        }
+        if (currentPath.includes("/admin/users")) {
+            return 'Search User Name, Email, or Public ID';
+        }
+        if (currentPath.includes("/admin/reports")) {
+            return 'Search Reporter, Email, or Feedback Title';
+        }
+        return 'Search...';
     };
 
     return (
@@ -53,11 +74,7 @@ export default function SearchComponent() {
                     type="search"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder={
-                        currentPath === "/admin/feedbacks"
-                            ? 'Search User, Feedback Title'
-                            : 'Search User Name, Email, or Public ID'
-                    }
+                    placeholder={getPlaceholder()}
                     className="h-10 border-0 focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 pl-3 pr-10"
                 />
                 <div className="pr-3 absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
@@ -69,7 +86,7 @@ export default function SearchComponent() {
                         >
                         </button>
                     )}
-                    <Search size={15} />
+                    <Search size={15} className="text-gray-400" />
                 </div>
             </Field>
         </div>

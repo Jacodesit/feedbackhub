@@ -116,10 +116,19 @@ class AdminController extends Controller
         ]);
     }
 
-    public function users(AdminRelatedService $adminRelatedService)
+    public function users(AdminRelatedService $adminRelatedService, Request $request)
     {
+        $search = $request->query('search');
+        $sort = $request->query('sort', 'newest');
+        $role = $request->query('role', 'all');
+
         return Inertia::render('authpage/admin/pages/users/page', [
-            'users' => $adminRelatedService->getUsers(10)
+            'users' => $adminRelatedService->getUsers(10, $search, $sort, $role),
+            'filters' => [
+                'search' => $search,
+                'sort' => $sort,
+                'role' => $role
+            ],
         ]);
     }
 
@@ -137,9 +146,20 @@ class AdminController extends Controller
         ]);
     }
 
-    public function getReportedFeedbacks(AdminRelatedService $adminRelatedService) {
+    public function getReportedFeedbacks(AdminRelatedService $adminRelatedService, Request $request) {
+        $search = $request->query('search');
+        $sort = $request->query('sort', 'newest');
+        $reason = $request->query('reason', 'all');
+        $status = $request->query('status', 'all');
+
         return Inertia::render('authpage/admin/pages/reports/page', [
-            'reports' => $adminRelatedService->getReportedFeedbacks(10)
+            'reports' => $adminRelatedService->getReportedFeedbacks(10, $search, $sort, $reason, $status),
+            'filters' => [
+                'search' => $search,
+                'sort' => $sort,
+                'reason' => $reason,
+                'status' => $status,
+            ],
         ]);
     }
     /**
