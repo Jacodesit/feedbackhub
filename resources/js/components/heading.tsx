@@ -2,6 +2,7 @@ import { Link } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "@/types/feedbackhub";
+import AuthenticatedHamburgerNavigation from "./hamburger-nav";
 import Logout from "./logout-btn";
 
 export default function Heading() {
@@ -22,6 +23,7 @@ export default function Heading() {
         { name: "My Posts", url: '/my-posts' },
         { name: "Profile", url: '/profile' },
     ]
+
 
     useEffect(() => {
         const silentIds = ["call-to-action", "footer"];
@@ -70,42 +72,54 @@ export default function Heading() {
         return currentPath === url;
     };
 
+    const viewportWidth = window.innerWidth
+
     return (
         <header className="fixed z-50 w-full">
             <div
-                className={`flex justify-between items-center border py-3 px-50 text-accent
-                    ${currentPath === '/' ? 'bg-white/5 backdrop-blur-md border-white/10 shadow-2xl'
+                className={`flex justify-between items-center border py-3 px-5 lg:px-50 text-accent
+                    ${
+                        currentPath === '/'
+                        ? 'bg-white/5 backdrop-blur-md border-white/10 shadow-2xl'
                         : 'bg-[#1e1e1e] border-white/10 shadow-lg'
                     }
                 `}
             >
                 <div>
-                    <img src="/images/branding2.png" alt="logo" className="w-40 invert" />
+                    <img src="/images/branding2.png" alt="logo" className="w-32 md:w-40 invert" />
                 </div>
                 {user ? (
                     <>
-                        <div>
-                            <ul className="flex items-center gap-6">
-                                {authLinks.map((link, index) => (
-                                    <li key={index}>
-                                        <Link
-                                            href={link.url}
-                                            className={`text-sm transition-all duration-300 ${
-                                                isActiveLink(link.url)
-                                                    ? "text-white font-bold"
-                                                    : "text-white/50 hover:text-white/80"
-                                            }`}
-                                        >
-                                            {link.name}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div>
-                            <Logout />
-                        </div>
+                        {viewportWidth >= 320 && viewportWidth <= 768 ? (
+                            <AuthenticatedHamburgerNavigation />
+                        ) : (
+                            <>
+                                <div>
+                                    <ul className="flex items-center gap-6">
+                                        {authLinks.map((link, index) => (
+                                            <li key={index}>
+                                                <Link
+                                                    href={link.url}
+                                                    className={`text-sm transition-all duration-300 ${
+                                                        isActiveLink(link.url)
+                                                            ? "text-white font-bold"
+                                                            : "text-white/50 hover:text-white/80"
+                                                    }`}
+                                                >
+                                                    {link.name}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <Logout />
+                                </div>
+                            </>
+                        )}
                     </>
+
+
                 ) : (
                     <>
                         <div>

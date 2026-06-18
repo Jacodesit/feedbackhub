@@ -54,7 +54,7 @@ export default function CommentForm({feedback}:pageProps) {
     return (
         <div className={`${currentPath === '/feedback' ? 'flex-1' : 'hidden'}`}>
             <form onSubmit={submit} className='w-full flex gap-2'>
-                <FieldGroup className="flex items-center gap-1 border rounded-full px-3 py-1 bg-slate-50">
+                <FieldGroup className="flex items-center gap-1 border rounded-full px-1 md:px-3 py-1 bg-slate-50">
                     {auth.user?.avatar ? (
                         <div className=" w-8 h-8 flex items-center justify-center rounded-full shadow-lg">
                             <img
@@ -72,7 +72,7 @@ export default function CommentForm({feedback}:pageProps) {
                         onChange={(e) => setData('content', e.target.value)}
                         id="comment"
                         placeholder="Add a comment..."
-                        className="flex-1 bg-slate-50 py-2 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="text-xs flex-1 bg-slate-50 py-2 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
 
                     <button

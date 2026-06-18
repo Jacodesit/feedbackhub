@@ -19,64 +19,10 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function forDashboard() {
-        $recentFeedbacks = Feedback::with([
-            'user' => fn ($query) => $query
-                ->select('id', 'name', 'avatar')
-            ])
-
-        ->latest()
-        ->take(4)
-        ->get();
-
-        $topFeedbacks = Feedback::with([
-            'user' => fn ($query) => $query
-                ->select('id', 'name', 'avatar')
-            ])
-
-        ->orderByDesc('votes')
-        ->take(4)
-        ->get();
-
-        $recentUsers = User::select('id', 'name', 'avatar', 'created_at')
-        ->latest()
-        ->take(4)
-        ->get();
-
-        $recentFeedbacks->each(function ($feedback) {
-            $user = $feedback->user;
-
-            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
-                return;
-            }
-
-            $user->setAttribute('avatar', Storage::url($user->avatar));
-        });
-
-        $topFeedbacks->each(function ($feedback) {
-            $user = $feedback->user;
-
-            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
-                return;
-            }
-
-            $user->setAttribute('avatar', Storage::url($user->avatar));
-        });
-
-        $recentUsers->each(function ($user) {
-            if (!$user || !$user->avatar || str_starts_with($user->avatar, '/storage/') || str_starts_with($user->avatar, 'http')) {
-                return;
-            }
-
-            $user->setAttribute('avatar', Storage::url($user->avatar));
-        });
-
-        return Inertia::render('authpage/admin/pages/dashboard/page', [
-            'recentFeedbacks' => $recentFeedbacks,
-            'topFeedbacks' => $topFeedbacks,
-            'recentUsers' => $recentUsers,
-            'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
-        ]);
+    public function forDashboard(AdminRelatedService $dashboardService)
+    {
+        $dashboardData = $dashboardService->getDashboardData();
+        return Inertia::render('authpage/admin/pages/dashboard/page', $dashboardData);
     }
 
     public function index(Request $request, FeedbackService $feedbackService)
@@ -94,7 +40,8 @@ class AdminController extends Controller
                 sort: $sort,
                 search: $search,
                 status: $status,
-                category: $category
+                category: $category,
+                tab: $tab
             ),
             'pinnedFeedbacks' => $feedbackService->getGlobalFeedbacks(
                 perPage: 10,
@@ -102,7 +49,8 @@ class AdminController extends Controller
                 sort: $sort,
                 search: $search,
                 status: $status,
-                category: $category
+                category: $category,
+                tab: $tab
             ),
             'categories' => ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'],
             'tab' => $tab,
@@ -147,6 +95,7 @@ class AdminController extends Controller
     }
 
     public function getReportedFeedbacks(AdminRelatedService $adminRelatedService, Request $request) {
+        $tab = $request->query('tab', 'feedback');
         $search = $request->query('search');
         $sort = $request->query('sort', 'newest');
         $reason = $request->query('reason', 'all');
@@ -154,6 +103,7 @@ class AdminController extends Controller
 
         return Inertia::render('authpage/admin/pages/reports/page', [
             'reports' => $adminRelatedService->getReportedFeedbacks(10, $search, $sort, $reason, $status),
+            'tab' => $tab,
             'filters' => [
                 'search' => $search,
                 'sort' => $sort,

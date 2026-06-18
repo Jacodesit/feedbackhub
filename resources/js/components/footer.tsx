@@ -65,23 +65,23 @@ export default function Footer() {
     };
 
     return (
-        <footer id="footer" className="p-20 bg-[#101010] text-white">
-            <div className="px-30">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center pb-15">
+        <footer id="footer" className="p-8 md:p-20 bg-[#101010] text-white">
+            <div className="px-0 lg:px-30">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-15 lg:20 items-center pb-15">
                     <div className="">
                         <img
                             src="/images/branding2.png"
                             alt="feedbackhub"
-                            className="mb-2 invert-100"
+                            className="h-4 lg:h-10 mb-2 invert-100"
                         />
-                        <p className="text-accent">Collect feedback. Build better products.</p>
+                        <p className="text-accent text-xs lg:text-base">Collect feedback. Build better products.</p>
                     </div>
 
 
                     {user ? (
                         <div className="flex flex-col gap-10">
                             <div className="">
-                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
+                                <p className="text-[10px] lg:text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
                                 <ul className="text-accent flex gap-5">
                                     {authLinks.map((authLink, index) => (
                                         <li
@@ -89,7 +89,7 @@ export default function Footer() {
                                         >
                                             <Link
                                                 href={authLink.url}
-                                                className={`text-sm transition-all duration-300 ${
+                                                className={`text-[12px] md:text-sm transition-all duration-300 ${
                                                 activeId === authLink.url && activeId !== "hero"
                                                 ? "text-white font-medium"
                                                 : "text-white font-medium hover:text-black"
@@ -103,14 +103,14 @@ export default function Footer() {
                             </div>
 
                             <div className="">
-                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
+                                <p className="text-[10px] lg:text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
                                 <Logout />
                             </div>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-10">
                             <div className="">
-                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
+                                <p className="text-[10px] lg:text-[15px] uppercase tracking-widest font-bold mb-2">Links</p>
                                 <ul className="text-accent flex gap-5">
                                     {links.map((link) => (
                                         <li key={link.id}>
@@ -131,7 +131,7 @@ export default function Footer() {
                             </div>
 
                             <div className="">
-                                <p className="text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
+                                <p className="text-[10px] md:text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
                                 <ul className="flex gap-5 text-accent">
                                     <Link
                                         href="/register"
@@ -151,7 +151,7 @@ export default function Footer() {
                     )}
                 </div>
                 <div className="border-t border-white/40">
-                    <p className="text-xs mt-5 text-center text-white">© 2026 FeedbackHub. All rights reserved</p>
+                    <p className="text-[9px] md:text-xs mt-5 text-center text-white">© 2026 FeedbackHub. All rights reserved</p>
                     <ScrollToTop />
                 </div>
             </div>

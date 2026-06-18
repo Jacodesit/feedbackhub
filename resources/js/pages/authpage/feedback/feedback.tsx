@@ -86,21 +86,21 @@ export default function Home({reasons, user_reasons}:pageProps) {
                             backgroundSize: "60px 60px",
                         }}
                     />
-                    <div className="relative z-10 px-50 flex items-center h-full">
-                        <div className="w-3/4 flex flex-col gap-5">
+                    <div className="relative z-10 px-5 md:px-28 lg:px-50 flex items-center h-full">
+                        <div className="w-full lg:w-3/4 flex flex-col gap-5">
                             <div>
-                                <div className='flex items-center gap-1 mb-5'>
-                                    <p className='text-2xl'>Hello!</p>
-                                    <span className="text-violet-500 border-b-4 text-2xl border-b-violet-500"
+                                <div className='flex items-center gap-1 mb-3 lg:mb-5'>
+                                    <p className='text-xl md:text-2xl'>Hello!</p>
+                                    <span className="text-violet-500 border-b-4 text-xl md:text-2xl border-b-violet-500"
                                     >
                                         {auth.user?.name?.split(" ").slice(0, -1).join(" ")}
                                     </span>
                                 </div>
 
-                                <h1 className="font-medium text-5xl mb-5">
+                                <h1 className="font-medium text-2xl lg:text-5xl mb-3 lg:mb-5">
                                     Welcome to FeedackHub
                                 </h1>
-                                <p className="text-2xl">
+                                <p className="text-sm lg:text-2xl">
                                     Manage feedback, track user ideas, and prioritize what matters most
                                     in one centralized workspace. Stay aligned with your community through
                                     organized discussions, real-time updates, and clear progress tracking.
@@ -110,9 +110,9 @@ export default function Home({reasons, user_reasons}:pageProps) {
                             </div>
                             <button
                                 onClick={() => setOpenModal(true)}
-                                className="flex items-center justify-center text-center gap-2
-                                    border-2 border-white bg-gray-900 text-white rounded-md py-3
-                                    w-[25%] cursor-pointer transition-all duration-300
+                                className="text-xs flex items-center justify-center text-center gap-2
+                                    border-2 border-white bg-gray-900 text-white rounded-md py-2 lg:py-3
+                                    w-[50%] lg:w-[25%] cursor-pointer transition-all duration-300
                                     hover:-translate-y-1 hover:bg-black hover:border-white"
                             >
                                 Post a Feedback
@@ -123,15 +123,15 @@ export default function Home({reasons, user_reasons}:pageProps) {
                 </section>
 
                 <section className="">
-                    <div className="px-50 py-20">
+                    <div className="px-5 md:px-28 lg:px-50 py-10 lg:py-20">
                         <div className="mb-10">
-                            <h1 className="font-bold text-5xl">Community Feedback</h1>
-                            <p className="text-lg text-gray-500">
+                            <h1 className="font-bold text-2xl md:text-3xl lg:text-5xl">Community Feedback</h1>
+                            <p className="text-sm lg:text-lg text-gray-500">
                                 Explore ideas, feature requests, and product improvements shared by the community.
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-rows-1 lg:grid-cols-2 gap-4">
                             {feedbacks.data.map(feedback => {
                                 const statusConfig = STATUS_CONFIG[feedback.status] || {
                                     label: feedback.status,
@@ -151,11 +151,11 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                         <div className='flex justify-between items-center'>
                                             <div className="flex items-center gap-2 px-5 py-3">
                                                 {feedback.user.avatar ? (
-                                                    <div className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg">
+                                                    <div className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full shadow-lg">
                                                         <img
                                                             src={feedback.user.avatar}
                                                             alt={feedback.user.name}
-                                                            className="w-10 h-10 rounded-full object-cover"
+                                                            className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
                                                         />
                                                     </div>
                                                 ) : (
@@ -163,10 +163,10 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                                 )}
 
                                                 <div className='flex flex-col'>
-                                                    <p className='font-medium text-base'>
+                                                    <p className='font-medium text-sm lg:text-base'>
                                                         {feedback.user.name}
                                                     </p>
-                                                    <p className='text-xs text-gray-500'>
+                                                    <p className='text-[9px] md:text-xs text-gray-500'>
                                                         {dayjs(feedback.created_at).format('MMM D, YYYY')} • {dayjs(feedback.created_at).fromNow()}
                                                     </p>
                                                 </div>
@@ -185,7 +185,7 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                                 setSelectedFeedback(feedback)
                                                 setViewFeedback(true)
                                             }}
-                                            className='px-5 h-48 flex flex-col justify-between'
+                                            className='px-5 h-44 md:h-48 flex flex-col justify-between'
                                         >
                                             <div className=''>
                                                 <div className='flex gap-1 mb-2'>
@@ -197,11 +197,11 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                                     </span>
                                                 </div>
 
-                                                <h1 className='text-base font-medium mb-2'>
+                                                <h1 className='text-sm md:text-base font-medium mb-2'>
                                                     {feedback.title}
                                                 </h1>
 
-                                                <p className='text-sm line-clamp-4 text-gray-500 '>
+                                                <p className='text-[11px] md:text-sm line-clamp-4 text-gray-500 '>
                                                     {feedback.description}
                                                 </p>
                                             </div>
@@ -213,7 +213,7 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                                         strokeWidth={1.5}
                                                         className='text-gray-500'
                                                     />
-                                                    <p className='text-sm'>{feedback.votes}</p>
+                                                    <p className='text-xs md:text-sm'>{feedback.votes}</p>
                                                 </div>
 
                                                 <div className='flex items-center gap-1'>
@@ -222,7 +222,7 @@ export default function Home({reasons, user_reasons}:pageProps) {
                                                         strokeWidth={1.5}
                                                         className='text-gray-500'
                                                     />
-                                                    <p className='text-sm'>{feedback.comments_count || 0}</p>
+                                                    <p className='text-xs md:text-sm'>{feedback.comments_count || 0}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -239,7 +239,7 @@ export default function Home({reasons, user_reasons}:pageProps) {
 
                         {/* Pagination */}
                         <div className="mt-8">
-                            <Pagination>
+                            <Pagination className='justify-center lg:justify-end'>
                                 <PaginationContent>
                                     <PaginationItem>
                                         <PaginationPrevious

@@ -16,7 +16,15 @@ class FeedbackService
     /**
      * Get the main global list of feedbacks with rich user analytics.
      */
-    public function getGlobalFeedbacks( int $perPage = 10, ?bool $isPinned = null, ?string $search = null, string $sort = 'newest', string $status = 'all', string $category = 'all' ): LengthAwarePaginator
+    public function getGlobalFeedbacks(
+        int $perPage = 10,
+        ?bool $isPinned = null,
+        ?string $search = null,
+        string $sort = 'newest',
+        string $status = 'all',
+        string $category = 'all',
+        ?string $tab = null
+    ): LengthAwarePaginator
     {
         $feedbacks = Feedback::with([
                 'user' => fn ($query) => $query
@@ -72,6 +80,7 @@ class FeedbackService
         if ($sort !== 'newest') $queryParams['sort'] = $sort;
         if ($status !== 'all') $queryParams['status'] = $status;
         if ($category !== 'all') $queryParams['category'] = $category;
+        if ($tab) $queryParams['tab'] = $tab;
 
         if (!empty($queryParams)) {
             $feedbacks->appends($queryParams);

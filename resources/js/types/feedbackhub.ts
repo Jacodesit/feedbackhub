@@ -187,6 +187,13 @@ export interface Report {
     feedback: Feedback;
 }
 
+export type Stats = {
+    totalFeedbacks: number;
+    totalUsers: number;
+    totalComments: number;
+    pendingFeedbacks: number;
+}
+
 export type ReportReason =
     | 'spam'
     | 'duplicate_feedback'

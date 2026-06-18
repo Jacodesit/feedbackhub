@@ -1,4 +1,4 @@
-import { Feedback } from "@/types/feedbackhub";
+import { Feedback, Stats } from "@/types/feedbackhub";
 import AdminLayout from "../../layout/AdminLayout";
 import StatisticsCard from "./components/cards/statistics/statistics";
 import RecentFeedbacks from "./components/cards/feedbacks/feedbacks";
@@ -11,15 +11,16 @@ type pageProps = {
     recentFeedbacks: Feedback[];
     topFeedbacks: Feedback[];
     recentUsers: User[];
+    stats: Stats;
 }
 
-export default function Dashboard({recentFeedbacks, topFeedbacks, recentUsers}:pageProps) {
+export default function Dashboard({recentFeedbacks, topFeedbacks, recentUsers, stats}:pageProps) {
     return (
         <AdminLayout>
             <div className="flex flex-col gap-5 ">
                 <div>
                     <h1 className="mb-5">Statistics</h1>
-                    <StatisticsCard />
+                    <StatisticsCard stats={stats} />
                 </div>
 
                 <div className="flex gap-3">

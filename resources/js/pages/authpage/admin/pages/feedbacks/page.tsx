@@ -51,7 +51,6 @@ export default function Feedbacks({feedbacks, tab, pinnedFeedbacks}:pageProps) {
                         <PinnedFeedbacksTable pinnedFeedbacks={pinnedFeedbacks} tab={tab} />
                     </TabsContent>
                 </Tabs>
-
             </div>
         </AdminLayout>
     )

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Comments;
+use App\Models\Feedback;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -10,6 +12,100 @@ use LengthException;
 
 class AdminRelatedService
 {
+    public function getDashboardData(): array
+    {
+        return [
+            'recentFeedbacks' => $this->getRecentFeedbacks(),
+            'topFeedbacks' => $this->getTopFeedbacks(),
+            'recentUsers' => $this->getRecentUsers(),
+            'categories' => $this->getCategories(),
+            'stats' => $this->getStats(),
+        ];
+    }
+
+    protected function getStats(): array
+    {
+        return [
+            'totalFeedbacks' => Feedback::count(),
+            'totalUsers' => User::count(),
+            'totalComments' => Comments::count(),
+            'pendingFeedbacks' => Feedback::where('status', 'open')->count(),
+        ];
+    }
+    protected function getRecentFeedbacks()
+    {
+        $feedbacks = Feedback::with([
+            'user' => fn ($query) => $query->select('id', 'name', 'avatar')
+        ])
+        ->latest()
+        ->take(4)
+        ->get();
+
+        $this->transformAvatars($feedbacks);
+
+        return $feedbacks;
+    }
+
+    protected function getTopFeedbacks()
+    {
+        $feedbacks = Feedback::with([
+            'user' => fn ($query) => $query->select('id', 'name', 'avatar')
+        ])
+        ->orderByDesc('votes')
+        ->take(4)
+        ->get();
+
+        $this->transformAvatars($feedbacks);
+
+        return $feedbacks;
+    }
+
+    protected function getRecentUsers()
+    {
+        $users = User::select('id', 'name', 'avatar', 'created_at')
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $this->transformUserAvatars($users);
+
+        return $users;
+    }
+
+    protected function getCategories(): array
+    {
+        return ['feature_request', 'bug_report', 'ui_ux', 'performance', 'other'];
+    }
+
+    protected function transformAvatars($items): void
+    {
+        $items->each(function ($item) {
+            $user = $item->user;
+
+            if (!$user || !$user->avatar || $this->isFullUrl($user->avatar)) {
+                return;
+            }
+
+            $user->setAttribute('avatar', Storage::url($user->avatar));
+        });
+    }
+
+    protected function transformUserAvatars($users): void
+    {
+        $users->each(function ($user) {
+            if (!$user->avatar || $this->isFullUrl($user->avatar)) {
+                return;
+            }
+
+            $user->setAttribute('avatar', Storage::url($user->avatar));
+        });
+    }
+
+    protected function isFullUrl(string $avatar): bool
+    {
+        return str_starts_with($avatar, '/storage/') ||
+               str_starts_with($avatar, 'http');
+    }
     /**
      * Create a new class instance.
      */

@@ -1,11 +1,16 @@
+import { Stats } from "@/types/feedbackhub";
 import { Hourglass, MessageCircleMore, MessageSquareMore, Users } from "lucide-react"
 
-export default function StatisticsCard() {
+type pageProps = {
+    stats: Stats;
+}
+
+export default function StatisticsCard({stats}:pageProps) {
     const cards = [
-        { name: 'Total Feedback', icon: <MessageSquareMore size={20} />, data: '199' },
-        { name: 'Total Users', icon: <Users size={20} />, data: '200' },
-        { name: 'Total Commments', icon: <MessageCircleMore size={20} />, data: '900' },
-        { name: 'Awaiting Review', icon: <Hourglass size={20} /> , data: '120' },
+        { name: 'Total Feedback', icon: <MessageSquareMore size={20} />, data: stats.totalFeedbacks },
+        { name: 'Total Users', icon: <Users size={20} />, data: stats.totalUsers },
+        { name: 'Total Commments', icon: <MessageCircleMore size={20} />, data: stats.totalComments },
+        { name: 'Awaiting Review', icon: <Hourglass size={20} /> , data: stats.pendingFeedbacks },
     ]
     return (
         <section
