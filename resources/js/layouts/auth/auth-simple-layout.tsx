@@ -12,7 +12,7 @@ interface AuthLayoutProps {
 export default function AuthSimpleLayout({ children, title, description }: AuthLayoutProps) {
     return (
         <div className="bg-background flex min-h-svh overflow-hidden">
-            <div className='w-3/5 left-container p-20 flex justify-center items-center mx-auto'>
+            <div className='hidden lg:w-3/5 left-container p-20 lg:flex justify-center items-center mx-auto'>
 
             </div>
             <div className="flex w-full flex-col justify-center items-center px-6 lg:w-2/5 lg:px-12">

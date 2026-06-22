@@ -104,6 +104,40 @@ export type Comments = {
     }
 }
 
+export interface Report {
+    id: number;
+    feedback_id: number;
+    reported_by: number;
+    details: string | null;
+    reason: ReportReason;
+    status: ReportStatus;
+    created_at: string;
+    updated_at: string;
+
+    reporter: {
+        id: number;
+        name: string;
+        avatar: string | null;
+        email: string;
+        public_id: string
+    };
+
+    feedback: Feedback;
+}
+
+export interface UserReport {
+    id: number;
+    user_id: number;
+    reported_by: number;
+    reason: UserReportReason;
+    status: ReportStatus;
+    created_at: string;
+    updated_at: string;
+
+    reporter: Pick<User, 'id' | 'name' | 'avatar' | 'email' | 'public_id'>;
+    user: Pick<User, 'id' | 'name' | 'avatar' | 'email' | 'public_id' | 'created_at'>;
+}
+
 export type Category = 'feature_request' | 'bug_report' | 'ui_ux' | 'performance' | 'other'
 
 export type UserStats = {
@@ -166,26 +200,16 @@ export type PaginatedReports = {
     total: number;
 }
 
-export interface Report {
-    id: number;
-    feedback_id: number;
-    reported_by: number;
-    details: string | null;
-    reason: ReportReason;
-    status: ReportStatus;
-    created_at: string;
-    updated_at: string;
-
-    reporter: {
-        id: number;
-        name: string;
-        avatar: string | null;
-        email: string;
-        public_id: string
-    };
-
-    feedback: Feedback;
+export type PaginatedUserReports = {
+    data: UserReport[]
+    links: { url: string | null; label: string; active: boolean }[];
+    current_page: number;
+    last_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    total: number;
 }
+
 
 export type Stats = {
     totalFeedbacks: number;

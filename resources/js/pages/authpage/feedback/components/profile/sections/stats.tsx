@@ -19,7 +19,7 @@ export default function Stats({feedbackCount, commentCount, totalVotesReceived, 
     return (
         <section>
             <h5 className="text-gray-500 text-sm mb-2">Contribution Stats</h5>
-            <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="grid grid-rows-1 md:grid-cols-2 gap-4 w-full">
                 {cards.map((card, index) => {
                     const isLastCard = index === cards.length - 1;
 
@@ -33,7 +33,7 @@ export default function Stats({feedbackCount, commentCount, totalVotesReceived, 
                         >
                             <div className="flex flex-col justify-center h-full space-y-0.5 z-10 pointer-events-none">
                                 <span className="text-gray-400 text-sm font-medium tracking-tight">{card.name}</span>
-                                <h1 className="text-4xl font-bold text-gray-900 font-sans tracking-tight">{card.value}</h1>
+                                <h1 className="text-lg md:text-2xl lg:text-4xl font-bold text-gray-900 font-sans tracking-tight">{card.value}</h1>
                             </div>
                             <VisualStaticGraph />
                         </div>

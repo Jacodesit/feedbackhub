@@ -15,6 +15,7 @@ Route::resource('feedbacks.votes', VotesController::class);
 
 Route::middleware('auth')->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+    Route::post('/report-user', [ReportController::class, 'reportUser'])->name('reports.user');
 });
 
 Route::get('/', fn() => Inertia::render('landingpage/page'))->name('index');

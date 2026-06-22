@@ -26,15 +26,15 @@ export default function Profile() {
                     />
                 </div>
                 <div className="absolute -bottom-14 left-5 border-4 rounded-full">
-                    <Avatar user={auth.user} size="lg" />
+                    <Avatar user={auth.user} className="h-22 w-22" />
                 </div>
             </div>
 
-            <div className="h-12 pl-40 pt-2 flex justify-between items-center">
+            <div className="h-12 pl-32 lg:pl-40 pt-2 flex justify-between items-center">
                 <div>
                     <div className="flex items-center">
                         <p
-                            className="text-2xl font-medium flex items-center gap-2"
+                            className="text-sm lg:text-2xl font-medium flex items-center gap-2"
                         >
                             {auth.user?.name}
                             <Contact
@@ -45,9 +45,9 @@ export default function Profile() {
                         </p>
 
                     </div>
-                    <p className="text-xs text-gray-500">{auth.user?.email} • Joined {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
+                    <p className="text-[9px] lg:text-xs text-gray-500">{auth.user?.email} • Joined {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
                 </div>
-                <p className="text-xs text-gray-500">ID: {auth.user?.public_id}</p>
+                <p className="text-[8px] lg:text-xs text-gray-500">ID: {auth.user?.public_id}</p>
             </div>
         </div>
     )

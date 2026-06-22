@@ -6,6 +6,7 @@ use App\Models\Comments;
 use App\Models\Feedback;
 use App\Models\Report;
 use App\Models\User;
+use App\Models\UserReport;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use LengthException;
@@ -257,6 +258,60 @@ class AdminRelatedService
         return $reports;
     }
 
+    public function getReportedUsers(int $perPage = 10, ?string $search = null, string $sort = 'newest', string $reason = 'all', string $status = 'all'): LengthAwarePaginator
+    {
+        $userReports = UserReport::with([
+            'reporter:id,name,avatar,email,public_id',
+            'user:id,name,avatar,email,public_id,created_at',
+        ]);
+
+        if ($search) {
+            $userReports->where(function ($query) use ($search) {
+                $query->whereHas('reporter', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('public_id', 'like', "%{$search}%");
+                })
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('public_id', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        if ($sort === 'oldest') {
+            $userReports->oldest();
+        } else {
+            $userReports->latest();
+        }
+
+        if ($reason !== 'all') {
+            $userReports->where('reason', $reason);
+        }
+
+        if ($status !== 'all') {
+            $userReports->where('status', $status);
+        }
+
+        $userReports = $userReports->latest()->paginate($perPage);
+
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($sort !== 'newest') $queryParams['sort'] = $sort;
+        if ($reason !== 'all') $queryParams['reason'] = $reason;
+        if ($status !== 'all') $queryParams['status'] = $status;
+
+        if (!empty($queryParams)) {
+            $userReports->appends($queryParams);
+        }
+
+        $this->normalizeAvatars($userReports);
+
+        return $userReports;
+
+    }
+
     private function normalizeAvatars($users): void
     {
         $users->getCollection()->transform(function ($item) {
@@ -278,6 +333,10 @@ class AdminRelatedService
                 !str_starts_with($item->reporter->avatar, 'http')
             ) {
                 $item->reporter->avatar = Storage::url($item->reporter->avatar);
+            }
+
+            if (isset($item->user) && $item->user) {
+                $this->normalizeUserAvatar($item->user);
             }
 
             if (isset($item->feedback) && $item->feedback) {

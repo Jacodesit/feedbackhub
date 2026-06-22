@@ -18,9 +18,9 @@ export default function Sidebar({ onNavigate, activeSection }: SidebarProps) {
     ];
 
     return (
-        <aside className="bg-white rounded-lg shadow-md p-5 min-w-[240px]">
-            <ul>
-                <p className="px-4 pb-3 text-gray-400">Menu</p>
+        <aside className="bg-white rounded-lg shadow-md p-5 lg:min-w-[240px]">
+            <ul className="flex">
+                <p className="px-4 pb-3 text-gray-400 hidden lg:block">Menu</p>
                 {links.map((link) => {
                     const isActive = activeSection === link.key;
 
@@ -28,14 +28,14 @@ export default function Sidebar({ onNavigate, activeSection }: SidebarProps) {
                         <li
                             key={link.key}
                             onClick={() => onNavigate(link.key)}
-                            className={`flex gap-2 items-center px-4 py-4 cursor-pointer duration-300 transition-all rounded-md mb-1
+                            className={`flex flex-col lg:flex gap-2 items-center px-4 py-4 cursor-pointer duration-300 transition-all rounded-md mb-1
                                 ${isActive
                                     ? "bg-black text-white shadow-sm"
                                     : "hover:bg-gray-100 text-gray-600"
                                 }`}
                         >
                             {link.icon}
-                            <p className="text-sm font-medium">{link.name}</p>
+                            <p className="text-xs lg:text-sm font-medium">{link.name}</p>
                         </li>
                     );
                 })}

@@ -13,14 +13,15 @@ import { UserReportReason } from "@/types/feedbackhub";
 
 type pageProps = {
     userReasons: Record<UserReportReason, string>
+    userId: number
 }
 
-export default function ReportUserPopover({userReasons}:pageProps) {
+export default function ReportUserPopover({userReasons, userId}:pageProps) {
     return (
         <Popover>
             <PopoverTrigger asChild>
                 <button
-                    className='border bg-gray-100 p-3 rounded-full flex gap-2 items-center transition-all duration-300 hover:bg-red-50 hover:text-destructive hover:border-red-500 cursor-pointer'
+                    className='border bg-gray-100 p-2 lg:p-3 rounded-full flex gap-2 items-center transition-all duration-300 hover:bg-red-50 hover:text-destructive hover:border-red-500 cursor-pointer'
                 >
                     <Flag size={15}/>
                 </button>
@@ -33,10 +34,10 @@ export default function ReportUserPopover({userReasons}:pageProps) {
                 <Separator />
                 <UserReportForm
                     userReasons={userReasons}
+                    userId={userId}
                 />
             </PopoverContent>
         </Popover>
     )
 }
-
 

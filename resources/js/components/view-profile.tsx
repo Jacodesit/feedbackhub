@@ -48,37 +48,38 @@ export default function ViewProfile({open, onClose, feedback, userReasons}:pageP
             open={open}
             onOpenChange={handleOpenChange}
         >
-            <SheetContent className="p-0 z-[9999] w-[35%] sm:max-w-none bg-[#fafafa]">
+            <SheetContent className="p-0 z-[9999] lg:w-[35%] sm:max-w-none bg-[#fafafa] border-0">
                 <div className="h-screen overflow-y-auto scroll-smooth hide-scrollbar">
                     <SheetHeader className="mb-10">
                         <div className="relative">
-                            <div className="h-32 w-full cover-photo">
+                            <div className="lg:h-32 w-full cover-photo">
                                 <img
                                     src="/images/cover-photo.jpg"
                                     alt="cover-photo"
-                                    className="h-32 w-full object-fill"
+                                    className="lg:h-32 w-full object-fill"
                                 />
                             </div>
-                            <div className="absolute -bottom-15 left-4 border-4 rounded-full">
-                                <Avatar user={feedback.user} className="h-28 w-28 !text-5xl" />
+                            <div className="absolute -bottom-13 lg:-bottom-15 left-4 border-4 rounded-full">
+                                <Avatar user={feedback.user} className="h-20 w-20 lg:h-28 lg:w-28 !text-5xl" />
                             </div>
                         </div>
 
-                        <div className="h-4 pl-36 pt-5 flex justify-between items-center">
-                            <div className=" w-full pr-6">
+                        <div className="h-4 pl-28 lg:pl-36 pt-5 flex justify-between items-center">
+                            <div className=" w-full lg:pr-6">
                                 <div className="flex items-center justify-between relative">
                                     <h1
-                                        className="text-xl font-medium flex items-center gap-2"
+                                        className="text-[10px] md:text-base lg:text-xl font-medium flex items-center gap-2"
                                     >
                                         {feedback.user?.name}
                                     </h1>
                                 </div>
-                                <p className="text-xs text-gray-500">Joined: {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
+                                <p className="text-left text-[9px] lg:text-xs text-gray-500">Joined: {dayjs(auth.user?.created_at).format('MMM D, YYYY')}</p>
                             </div>
                             {canReport && (
                                 <div className="pr-6">
                                     <ReportUserPopover
                                         userReasons={userReasons}
+                                        userId={feedback.user.id}
                                     />
                                 </div>
                             )}

@@ -71,18 +71,18 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
     return (
         <AuthenticatedLayout>
-            <div className="flex flex-col gap-5 px-50 py-30 bg-[#fafafa]">
-                <div className='flex justify-between items-center p-10 bg-white shadow w-full rounded-lg relative'>
+            <div className="flex flex-col gap-5 px-5 md:px-28 lg:px-50 py-26 lg:py-20 bg-[#fafafa]">
+                <div className='flex justify-between items-center p-6 md:p-8 lg:p-10 bg-white shadow w-full rounded-lg relative'>
                     <Grid />
                     <div className='relative z-30'>
-                        <h1 className="font-semibold text-4xl">My Feedbacks</h1>
-                        <p className="text-gray-500">View, manage, and track the feedback you’ve shared with the community.</p>
+                        <h1 className="font-semibold text-lg md:text-2xl lg:text-4xl">My Feedbacks</h1>
+                        <p className="text-gray-500 text-xs lg:text-base">View, manage, and track the feedback you’ve shared with the community.</p>
                     </div>
 
                     <button
                         onClick={() => setOpenModal(true)}
-                        className={`relative z-30 text-sm flex items-center justify-center text-center gap-2
-                            border-2 border-white bg-gray-900 text-white rounded-md py-3 px-4
+                        className={`relative z-30 text-xs md:text-sm flex items-center justify-center text-center gap-2
+                            border-2 border-white bg-gray-900 text-white rounded-md py-2 px-3 lg:py-3 lg:px-4
                             cursor-pointer transition-all duration-300
                             hover:-translate-y-1 hover:bg-black ${
                                 feedbacks.data.length !== 0 ? 'block' : 'hidden'
@@ -120,7 +120,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
                         </div>
                     )}
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {feedbacks.data.map(feedback => {
                             const statusConfig = STATUS_CONFIG[feedback.status] || {
                                 label: feedback.status,
@@ -215,7 +215,7 @@ export default function Posts({ feedbacks: initialFeedbacks }: pageProps) {
 
                     {/* Pagination */}
                     <div className="mt-8">
-                        <Pagination>
+                        <Pagination className='justify-center lg:justify-end'>
                             <PaginationContent>
                                 <PaginationItem>
                                     <PaginationPrevious

@@ -103,6 +103,7 @@ class AdminController extends Controller
 
         return Inertia::render('authpage/admin/pages/reports/page', [
             'reports' => $adminRelatedService->getReportedFeedbacks(10, $search, $sort, $reason, $status),
+            'userReports' => $adminRelatedService->getReportedUsers(10, $search, $sort, $reason, $status),
             'tab' => $tab,
             'filters' => [
                 'search' => $search,

@@ -35,10 +35,10 @@ export default function LogoutDialog({openDialog, onClose}:pageProps) {
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                <AlertDialogTitle>Logging out of your account</AlertDialogTitle>
-                <AlertDialogDescription>
-                    You will end your session on this device and return to the login screen.
-                </AlertDialogDescription>
+                    <AlertDialogTitle>Logging out of your account</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        You will end your session on this device and return to the login screen.
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel

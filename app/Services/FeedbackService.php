@@ -208,6 +208,17 @@ class FeedbackService
         ]);
     }
 
+    public function storingReportedUser(int $reportedUserId, string $reason, ?string $details = null, int $reportedBy): Report
+    {
+        return Report::create([
+            'reported_user_id' => $reportedUserId,
+            'reported_by' => $reportedBy,
+            'reason' => $reason,
+            'details' => $details,
+            'status' => 'pending',
+        ]);
+    }
+
     /**
      * Normalizes all avatar URLs inside a paginated feedback collection.
      */

@@ -24,11 +24,11 @@ export default function ProblemSolution() {
         }
     ]
     return (
-        <section id="problem-solution" className="p-20 bg-slate-100">
-            <div className="px-30">
-                <div className="mb-15 text-center">
-                    <h1 className="font-bold text-3xl text-violet-500">Problems and Solution</h1>
-                    <p>Make Feedback Clear, Not Confusing</p>
+        <section id="problem-solution" className="py-5 px-0 lg:p-20  bg-slate-100">
+            <div className="px-5 md:px-28 lg:px-30">
+                <div className="mb-5 md:mb-10 lg:mb-15 text-center">
+                    <h1 className="font-bold text-2xl lg:text-5xl mb-3 lg:mb-5 text-violet-500">Problems and Solution</h1>
+                    <p className="text-sm md:text-base">Make Feedback Clear, Not Confusing</p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -38,15 +38,15 @@ export default function ProblemSolution() {
                             className="flex flex-col justify-between p-8 rounded-3xl bg-white border border-slate-100 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/5 hover:-translate-y-1"
                         >
                             <div className="mb-4">
-                                <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-violet-50 mb-4 transition-colors group-hover:bg-violet-100">
+                                <div className="inline-flex items-center justify-center p-2 md:p-3 rounded-2xl bg-violet-50 mb-4 transition-colors group-hover:bg-violet-100">
                                     <span className="text-violet-500">{content.icon}</span>
                                 </div>
-                                <h3 className="text-slate-900 font-semibold text-xl tracking-tight leading-tight">
+                                <h3 className="text-slate-900 font-semibold text-sm md:text-xl tracking-tight leading-tight">
                                     {content.problem}
                                 </h3>
                             </div>
 
-                            <p className="text-slate-500 italic font-light text-sm leading-relaxed">
+                            <p className="text-slate-500 italic font-light text-xs md:text-sm leading-relaxed">
                                 {content.solution}
                             </p>
                         </div>

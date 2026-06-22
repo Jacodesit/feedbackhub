@@ -42,6 +42,30 @@ export const REASON_CONFIG = {
         label: 'Misleading Information',
         className: 'bg-purple-100 border border-purple-300 text-purple-800',
     },
+    spam_or_promotional_activity: {
+        label: 'Spam or Promotional Activity',
+        className: 'bg-amber-100 border border-amber-300 text-amber-800',
+    },
+    harassment_or_bullying: {
+        label: 'Harassment or Bullying',
+        className: 'bg-red-100 border border-red-300 text-red-800',
+    },
+    hate_speech_or_offensive_behavior: {
+        label: 'Hate Speech or Offensive Behavior',
+        className: 'bg-orange-100 border border-orange-300 text-orange-800',
+    },
+    impersonation: {
+        label: 'Impersonation',
+        className: 'bg-blue-100 border border-blue-300 text-blue-800',
+    },
+    misleading_or_fraudulent_activity: {
+        label: 'Misleading or Fraudulent Activity',
+        className: 'bg-purple-100 border border-purple-300 text-purple-800',
+    },
+    repeated_community_guidelines_violations: {
+        label: 'Repeated Community Guidelines Violations',
+        className: 'bg-rose-100 border border-rose-300 text-rose-800',
+    },
     other: {
         label: 'Other',
         className: 'bg-slate-100 border border-slate-300 text-slate-700',

@@ -1,4 +1,4 @@
-import { PaginatedReports } from "@/types/feedbackhub";
+import { PaginatedReports, PaginatedUserReports } from "@/types/feedbackhub";
 import SearchComponent from "../../components/search";
 import AdminLayout from "../../layout/AdminLayout";
 import ReportTable from "./components/table";
@@ -7,13 +7,15 @@ import ReasonFilter from "./components/filters/dropdowns/reasons";
 import TimelineFilter from "../users/components/filters/dropdowns/timeline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { router } from "@inertiajs/react";
+import ReportedUsersTable from "./components/tables/users";
 
 type pageProps = {
     reports: PaginatedReports
     tab: string
+    userReports: PaginatedUserReports
 }
 
-export default function Reports({reports, tab}:pageProps) {
+export default function Reports({reports, tab, userReports}:pageProps) {
         const handleTabChange = (newTab: string) => {
             router.get('/admin/reports',
                 { tab: newTab },
@@ -44,8 +46,8 @@ export default function Reports({reports, tab}:pageProps) {
                     <TabsContent value="feedback">
                         <ReportTable reports={reports} />
                     </TabsContent>
-                    <TabsContent value="users">
-                        Nothing to show yet
+                    <TabsContent value="user">
+                        <ReportedUsersTable userReports={userReports} />
                     </TabsContent>
                 </Tabs>
             </div>

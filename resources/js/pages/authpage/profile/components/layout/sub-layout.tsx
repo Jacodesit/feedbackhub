@@ -20,7 +20,7 @@ type SubLayoutProps = {
 
 export default function ProfileSubLayout({ feedbacks, stats, refs }: SubLayoutProps) {
     return (
-        <section className="bg-white rounded-lg shadow-md p-10 flex flex-col gap-5 w-full">
+        <section className="bg-white rounded-lg shadow-md p-6 lg:p-10 flex flex-col gap-5 w-full">
             <div id="spy-profile" ref={refs.profile} className="scroll-mt-50"><Profile /></div>
             <div id="spy-stats" ref={refs.stats} className="scroll-mt-20"><Stats stats={stats} /></div>
             <div id="spy-feedbacks" ref={refs.feedbacks} className="scroll-mt-20"><Feedbacks feedbacks={feedbacks}/></div>

@@ -4,7 +4,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { Link } from "@inertiajs/react"
-import Logout from "./logout-btn"
+import Logout from "../logout-btn"
 import { Menu } from "lucide-react"
 
 export default function AuthenticatedHamburgerNavigation() {

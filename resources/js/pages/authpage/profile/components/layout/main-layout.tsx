@@ -50,17 +50,17 @@ export default function ProfileMainLayout({ feedbacks, stats }: { feedbacks: Pag
     };
 
     return (
-        <main className="flex flex-col gap-5 items-start relative z-10 px-50 py-30">
+        <main className="flex flex-col gap-5 items-start relative z-10 px-5 md:px-28 lg:px-50 py-26 lg:py-20">
             <div className="relative bg-white p-10  rounded-lg shadow w-full">
                 <Grid />
                 <div className="relative z-100">
-                    <h1 className="font-semibold text-4xl">Profile</h1>
-                    <p className="text-gray-500">Manage your account, track your feedback activity, and view your contributions in one place.</p>
+                    <h1 className="font-semibold text-lg md:text-2xl lg:text-4xl">Profile</h1>
+                    <p className="text-gray-500 text-xs lg:text-base">Manage your account, track your feedback activity, and view your contributions in one place.</p>
                 </div>
             </div>
 
-            <div className="flex gap-5">
-                <div className="sticky top-30 self-start">
+            <div className="flex flex-col lg:flex gap-5">
+                <div className="lg:sticky top-30 self-start">
                     <Sidebar onNavigate={scrollToSection} activeSection={activeSection} />
                 </div>
 

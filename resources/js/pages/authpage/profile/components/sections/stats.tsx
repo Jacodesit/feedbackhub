@@ -16,7 +16,7 @@ export default function Stats({ stats }: { stats: UserStats }) {
                 <h2 className=" font-medium">Stats</h2>
                 <p className="text-sm text-gray-400">Contribution/Activity</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-rows-1 lg:grid-cols-2 gap-4">
                 {cards.map((stat, index) => {
                     const isLastCard = index === cards.length - 1;
 

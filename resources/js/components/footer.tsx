@@ -117,7 +117,7 @@ export default function Footer() {
                                             <a
                                                 href={`#${link.id}`}
                                                 onClick={(e) => handleScroll(e, link.id)}
-                                                className={`text-sm transition-all duration-300 ${
+                                                className={`text-[10px] md:text-[12px] transition-all duration-300 ${
                                                     activeId === link.id && activeId !== "hero"
                                                     ? "text-white font-medium"
                                                     : "text-white font-medium hover:text-black"
@@ -131,17 +131,17 @@ export default function Footer() {
                             </div>
 
                             <div className="">
-                                <p className="text-[10px] md:text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
+                                <p className="text-[10px] lg:text-[15px] uppercase tracking-widest font-bold mb-2">Actions</p>
                                 <ul className="flex gap-5 text-accent">
                                     <Link
                                         href="/register"
-                                        className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
+                                        className="text-[10px] md:text-[12px] transition-all duration-300 text-white font-medium hover:text-black"
                                     >
                                         Get Started
                                     </Link>
                                     <Link
                                         href="/login"
-                                        className="text-sm transition-all duration-300 text-white font-medium hover:text-black"
+                                        className="text-[10px] md:text-[12px] transition-all duration-300 text-white font-medium hover:text-black"
                                     >
                                         Login
                                     </Link>
